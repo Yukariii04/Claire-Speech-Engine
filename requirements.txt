@@ -1,0 +1,13 @@
+# Runtime
+torch
+numpy
+onnxruntime
+sounddevice
+soundfile
+pyyaml
+rich
+loguru
+
+# Dev / Testing
+pytest
+pytest-benchmark
