@@ -72,9 +72,9 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
-## Skills Evaluation (PRD-007)
+## Skills Evaluation (PRD-008)
 
-- **`ponytail`**: Highly applicable. We are building a lightweight voice package manager (metadata loading and registry). There will be zero actual model loading, Torch, ONNX, or inference implemented. This replaces the primitive `VoiceManager` from PRD-004 with a robust, formalized `cse.voice` package system.
+- **`ponytail`**: Highly applicable. The Kokoro backend must be a thin, replaceable adapter. Only `backends/kokoro/` imports Kokoro-specific libraries. The rest of CSE remains completely unaware that Kokoro exists. No architecture modifications allowed.
 - **UI/UX Skills**: Not applicable.
 - **GSD Skills**: Not applicable.
 
@@ -84,7 +84,7 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-007             |
+| **Current PRD** | PRD-008             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
@@ -145,3 +145,18 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 | Tests pass                | ✅     | 18 tests pass                  |
 | Benchmarks pass           | ✅     | Discovery & lookup < 10ms      |
 | Documentation complete    | ✅     | README in `src/cse/voice/`     |
+
+---
+
+## Verification Results (PRD-008)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Backend initializes       | ✅     | Kokoro ONNX pipeline loads     |
+| Voice loads               | ✅     | `load_voice()` resolves names  |
+| Speech generated          | ✅     | Real Kokoro synthesis works    |
+| WAV saved                 | ✅     | UUID-named WAV in `temp/`      |
+| SpeechResult returned     | ✅     | Immutable frozen dataclass     |
+| Tests pass                | ✅     | 19 tests (18 unit + 1 integration), 213 total |
+| Benchmarks pass           | ✅     | Warm synthesis ~777ms (<1.5s target) |
+| Documentation complete    | ✅     | README in `src/cse/backends/kokoro/` |

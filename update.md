@@ -227,3 +227,48 @@ All PRD-007 acceptance criteria passed:
 - ✅ Tests pass
 - ✅ Benchmarks pass
 - ✅ Documentation complete
+
+## 2026-07-07 — PRD-008 Implementation (Kokoro Backend)
+
+### Phase 1: Foundation
+- Evaluated AI Skills: `ponytail` enforces a thin adapter pattern — only `backends/kokoro/` imports Kokoro. The rest of CSE is completely unaware Kokoro exists. No architecture modifications.
+- Initializing directory structure `src/cse/backends/kokoro/`.
+
+### Phase 2: Core Components
+- Implemented `config.py` — immutable `KokoroConfig` with model paths, voice defaults, and output settings.
+- Implemented `exceptions.py` — `KokoroInitializationError`, `VoiceLoadError`, `SpeechGenerationError` hierarchy.
+- Implemented `converter.py` — `timeline_to_text()` extracts only TOKEN events, ignoring emphasis/pauses/breathing per PRD-008 §9.
+- Implemented `loader.py` — `resolve_voice()` maps voice names to Kokoro identifiers.
+- Implemented `result.py` — immutable `SpeechResult` frozen dataclass with all required fields.
+- Implemented `backend.py` — `KokoroBackend(AcousticBackend)` with full lifecycle: initialize → load_voice → synthesize → shutdown.
+- Kokoro-specific imports (`kokoro_onnx`, `soundfile`) confined exclusively to `backends/kokoro/`.
+
+### Phase 3: Tests & Benchmarks
+- 19 tests: 18 unit tests (mocked Kokoro) + 1 integration test (real model).
+- Unit tests cover: exceptions, config, converter, loader, SpeechResult, backend init/shutdown/synthesize/validate.
+- Integration test validates full lifecycle with real Kokoro model files.
+- Benchmarks: Converter 1000x in ~279μs, mocked synthesis ~2.4ms, real Kokoro warm synthesis ~777ms.
+
+### Phase 4: Documentation
+- Created `README.md` in `src/cse/backends/kokoro/` covering installation, dependencies, lifecycle, configuration, and known limitations.
+
+### Bug Fix: Corrupted Voices File
+- `voices-v1.0.bin` was truncated (24.8 MB vs expected 28.2 MB), causing `BadZipFile` during `np.load()`.
+- Re-downloaded from GitHub releases to correct 28,214,398 bytes. Integration test now passes.
+
+### Verification
+All PRD-008 acceptance criteria passed:
+- ✅ Backend initializes (Kokoro ONNX pipeline)
+- ✅ Voice loads (`load_voice()` resolves names)
+- ✅ Speech generated (real Kokoro synthesis)
+- ✅ WAV saved (UUID-named in `temp/`)
+- ✅ SpeechResult returned (immutable frozen dataclass)
+- ✅ Tests pass (19/19, 213 total project-wide)
+- ✅ Benchmarks pass (warm synthesis ~777ms, target <1.5s)
+- ✅ Documentation complete (README in `src/cse/backends/kokoro/`)
+
+### Architecture Validation
+PRD-008 proves the CSE architecture is genuinely backend-agnostic:
+- Only `backends/kokoro/` imports Kokoro-specific libraries
+- The rest of CSE remains completely unaware Kokoro exists
+- Deleting `backends/kokoro/` and adding `backends/claire/` would require zero changes to the core
