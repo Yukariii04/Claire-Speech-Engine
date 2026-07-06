@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from cse.performance.compiler.timeline import PerformanceTimeline
-from cse.runtime.voice.backend import AcousticBackend, DummyBackend
+from cse.acoustic.backend import AcousticBackend, DummyBackend
 from cse.runtime.voice.exceptions import BackendNotRegisteredError, InvalidRuntimeStateError
 from cse.runtime.voice.manager import VoiceManager
 from cse.runtime.voice.state import RuntimeState

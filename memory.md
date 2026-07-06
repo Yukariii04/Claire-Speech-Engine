@@ -72,11 +72,11 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
-## Skills Evaluation (PRD-004)
+## Skills Evaluation (PRD-005)
 
-- **`ponytail`**: Highly applicable. We are explicitly ordered to build *only* orchestration, avoiding streaming, model loading, audio synthesis, ONNX, and GPU code. The implementation should be the simplest robust solution to meet the orchestration interface without over-engineering or creating fake audio mechanisms.
-- **UI/UX Skills**: Not applicable (this is an orchestration backend).
-- **GSD Skills**: Not applicable as we are strictly following PRD sequential workflow.
+- **`ponytail`**: Highly applicable. We must build a clean, unified acoustic backend interface that replaces the old placeholder in `runtime/voice/backend.py`, strictly avoiding model loading, audio synthesis, PyTorch, and ONNX. The focus is purely on the contract and registry, keeping it as minimal and robust as possible.
+- **UI/UX Skills**: Not applicable (purely backend architecture).
+- **GSD Skills**: Not applicable (strictly sequential PRD implementation).
 
 ---
 
@@ -84,7 +84,7 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-004             |
+| **Current PRD** | PRD-005             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
@@ -102,3 +102,18 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 | Tests pass                | ✅     | 162 total tests pass           |
 | Benchmarks pass           | ✅     | Init time ~0.001ms (< 20ms)    |
 | Documentation complete    | ✅     | README in `src/cse/runtime/voice/` |
+
+---
+
+## Verification Results (PRD-005)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Interface complete        | ✅     | `AcousticBackend` defines strict API |
+| Capabilities implemented  | ✅     | `BackendCapabilities` immutable dataclass |
+| Registry works            | ✅     | Thread-safe CRUD ops implemented |
+| Manager works             | ✅     | Correctly routes initialization |
+| Validation works          | ✅     | `validate_before_synthesis` works |
+| Tests pass                | ✅     | 16 new tests, all pass |
+| Benchmarks pass           | ✅     | Lookup 1000x takes < 1ms (<10ms target)|
+| Documentation complete    | ✅     | README in `src/cse/acoustic/backend/`|
