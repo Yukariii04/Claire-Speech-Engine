@@ -51,3 +51,36 @@ All 8 PRD-001 acceptance criteria passed:
 - ✅ Tests pass (24/24)
 - ✅ Benchmarks execute (2.08 ms mean, well under 300 ms)
 - ✅ Documentation complete
+
+## 2026-07-06 — PRD-002 Implementation (CIR)
+
+### Phase 1: Foundation (TDD)
+- Created `exceptions.py` with 3 typed error classes.
+- Created `ids.py` for deterministic UUID5 generation using a CIR namespace.
+- Created `schema.py` defining the immutable CIR object hierarchy (`CIRDocument`, `CIRUtterance`, `CIRSpeechSegment`, `CIRLexicalToken`) using frozen dataclasses and tuples.
+- Wrote failing unit tests for schema, exceptions, and IDs.
+
+### Phase 2: Core Components (TDD)
+- Wrote failing unit tests for Builder, Validator, Serializer, and Public API (93 tests total).
+- Implemented `builder.py` to parse text into sentences, segments, and tokens with deterministic UUIDs and precise source offsets.
+- Implemented `validator.py` to enforce strict structural integrity (version, hierarchy, non-empty, unique UUIDs).
+- Implemented `serializer.py` for lossless JSON round-trip serialization.
+- Implemented `parser.py` as a semantic alias for `build_cir`.
+- Exposed the public API in `cir/__init__.py`.
+- Fixed a bug where identical sentences produced duplicate UUIDs by mixing `source_offset` into the UUID seed.
+
+### Phase 3: Benchmarks & Documentation
+- Wrote benchmarks validating that 100-word paragraph builds take < 5 ms (actual: 0.65 ms) and 1000 builds take < 1 second (actual: 35 ms).
+- Added `README.md` in `src/cse/language/cir/` explaining the architecture, API, and purpose of CIR.
+
+### Verification
+All PRD-002 acceptance criteria passed:
+- ✅ Immutable (Frozen dataclasses, tuple fields)
+- ✅ Serializable (Lossless JSON round-trip)
+- ✅ Versioned (`CIR_VERSION = "2.0.0"`)
+- ✅ UUIDs implemented (Deterministic UUID5)
+- ✅ Validation works (Catch duplicate UUIDs, malformed hierarchies)
+- ✅ Benchmarks pass (Builder: 0.65ms, 1000 builds: 35ms)
+- ✅ Tests pass (117/117 passed)
+- ✅ Documentation complete (README added)
+- ✅ Public API stable (5 functions only)

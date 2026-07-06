@@ -74,21 +74,22 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-001             |
+| **Current PRD** | PRD-002             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
 ---
 
-## Verification Results
+## Verification Results (PRD-002)
 
 | Criterion                | Status | Detail                         |
 |--------------------------|--------|--------------------------------|
-| Project installs         | ✅     | `pip install -e ".[dev]"` OK   |
-| Runtime starts           | ✅     | Banner matches PRD expected output |
-| Runtime shuts down       | ✅     | `shutdown()` test passes       |
-| Logger works             | ✅     | All 5 levels tested            |
-| Configuration loads      | ✅     | Load, dotted-key, env override, reload |
-| Tests pass               | ✅     | 24/24 passed                   |
-| Benchmarks execute       | ✅     | Mean 2.08 ms (target < 300 ms) |
-| Documentation complete   | ✅     | README with all required sections |
+| Immutable                | ✅     | Frozen dataclasses, tuples     |
+| Serializable             | ✅     | Lossless JSON round-trip       |
+| Versioned                | ✅     | CIR_VERSION = "2.0.0"          |
+| UUIDs implemented        | ✅     | Deterministic UUID5 seeded     |
+| Validation works         | ✅     | Structural integrity checks    |
+| Benchmarks pass          | ✅     | Builder < 5ms, 1000 builds < 1s|
+| Tests pass               | ✅     | 93 new tests (117 total)       |
+| Documentation complete   | ✅     | README in `src/cse/language/cir/` |
+| Public API stable        | ✅     | 5 exposed functions in `__init__` |
