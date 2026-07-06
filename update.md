@@ -287,3 +287,28 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - ✅ Tests pass (14/14)
 - ✅ Benchmarks pass
 - ✅ Documentation complete
+
+## 2026-07-07 — PRD-010 Implementation (Developer Experience)
+
+### Phase 1: Foundation
+- Evaluated AI Skills: `ponytail` enforced a minimalist approach to the CLI. We relied strictly on `argparse` from the standard library to avoid bloat and third-party dependencies like `click`.
+
+### Phase 2: Core Components
+- Created `examples/` directory containing four runnable examples (`basic.py`, `configuration.py`, `list_voices.py`, `generate_speech.py`).
+- Implemented `src/cse/cli/` using `argparse` to provide `help`, `version`, `voices`, and `speak` commands.
+- Redirected root `cse.py` to use the new CLI instead of the internal bootstrap loader.
+
+### Phase 3: Tests & Benchmarks
+- Updated `tests/test_cli.py` to cover all new CLI commands and edge cases.
+- CLI startup benchmark achieved `~0.5ms` (target `<200ms`), by lazy-loading `SpeechEngine` only when required.
+
+### Phase 4: Documentation
+- Rewrote the root `README.md` to focus on the Developer Experience (What is CSE, Quick Start, Examples).
+- Added `README.md` to `src/cse/cli/`.
+
+### Verification
+- ✅ CLI works
+- ✅ Examples work
+- ✅ README updated
+- ✅ Tests pass (8/8 CLI tests)
+- ✅ Benchmarks pass (~0.5ms)

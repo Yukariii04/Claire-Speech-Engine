@@ -1,20 +1,50 @@
-# Claire Speech Engine (CSE)
+# The Claire Speech Engine (CSE)
 
-> Production-grade speech synthesis foundation.
+**The Claire Speech Engine** is a production-grade, backend-agnostic speech synthesis library built in Python. 
 
----
+## What is CSE?
 
-## Project Goals
+CSE is a unified pipeline for generating high-quality speech. It cleanly abstracts away the complexity of parsing text, compiling performance timelines, and routing audio generation through acoustic backends (like Kokoro ONNX). 
 
-Claire Speech Engine is a modular, production-grade speech synthesis engine built in Python. This repository establishes the engineering foundation — packaging, configuration, logging, module discovery, and runtime lifecycle — upon which future speech features will be built.
+You feed it text, and it gives you speech.
 
-**Current milestone:** PRD-001 — Project Bootstrap & Foundation (no speech features yet).
+## Why use it?
 
----
+- **Simple Public API:** A single `SpeechEngine` class orchestrates the entire lifecycle.
+- **Backend-Agnostic:** Designed from the ground up to support multiple AI acoustic models without changing your code.
+- **Immutable & Fast:** Core data structures (CIR, Performance Timelines, Audio Streams) are completely immutable and blazing fast.
+- **Developer First:** Built with clean architecture, typed exceptions, and no heavy boilerplate.
+
+## Quick Start
+
+The quickest way to see CSE in action is using the CLI:
+
+```bash
+# List available voices
+python cse.py voices
+
+# Generate speech
+python cse.py speak --voice claire --text "Hello from The Claire Speech Engine."
+```
+
+Or from Python:
+
+```python
+from cse import SpeechEngine
+
+engine = SpeechEngine()
+engine.load_voice("claire")
+
+speech = engine.speak("Synthesis is now extremely simple.")
+if speech.success:
+    print(f"Audio saved to: {speech.audio_path}")
+```
 
 ## Installation
 
-**Requirements:** Python ≥ 3.12
+*(Note: CSE is currently in active development and not yet available on PyPI.)*
+
+To install from source:
 
 ```bash
 git clone <repo-url> ClaireSpeechEngine
@@ -22,66 +52,22 @@ cd ClaireSpeechEngine
 pip install -e ".[dev]"
 ```
 
----
+## Examples
 
-## Running
+We believe every feature should be easily discoverable. Check the `examples/` directory for runnable scripts:
 
-```bash
-python cse.py
-```
+- `examples/basic.py` — Simple end-to-end synthesis.
+- `examples/configuration.py` — How to pass custom overrides and load configurations.
+- `examples/list_voices.py` — Querying the local voice registry.
+- `examples/generate_speech.py` — Handling output files and moving them dynamically.
 
-**Expected output:**
-
-```text
-Claire Speech Engine
-Version 0.1.0
-
-Configuration Loaded
-Logger Initialized
-Module Registry Initialized
-Runtime Ready
-```
-
-### CLI Options
-
-| Flag        | Description              |
-|-------------|--------------------------|
-| `--help`    | Show usage information   |
-| `--version` | Print version and exit   |
-| `--debug`   | Enable debug-level logs  |
-
----
-
-## Repository Structure
+## Roadmap
 
 ```text
-ClaireSpeechEngine/
-├── docs/                  # Documentation
-│   ├── PRDs/              # Product requirements
-│   ├── RFCs/              # Design proposals
-│   ├── Architecture/      # Architecture docs
-│   └── Benchmarks/        # Benchmark reports
-├── src/cse/               # Source code
-│   ├── api/               # Public API surface
-│   ├── config/            # Configuration system
-│   ├── core/              # Logger, registry
-│   ├── runtime/           # Bootstrap & lifecycle
-│   ├── plugins/           # Plugin interface
-│   ├── performance/       # Profiling utilities
-│   ├── speech/            # (future) Speech modules
-│   ├── prosody/           # (future) Prosody modules
-│   ├── streaming/         # (future) Streaming modules
-│   ├── models/            # (future) Model definitions
-│   └── utils/             # Shared helpers
-├── tests/                 # Test suite
-├── benchmarks/            # Performance benchmarks
-├── configs/               # YAML configuration files
-├── examples/              # Usage examples
-├── assets/                # Static assets
-├── models/                # Trained model weights
-├── scripts/               # Dev & build scripts
-├── training/              # Training pipelines
-└── third_party/           # Vendored dependencies
+PRD-010 ✅ CLI & Examples
+PRD-011 🚧 Packaging & PyPI
+PRD-012 🚧 Performance
+PRD-013 🚧 Public Beta Readiness
 ```
 
 ---
@@ -89,47 +75,11 @@ ClaireSpeechEngine/
 ## Development
 
 ### Running Tests
-
 ```bash
 pytest
 ```
 
 ### Running Benchmarks
-
 ```bash
 pytest benchmarks/ --benchmark-only
 ```
-
-### Configuration
-
-Default config lives at `configs/default.yaml`. Override any value with environment variables using the `CSE_` prefix:
-
-```bash
-CSE_RUNTIME_DEBUG=true python cse.py
-```
-
-### Pre-commit Hooks
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Ensure all tests pass (`pytest`)
-4. Ensure code style compliance (pre-commit hooks handle this)
-5. Submit a pull request
-
-### Coding Standards
-
-- PEP 8 compliance
-- Type hints on all public functions
-- Docstrings on all public functions and classes
-- No global mutable state
-- Dependency injection where appropriate
-- No circular imports

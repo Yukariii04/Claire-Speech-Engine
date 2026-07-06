@@ -1,58 +1,51 @@
-"""Tests for CLI argument handling."""
-
-from __future__ import annotations
+"""Tests for the Developer Experience CLI (PRD-010)."""
 
 import subprocess
 import sys
 from pathlib import Path
 
+from cse.cli.parser import create_parser
+from cse.cli.commands import command_version, command_voices
 
 CSE_PY = str(Path(__file__).resolve().parents[1] / "cse.py")
 
 
-class TestCLI:
-    """CLI integration tests."""
+def test_parser_creation():
+    parser = create_parser()
+    assert parser.prog == "cse"
 
-    def test_help_flag(self) -> None:
-        """--help should print usage and exit 0."""
-        result = subprocess.run(
-            [sys.executable, CSE_PY, "--help"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        assert result.returncode == 0
-        assert "usage" in result.stdout.lower() or "Claire" in result.stdout
+def test_help_command():
+    result = subprocess.run([sys.executable, CSE_PY, "help"], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "Available commands" in result.stdout or "usage" in result.stdout.lower()
 
-    def test_version_flag(self) -> None:
-        """--version should print version string and exit 0."""
-        result = subprocess.run(
-            [sys.executable, CSE_PY, "--version"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        assert result.returncode == 0
-        assert "0.1.0" in result.stdout
+def test_help_flag():
+    result = subprocess.run([sys.executable, CSE_PY, "--help"], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "Available commands" in result.stdout or "usage" in result.stdout.lower()
 
-    def test_debug_flag(self) -> None:
-        """--debug should complete without error."""
-        result = subprocess.run(
-            [sys.executable, CSE_PY, "--debug"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        assert result.returncode == 0
+def test_version_command():
+    result = subprocess.run([sys.executable, CSE_PY, "version"], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "Claire Speech Engine" in result.stdout
 
-    def test_default_run(self) -> None:
-        """Running without flags should print the startup banner."""
-        result = subprocess.run(
-            [sys.executable, CSE_PY],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        assert result.returncode == 0
-        assert "Claire Speech Engine" in result.stdout
-        assert "Runtime Ready" in result.stdout
+def test_voices_command():
+    result = subprocess.run([sys.executable, CSE_PY, "voices"], capture_output=True, text=True)
+    assert result.returncode == 0
+    # Even if no voices exist, it should return 0 and not fail
+    assert "voices found" in result.stdout or "- " in result.stdout or "No voices" in result.stdout
+
+def test_speak_command_missing_args():
+    result = subprocess.run([sys.executable, CSE_PY, "speak"], capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "required" in result.stderr.lower()
+
+def test_speak_command_invalid_voice():
+    result = subprocess.run(
+        [sys.executable, CSE_PY, "speak", "--voice", "invalid_123", "--text", "Test"],
+        capture_output=True, text=True
+    )
+    # Should fail cleanly with human-readable message, not traceback
+    assert result.returncode == 1
+    assert "Error:" in result.stdout
+    assert "Traceback" not in result.stderr

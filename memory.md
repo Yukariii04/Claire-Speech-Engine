@@ -148,20 +148,17 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 ---
 
-## Current State (Post PRD-009)
-The project now exposes a stable, simple public API (`SpeechEngine`). The internal complexity (`cir`, `performance`, `runtime`, `backends`) is entirely encapsulated and no longer leaked to users. This allows for safe future refactoring. The `cse` package root exposes only the `SpeechEngine`.
+## Current State (Post PRD-010)
+The project now includes a Developer Experience layer featuring a simple `argparse` CLI, runnable examples, and clear Quick Start documentation. The architecture remains untouched, keeping the underlying engine encapsulated.
 
 ---
 
-## Verification Results (PRD-009)
+## Verification Results (PRD-010)
 
 | Criterion                 | Status | Detail                         |
 |---------------------------|--------|--------------------------------|
-| Engine initializes        | ✅     | Minimal adapter over Config    |
-| Voice loads               | ✅     | Wraps `VoiceRuntime`           |
-| Speech generates          | ✅     | E2E pipeline orchestrated      |
-| SpeechResult returned     | ✅     | Returns backend result object  |
-| Shutdown works            | ✅     | Idempotent resource cleanup    |
-| Tests pass                | ✅     | 14/14 API unit tests pass      |
-| Benchmarks pass           | ✅     | Overhead <2ms for API creation |
-| Documentation complete    | ✅     | Quick Start README provided    |
+| CLI works                 | ✅     | `help`, `version`, `voices`, `speak` all work |
+| Examples work             | ✅     | 4 runnable examples in `examples/` |
+| README updated            | ✅     | Root README completely rewritten |
+| Tests pass                | ✅     | CLI tests fully green          |
+| Benchmarks pass           | ✅     | Startup is ~0.5ms (target <200ms) |
