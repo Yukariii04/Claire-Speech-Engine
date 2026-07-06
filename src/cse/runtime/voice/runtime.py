@@ -5,17 +5,17 @@ from __future__ import annotations
 from cse.performance.compiler.timeline import PerformanceTimeline
 from cse.acoustic.backend import AcousticBackend, DummyBackend
 from cse.runtime.voice.exceptions import BackendNotRegisteredError, InvalidRuntimeStateError
-from cse.runtime.voice.manager import VoiceManager
 from cse.runtime.voice.state import RuntimeState
+from cse.voice import get_voice_package, VoicePackage, VoicePackageNotFoundError
 
 
 class VoiceRuntime:
     """Orchestrates the speech pipeline."""
 
-    def __init__(self, manager: VoiceManager | None = None, backend: AcousticBackend | None = None) -> None:
+    def __init__(self, backend: AcousticBackend | None = None) -> None:
         self._state = RuntimeState.UNINITIALIZED
-        self._manager = manager or VoiceManager()
         self._backend = backend or DummyBackend()
+        self._active_voice: VoicePackage | None = None
 
     def initialize(self) -> None:
         """Initialize the runtime."""
@@ -30,7 +30,7 @@ class VoiceRuntime:
         if self._state == RuntimeState.UNINITIALIZED:
             return
         
-        self._manager.unload_voice()
+        self.unload_voice()
         self._backend.shutdown()
         self._state = RuntimeState.SHUTDOWN
 
@@ -39,16 +39,21 @@ class VoiceRuntime:
         if self._state not in (RuntimeState.READY, RuntimeState.VOICE_LOADED):
             raise InvalidRuntimeStateError(f"Cannot load voice from {self._state}")
 
-        self._manager.load_voice(voice_id)
+        # PRD-007: Use Voice Package System
+        try:
+            package = get_voice_package(voice_id)
+        except VoicePackageNotFoundError as e:
+            from cse.runtime.voice.exceptions import VoiceNotFoundError
+            raise VoiceNotFoundError(str(e)) from e
+            
+        self._active_voice = package
         self._state = RuntimeState.VOICE_LOADED
 
     def unload_voice(self) -> None:
         """Unload the currently active voice."""
-        if self._state != RuntimeState.VOICE_LOADED:
-            raise InvalidRuntimeStateError(f"Cannot unload voice from {self._state}")
-
-        self._manager.unload_voice()
-        self._state = RuntimeState.READY
+        if self._state == RuntimeState.VOICE_LOADED:
+            self._active_voice = None
+            self._state = RuntimeState.READY
 
     def process(self, timeline: PerformanceTimeline) -> object:
         """Process a timeline and return synthesized audio."""
@@ -65,6 +70,6 @@ class VoiceRuntime:
         finally:
             self._state = RuntimeState.VOICE_LOADED
 
-    def get_loaded_voice(self) -> dict[str, str] | None:
-        """Get the currently loaded voice metadata."""
-        return self._manager.get_loaded_voice()
+    def get_loaded_voice(self) -> VoicePackage | None:
+        """Get the currently loaded VoicePackage."""
+        return self._active_voice

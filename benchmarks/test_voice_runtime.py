@@ -1,22 +1,29 @@
-"""Benchmarks for Voice Runtime (PRD-004 §16)."""
+"""Benchmarks for Voice Runtime."""
 
 from __future__ import annotations
 
 import pytest
-import yaml
 
-from cse.runtime.voice.manager import VoiceManager
 from cse.runtime.voice.runtime import VoiceRuntime
+from cse.voice import register_voice_package, VoicePackage, VoiceMetadata
+from pathlib import Path
 
 
 @pytest.fixture
-def mock_voice_dir(tmp_path):
-    voice_dir = tmp_path / "claire"
-    voice_dir.mkdir(parents=True)
-    meta_file = voice_dir / "metadata.yaml"
-    with open(meta_file, "w") as f:
-        yaml.dump({"id": "claire", "name": "Claire"}, f)
-    return str(tmp_path)
+def mock_package():
+    meta = VoiceMetadata(
+        id="claire",
+        name="Claire",
+        version="1.0.0",
+        author="Test",
+        language="en",
+        backend="dummy",
+        sample_rate=24000,
+        channels=1,
+        description="Test",
+        license="MIT"
+    )
+    return VoicePackage(metadata=meta, path=Path("/tmp/claire"))
 
 
 def test_benchmark_runtime_initialization(benchmark):
@@ -31,10 +38,13 @@ def test_benchmark_runtime_initialization(benchmark):
     )
 
 
-def test_benchmark_load_metadata(benchmark, mock_voice_dir):
-    manager = VoiceManager(voices_dir=mock_voice_dir)
-    runtime = VoiceRuntime(manager=manager)
+def test_benchmark_load_metadata(benchmark, mock_package):
+    runtime = VoiceRuntime()
     runtime.initialize()
+    try:
+        register_voice_package(mock_package)
+    except Exception:
+        pass
 
     def _run():
         runtime.load_voice("claire")
@@ -42,17 +52,14 @@ def test_benchmark_load_metadata(benchmark, mock_voice_dir):
     benchmark(_run)
 
 
-def test_benchmark_unload_metadata(benchmark, mock_voice_dir):
-    manager = VoiceManager(voices_dir=mock_voice_dir)
-    runtime = VoiceRuntime(manager=manager)
+def test_benchmark_unload_metadata(benchmark, mock_package):
+    runtime = VoiceRuntime()
     runtime.initialize()
-    runtime.load_voice("claire")
+    try:
+        register_voice_package(mock_package)
+    except Exception:
+        pass
 
-    def _run():
-        runtime.unload_voice()
-        runtime._state = 2 # hack state to VOICE_LOADED to allow repeated unloading
-        # wait, a better way is to just use manager directly or reload it.
-        
     def _run_clean():
         runtime.load_voice("claire")
         runtime.unload_voice()

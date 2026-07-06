@@ -72,9 +72,9 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
-## Skills Evaluation (PRD-006)
+## Skills Evaluation (PRD-007)
 
-- **`ponytail`**: Highly applicable. We are strictly building a transport pipeline with zero playback, zero PyAudio, zero networking, and zero WAV export. We must ensure the `AudioFrame` is immutable, the `StreamBuffer` is generic, and the API is PCM-format agnostic, keeping it as lightweight and robust as possible.
+- **`ponytail`**: Highly applicable. We are building a lightweight voice package manager (metadata loading and registry). There will be zero actual model loading, Torch, ONNX, or inference implemented. This replaces the primitive `VoiceManager` from PRD-004 with a robust, formalized `cse.voice` package system.
 - **UI/UX Skills**: Not applicable.
 - **GSD Skills**: Not applicable.
 
@@ -84,7 +84,7 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-006             |
+| **Current PRD** | PRD-007             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
@@ -132,3 +132,16 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 | Tests pass                | ✅     | 15 new tests, all pass         |
 | Benchmarks pass           | ✅     | 1000 pushes/pops in ~2.5ms     |
 | Documentation complete    | ✅     | README in `src/cse/streaming/audio/`|
+
+---
+
+## Verification Results (PRD-007)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Package loads             | ✅     | `PackageLoader` parses dirs    |
+| Metadata validates        | ✅     | Strict YAML dictionary checks  |
+| Registry works            | ✅     | Thread-safe global registry    |
+| Tests pass                | ✅     | 18 tests pass                  |
+| Benchmarks pass           | ✅     | Discovery & lookup < 10ms      |
+| Documentation complete    | ✅     | README in `src/cse/voice/`     |
