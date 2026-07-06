@@ -115,3 +115,31 @@ All PRD-003 acceptance criteria passed:
 - ✅ API documented
 - ✅ Thread safe (Stateless)
 - ✅ Immutable (Frozen dataclasses, tuples)
+
+## 2026-07-06 — PRD-004 Implementation (Voice Runtime)
+
+### Phase 1: Foundation (TDD)
+- Evaluated AI Skills and noted `ponytail` as highly applicable to keep orchestration purely structural, strictly avoiding synthesis, streaming, and fake audio.
+- Initializing directory structure `src/cse/runtime/voice/`.
+
+### Phase 2: Core Components (TDD)
+- Implemented `state.py` containing the `RuntimeState` enum enforcing the state machine.
+- Implemented `exceptions.py` with specific error classes (e.g. `InvalidRuntimeStateError`, `VoiceNotFoundError`).
+- Implemented `backend.py` with `AcousticBackend` interface and a `DummyBackend` that satisfies initialization but raises `NotImplementedError` upon synthesis.
+- Implemented `manager.py` that discovers and loads YAML `metadata.yaml` for voices without loading heavy models.
+- Implemented `runtime.py` (`VoiceRuntime`) which handles orchestration and strict state transitions.
+
+### Phase 3: Benchmarks & Documentation
+- Validated performance: initialization takes ~0.001ms (target < 20ms).
+- Created `README.md` explaining the orchestration boundaries.
+
+### Verification
+All PRD-004 acceptance criteria passed:
+- ✅ Runtime initializes
+- ✅ Voice metadata loads
+- ✅ Runtime state transitions work
+- ✅ Backend registration works
+- ✅ Dummy backend called
+- ✅ Tests pass (162/162 passed)
+- ✅ Benchmarks pass
+- ✅ Documentation complete

@@ -72,26 +72,33 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
+## Skills Evaluation (PRD-004)
+
+- **`ponytail`**: Highly applicable. We are explicitly ordered to build *only* orchestration, avoiding streaming, model loading, audio synthesis, ONNX, and GPU code. The implementation should be the simplest robust solution to meet the orchestration interface without over-engineering or creating fake audio mechanisms.
+- **UI/UX Skills**: Not applicable (this is an orchestration backend).
+- **GSD Skills**: Not applicable as we are strictly following PRD sequential workflow.
+
+---
+
 ## Active State
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-003             |
+| **Current PRD** | PRD-004             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
 ---
 
-## Verification Results (PRD-003)
+## Verification Results (PRD-004)
 
-| Criterion                | Status | Detail                         |
-|--------------------------|--------|--------------------------------|
-| Timeline builds          | ✅     | `compile_performance` works    |
-| Events generated         | ✅     | Start, Token, End correct      |
-| Validation works         | ✅     | Timestamps, parameters, order  |
-| Serialization works      | ✅     | JSON round-trip                |
-| Benchmarks pass          | ✅     | 100-word: ~0.5ms, 1000 builds: ~20ms |
-| Golden tests pass        | ✅     | Matches PRD example strictly   |
-| API documented           | ✅     | README added                   |
-| Thread safe              | ✅     | Stateless implementation       |
-| Immutable                | ✅     | Frozen dataclasses, tuples     |
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Runtime initializes       | ✅     | Transitions UNINITIALIZED->READY |
+| Voice metadata loads      | ✅     | `VoiceManager` parses YAML     |
+| State transitions work    | ✅     | Strictly enforced via `RuntimeState` |
+| Backend registration works| ✅     | Dependency injection supported |
+| Dummy backend called      | ✅     | `process()` reaches dummy & raises `NotImplementedError` |
+| Tests pass                | ✅     | 162 total tests pass           |
+| Benchmarks pass           | ✅     | Init time ~0.001ms (< 20ms)    |
+| Documentation complete    | ✅     | README in `src/cse/runtime/voice/` |
