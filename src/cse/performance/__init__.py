@@ -1,1 +1,1 @@
-"""CSE performance — benchmarking and profiling utilities."""
+"""Performance module — generates Performance Timelines from CIR."""
