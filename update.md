@@ -84,3 +84,34 @@ All PRD-002 acceptance criteria passed:
 - ✅ Tests pass (117/117 passed)
 - ✅ Documentation complete (README added)
 - ✅ Public API stable (5 functions only)
+
+## 2026-07-06 — PRD-003 Implementation (Performance Compiler)
+
+### Phase 1: Foundation (TDD)
+- Evaluated AI Skills and noted `ponytail` as highly applicable to keep implementation minimal without anticipating future PRDs.
+- Created `exceptions.py` with 3 typed error classes.
+- Created `events.py` and `timeline.py` for the immutable Performance Timeline schema and event definitions.
+- Wrote failing unit tests for schema and exceptions.
+
+### Phase 2: Core Components (TDD)
+- Implemented `compiler.py` to compile CIR into an ordered timeline with `SPEAK_START`, `TOKEN`, and `SPEAK_END` events. Tokens default to `0.5` for all attributes and strictly `150ms` duration.
+- Implemented `validator.py` for structural checks (negative timestamps, event order, parameters out of bounds, duplicate UUIDs).
+- Implemented `serializer.py` for lossless JSON round-tripping.
+- Added `tests/golden/test_perf_golden.py` to assert the timeline exact structure against the PRD example.
+- Exposed the public API in `compiler/__init__.py`.
+
+### Phase 3: Benchmarks & Documentation
+- Added benchmarks ensuring compilation takes < 2 ms and 1000 timelines are built in < 1s.
+- Created `README.md` explaining the Timeline structure, API, and current limitations.
+
+### Verification
+All PRD-003 acceptance criteria passed:
+- ✅ Timeline builds
+- ✅ Events generated (Start, Token, End)
+- ✅ Validation works (Timestamps, parameters, order)
+- ✅ Serialization works (JSON round-trip)
+- ✅ Benchmarks pass (100-word: ~0.5ms, 1000 builds: ~20ms)
+- ✅ Golden tests pass
+- ✅ API documented
+- ✅ Thread safe (Stateless)
+- ✅ Immutable (Frozen dataclasses, tuples)
