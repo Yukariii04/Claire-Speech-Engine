@@ -72,11 +72,11 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
-## Skills Evaluation (PRD-005)
+## Skills Evaluation (PRD-006)
 
-- **`ponytail`**: Highly applicable. We must build a clean, unified acoustic backend interface that replaces the old placeholder in `runtime/voice/backend.py`, strictly avoiding model loading, audio synthesis, PyTorch, and ONNX. The focus is purely on the contract and registry, keeping it as minimal and robust as possible.
-- **UI/UX Skills**: Not applicable (purely backend architecture).
-- **GSD Skills**: Not applicable (strictly sequential PRD implementation).
+- **`ponytail`**: Highly applicable. We are strictly building a transport pipeline with zero playback, zero PyAudio, zero networking, and zero WAV export. We must ensure the `AudioFrame` is immutable, the `StreamBuffer` is generic, and the API is PCM-format agnostic, keeping it as lightweight and robust as possible.
+- **UI/UX Skills**: Not applicable.
+- **GSD Skills**: Not applicable.
 
 ---
 
@@ -84,7 +84,7 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-005             |
+| **Current PRD** | PRD-006             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
@@ -117,3 +117,18 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 | Tests pass                | ✅     | 16 new tests, all pass |
 | Benchmarks pass           | ✅     | Lookup 1000x takes < 1ms (<10ms target)|
 | Documentation complete    | ✅     | README in `src/cse/acoustic/backend/`|
+
+---
+
+## Verification Results (PRD-006)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| AudioFrame immutable      | ✅     | Frozen dataclass, generic PCM  |
+| Stream works              | ✅     | Lifecycles managed safely      |
+| FIFO buffer works         | ✅     | Thread-safe queue wrapper      |
+| Controller works          | ✅     | Coordinates stream & buffer    |
+| Validation works          | ✅     | Enforces format & duration     |
+| Tests pass                | ✅     | 15 new tests, all pass         |
+| Benchmarks pass           | ✅     | 1000 pushes/pops in ~2.5ms     |
+| Documentation complete    | ✅     | README in `src/cse/streaming/audio/`|
