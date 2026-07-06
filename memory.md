@@ -148,15 +148,20 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 ---
 
-## Verification Results (PRD-008)
+## Current State (Post PRD-009)
+The project now exposes a stable, simple public API (`SpeechEngine`). The internal complexity (`cir`, `performance`, `runtime`, `backends`) is entirely encapsulated and no longer leaked to users. This allows for safe future refactoring. The `cse` package root exposes only the `SpeechEngine`.
+
+---
+
+## Verification Results (PRD-009)
 
 | Criterion                 | Status | Detail                         |
 |---------------------------|--------|--------------------------------|
-| Backend initializes       | ✅     | Kokoro ONNX pipeline loads     |
-| Voice loads               | ✅     | `load_voice()` resolves names  |
-| Speech generated          | ✅     | Real Kokoro synthesis works    |
-| WAV saved                 | ✅     | UUID-named WAV in `temp/`      |
-| SpeechResult returned     | ✅     | Immutable frozen dataclass     |
-| Tests pass                | ✅     | 19 tests (18 unit + 1 integration), 213 total |
-| Benchmarks pass           | ✅     | Warm synthesis ~777ms (<1.5s target) |
-| Documentation complete    | ✅     | README in `src/cse/backends/kokoro/` |
+| Engine initializes        | ✅     | Minimal adapter over Config    |
+| Voice loads               | ✅     | Wraps `VoiceRuntime`           |
+| Speech generates          | ✅     | E2E pipeline orchestrated      |
+| SpeechResult returned     | ✅     | Returns backend result object  |
+| Shutdown works            | ✅     | Idempotent resource cleanup    |
+| Tests pass                | ✅     | 14/14 API unit tests pass      |
+| Benchmarks pass           | ✅     | Overhead <2ms for API creation |
+| Documentation complete    | ✅     | Quick Start README provided    |

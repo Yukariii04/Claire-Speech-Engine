@@ -138,19 +138,6 @@ All PRD-004 acceptance criteria passed:
 - ✅ Runtime initializes
 - ✅ Voice metadata loads
 - ✅ Runtime state transitions work
-- ✅ Backend registration works
-- ✅ Dummy backend called
-- ✅ Tests pass (162/162 passed)
-- ✅ Benchmarks pass
-- ✅ Documentation complete
-
-## 2026-07-06 — PRD-005 Implementation (Acoustic Backend Interface)
-
-### Phase 1: Foundation (TDD)
-- Evaluated AI Skills: `ponytail` continues to guide development to ensure a minimal interface-only implementation with no ML dependencies.
-- Creating directory structure `src/cse/acoustic/backend/`.
-
-### Phase 2: Core Components (TDD)
 - Implemented `capabilities.py`, `exceptions.py`, `interface.py`, and `dummy_backend.py`.
 - Implemented `registry.py` for thread-safe backend registration.
 - Implemented `manager.py` to handle backend initialization and lifecycle.
@@ -272,3 +259,31 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Only `backends/kokoro/` imports Kokoro-specific libraries
 - The rest of CSE remains completely unaware Kokoro exists
 - Deleting `backends/kokoro/` and adding `backends/claire/` would require zero changes to the core
+
+## 2026-07-07 — PRD-009 Implementation (Public Speech Engine API)
+
+### Phase 1: Foundation
+- Evaluated AI Skills: `ponytail` enforces a minimal facade pattern. No extra logic, just strict delegation.
+- Created `src/cse/api/` with `engine.py`, `config.py`, `lifecycle.py`, and `exceptions.py`.
+
+### Phase 2: Core Components
+- `SpeechEngine` class implemented to handle initialization, configuration loading, voice loading, and speech generation pipeline.
+- `EngineConfig` implemented to standardize overrides.
+- Refactored `src/cse/__init__.py` to export **only** the `SpeechEngine` class, strictly encapsulating all other modules as internal details per PRD-009 §17.
+
+### Phase 3: Tests & Benchmarks
+- 14 API unit tests verify initialization, voice loading, speech generation, and lifecycle idempotency.
+- Benchmarks show Engine Creation overhead at ~1.6µs (<100ms target) and Speech Request overhead at ~134µs (<10ms target).
+
+### Phase 4: Documentation
+- Created `src/cse/api/README.md` with Quick Start examples and lifecycle explanations.
+
+### Verification
+- ✅ Engine initializes
+- ✅ Voice loads
+- ✅ Speech generates
+- ✅ SpeechResult returned
+- ✅ Shutdown works
+- ✅ Tests pass (14/14)
+- ✅ Benchmarks pass
+- ✅ Documentation complete
