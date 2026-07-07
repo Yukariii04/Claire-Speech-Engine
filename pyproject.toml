@@ -4,10 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claire-speech-engine"
-version = "0.1.0"
+version = "0.11.0-alpha"
 description = "Claire Speech Engine — production-grade speech synthesis foundation."
 readme = "README.md"
-license = "MIT"
+license = {text = "MIT"}
+authors = [
+    { name = "CSE Team" }
+]
+keywords = ["speech", "synthesis", "tts", "text-to-speech"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+]
 requires-python = ">=3.12"
 dependencies = [
     "torch",
@@ -25,7 +35,11 @@ dev = [
     "pytest",
     "pytest-benchmark",
     "pre-commit",
+    "build",
 ]
+
+[project.scripts]
+cse = "cse.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

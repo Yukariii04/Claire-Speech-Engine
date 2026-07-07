@@ -148,8 +148,8 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 ---
 
-## Current State (Post PRD-010)
-The project now includes a Developer Experience layer featuring a simple `argparse` CLI, runnable examples, and clear Quick Start documentation. The architecture remains untouched, keeping the underlying engine encapsulated.
+## Current State (Post PRD-011)
+The project now includes standard Python packaging metadata, exposing `cse` as a CLI tool and making `cse.SpeechEngine` available via `__init__.py`. We introduced `pyproject.toml` configurations for building wheels and distributing without breaking the architecture.
 
 ---
 
@@ -162,3 +162,15 @@ The project now includes a Developer Experience layer featuring a simple `argpar
 | README updated            | ✅     | Root README completely rewritten |
 | Tests pass                | ✅     | CLI tests fully green          |
 | Benchmarks pass           | ✅     | Startup is ~0.5ms (target <200ms) |
+
+## Verification Results (PRD-011)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Package builds            | ✅     | Wheels and sdist build cleanly |
+| Entry point works         | ✅     | `cse` CLI installed via scripts |
+| Public import works       | ✅     | `from cse import SpeechEngine` works |
+| Version exposed           | ✅     | `cse.__version__ == "0.11.0-alpha"` |
+| README updated            | ✅     | Quick Start and CLI docs updated |
+| Tests pass                | ✅     | All tests green (incl. packaging) |
+| Benchmarks pass           | ✅     | Import is ~0.5ms (target <50ms) |

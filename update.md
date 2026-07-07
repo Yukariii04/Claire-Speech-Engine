@@ -312,3 +312,25 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - ✅ README updated
 - ✅ Tests pass (8/8 CLI tests)
 - ✅ Benchmarks pass (~0.5ms)
+
+## 2026-07-07 — PRD-011 Implementation (Release Architecture & Packaging)
+
+### Phase 1: Configuration
+- Reconfigured `pyproject.toml` to support `build` metadata, identifying dependencies and adding an explicit `project.scripts` mapping for `cse = "cse.cli.main:main"`.
+- Set package version to `"0.11.0-alpha"`.
+
+### Phase 2: Imports & Documentation
+- Edited `src/cse/__init__.py` to expose `SpeechEngine` and `__version__`.
+- Updated `README.md` to properly feature the PyPI-esque installation path alongside the Python API.
+
+### Phase 3: Tests & Validation
+- Wrote `tests/test_packaging.py` validating that the entry point `cse` commands return correctly, the version is properly formatted, the package builds, and the public import works.
+- Wrote `benchmarks/test_import_time.py` to ensure imports take `< 50ms`. Actual time: `~0.5ms`.
+
+### Verification
+- ✅ Package builds
+- ✅ Entry point works
+- ✅ Public import works
+- ✅ Version exposed
+- ✅ README updated
+- ✅ Tests pass

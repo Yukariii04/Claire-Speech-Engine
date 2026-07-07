@@ -3,8 +3,8 @@
 Production-grade speech synthesis foundation.
 """
 
-__version__ = "1.0.0"
+__version__ = "0.11.0-alpha"
 
 from cse.api.engine import SpeechEngine
 
-__all__ = ["SpeechEngine"]
+__all__ = ["SpeechEngine", "__version__"]

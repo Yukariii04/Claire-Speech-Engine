@@ -2,32 +2,33 @@
 
 **The Claire Speech Engine** is a production-grade, backend-agnostic speech synthesis library built in Python. 
 
-## What is CSE?
+## Installation (development)
 
-CSE is a unified pipeline for generating high-quality speech. It cleanly abstracts away the complexity of parsing text, compiling performance timelines, and routing audio generation through acoustic backends (like Kokoro ONNX). 
+*(Note: CSE is currently in active development and not yet available on PyPI.)*
 
-You feed it text, and it gives you speech.
+To install from source:
 
-## Why use it?
-
-- **Simple Public API:** A single `SpeechEngine` class orchestrates the entire lifecycle.
-- **Backend-Agnostic:** Designed from the ground up to support multiple AI acoustic models without changing your code.
-- **Immutable & Fast:** Core data structures (CIR, Performance Timelines, Audio Streams) are completely immutable and blazing fast.
-- **Developer First:** Built with clean architecture, typed exceptions, and no heavy boilerplate.
+```bash
+git clone <repo-url> ClaireSpeechEngine
+cd ClaireSpeechEngine
+pip install -e ".[dev]"
+```
 
 ## Quick Start
 
-The quickest way to see CSE in action is using the CLI:
+The quickest way to see CSE in action is using the CLI or the Python API.
+
+### CLI
 
 ```bash
 # List available voices
-python cse.py voices
+cse voices
 
 # Generate speech
-python cse.py speak --voice claire --text "Hello from The Claire Speech Engine."
+cse speak --voice claire --text "Hello from The Claire Speech Engine."
 ```
 
-Or from Python:
+### Python API
 
 ```python
 from cse import SpeechEngine
@@ -38,18 +39,6 @@ engine.load_voice("claire")
 speech = engine.speak("Synthesis is now extremely simple.")
 if speech.success:
     print(f"Audio saved to: {speech.audio_path}")
-```
-
-## Installation
-
-*(Note: CSE is currently in active development and not yet available on PyPI.)*
-
-To install from source:
-
-```bash
-git clone <repo-url> ClaireSpeechEngine
-cd ClaireSpeechEngine
-pip install -e ".[dev]"
 ```
 
 ## Examples
@@ -69,6 +58,10 @@ PRD-011 🚧 Packaging & PyPI
 PRD-012 🚧 Performance
 PRD-013 🚧 Public Beta Readiness
 ```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
