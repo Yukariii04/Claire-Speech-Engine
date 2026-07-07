@@ -148,8 +148,8 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 ---
 
-## Current State (Post PRD-011)
-The project now includes standard Python packaging metadata, exposing `cse` as a CLI tool and making `cse.SpeechEngine` available via `__init__.py`. We introduced `pyproject.toml` configurations for building wheels and distributing without breaking the architecture.
+## Current State (Post PRD-012)
+The project now has a complete performance validation suite with regression thresholds on every subsystem. Memory profiling uses stdlib tracemalloc. Release validation tests verify all assets. Documentation in `docs/Benchmarks/` covers targets, results, and optimization notes.
 
 ---
 
@@ -174,3 +174,14 @@ The project now includes standard Python packaging metadata, exposing `cse` as a
 | README updated            | ✅     | Quick Start and CLI docs updated |
 | Tests pass                | ✅     | All tests green (incl. packaging) |
 | Benchmarks pass           | ✅     | Import is ~0.5ms (target <50ms) |
+
+## Verification Results (PRD-012)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Performance targets met   | ✅     | All subsystems under target    |
+| Memory targets met        | ✅     | Idle < 100 MB, import < 50 MB |
+| Benchmarks complete       | ✅     | 27 passed, 2 skipped (no model)|
+| Regression suite          | ✅     | Threshold assertions on all benchmarks |
+| Documentation updated     | ✅     | `docs/Benchmarks/README.md`    |
+| Tests pass                | ✅     | Release validation 9/9 green   |

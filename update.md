@@ -334,3 +334,25 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - ✅ Version exposed
 - ✅ README updated
 - ✅ Tests pass
+
+## 2026-07-07 — PRD-012 Implementation (Performance Optimization & Release Validation)
+
+### Phase 1: Regression Thresholds
+- Added threshold assertions to all existing benchmarks missing them: `test_cli.py` (< 200ms), `test_api_engine.py` (< 100ms creation, < 10ms overhead), `test_import_time.py` (< 50ms).
+
+### Phase 2: Memory Profiling
+- Created `benchmarks/test_memory.py` using stdlib `tracemalloc` (ponytail: no psutil dependency). Validates engine idle < 100 MB and import < 50 MB.
+
+### Phase 3: Release Validation
+- Created `tests/test_release_validation.py` verifying all release assets: README sections, LICENSE, pyproject metadata, examples, requirements, package build, public import, version string, CLI entry point.
+
+### Phase 4: Documentation
+- Created `docs/Benchmarks/README.md` with performance targets, measured results, regression threshold map, running instructions, and optimization notes.
+
+### Verification
+- ✅ Performance targets met (all subsystems under target)
+- ✅ Memory targets met (idle < 100 MB, import < 50 MB)
+- ✅ Benchmarks complete (27 passed, 2 skipped — no Kokoro model files)
+- ✅ Regression suite implemented (threshold assertions on all benchmarks)
+- ✅ Documentation updated (`docs/Benchmarks/`)
+- ✅ Tests pass (release validation 9/9 green)
