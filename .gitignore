@@ -30,9 +30,9 @@ desktop.ini
 *.log
 
 # Models / large assets
-models/*.bin
-models/*.onnx
-models/*.pt
+models/**/*.bin
+models/**/*.onnx
+models/**/*.pt
 temp/
 /kokoro/
 
