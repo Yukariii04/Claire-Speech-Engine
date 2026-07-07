@@ -54,8 +54,8 @@ We believe every feature should be easily discoverable. Check the `examples/` di
 
 ```text
 PRD-010 ✅ CLI & Examples
-PRD-011 🚧 Packaging & PyPI
-PRD-012 🚧 Performance
+PRD-011 ✅ Packaging & PyPI
+PRD-012 ✅ Performance
 PRD-013 🚧 Public Beta Readiness
 ```
 
@@ -76,3 +76,4 @@ pytest
 ```bash
 pytest benchmarks/ --benchmark-only
 ```
+*See [docs/Benchmarks/README.md](docs/Benchmarks/README.md) for full performance targets and reports.*
