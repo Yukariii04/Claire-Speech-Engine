@@ -356,3 +356,28 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - ✅ Regression suite implemented (threshold assertions on all benchmarks)
 - ✅ Documentation updated (`docs/Benchmarks/`)
 - ✅ Tests pass (release validation 9/9 green)
+
+## 2026-07-07 — PRD-013 Implementation (Multi-Backend Validation)
+
+### Phase 1: Capability Reporting
+- Added `backend_name`, `emotion`, and `sample_rate` to `BackendCapabilities`.
+- Updated `DummyBackend` and `KokoroBackend` to report these capabilities.
+
+### Phase 2: Backend Switching
+- Added `load_backend` and `get_backend_capabilities` to the public `SpeechEngine` and `VoiceRuntime` to allow dynamic switching without changing the API contract.
+
+### Phase 3: Evaluation Utilities
+- Created `evaluation/prompts/standard.txt` containing 8 diverse evaluation prompts.
+- Created `evaluation/compare.py` to iterate through available backends and generate side-by-side synthesis outputs (or intentionally skip missing evaluation backends like Fish Speech).
+
+### Phase 4: Documentation & Tests
+- Added `docs/Backends/README.md` to document the switching workflow and capability reporting.
+- Created `tests/test_backend_validation.py` to verify API routing and capability structure.
+
+### Verification
+- ✅ Existing backends remain functional (Dummy, Kokoro)
+- ✅ Backend switching works (`engine.load_backend()`)
+- ✅ Capability reporting implemented (`engine.get_backend_capabilities()`)
+- ✅ Evaluation utilities available (`evaluation/compare.py`)
+- ✅ Documentation complete (`docs/Backends/README.md`)
+- ✅ Tests pass (backend validation tests green)

@@ -61,6 +61,17 @@ class SpeechEngine:
         self._check_state()
         return list_voice_packages()
 
+    def load_backend(self, backend_id: str) -> None:
+        """Load an acoustic backend."""
+        self._check_state()
+        self._runtime.load_backend(backend_id)
+
+    def get_backend_capabilities(self) -> dict[str, Any]:
+        """Get capabilities of the current backend."""
+        self._check_state()
+        caps = self._runtime._backend.get_capabilities()
+        return caps.__dict__ if hasattr(caps, "__dict__") else {}
+
     def speak(self, text: str) -> Any:
         """Generate speech from text.
         

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from cse.performance.compiler.timeline import PerformanceTimeline
 from cse.acoustic.backend import AcousticBackend, DummyBackend
+from cse.acoustic.backend.exceptions import BackendNotFoundError
 from cse.runtime.voice.exceptions import BackendNotRegisteredError, InvalidRuntimeStateError
 from cse.runtime.voice.state import RuntimeState
 from cse.voice import get_voice_package, VoicePackage, VoicePackageNotFoundError
@@ -33,6 +34,24 @@ class VoiceRuntime:
         self.unload_voice()
         self._backend.shutdown()
         self._state = RuntimeState.SHUTDOWN
+
+    def load_backend(self, backend_id: str) -> None:
+        """Switch the acoustic backend by ID."""
+        if backend_id == "dummy":
+            from cse.acoustic.backend.dummy_backend import DummyBackend
+            backend = DummyBackend()
+        elif backend_id == "kokoro":
+            from cse.backends.kokoro.backend import KokoroBackend
+            backend = KokoroBackend()
+        else:
+            raise BackendNotFoundError(f"Unknown backend: {backend_id}")
+            
+        if self._state != RuntimeState.UNINITIALIZED:
+            self._backend.shutdown()
+            
+        self._backend = backend
+        if self._state != RuntimeState.UNINITIALIZED:
+            self._backend.initialize()
 
     def load_voice(self, voice_id: str) -> None:
         """Load a voice by ID."""

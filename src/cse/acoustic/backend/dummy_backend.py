@@ -21,10 +21,13 @@ class DummyBackend(AcousticBackend):
 
     def get_capabilities(self) -> BackendCapabilities:
         return BackendCapabilities(
+            backend_name="dummy",
             supports_streaming=False,
             supports_batch=False,
             supports_multispeaker=False,
             supports_voice_cloning=False,
+            emotion="none",
+            sample_rate=24000,
             requires_gpu=False,
             supported_languages=("en",),
             backend_version="1.0.0",

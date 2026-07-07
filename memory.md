@@ -148,8 +148,8 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 ---
 
-## Current State (Post PRD-012)
-The project now has a complete performance validation suite with regression thresholds on every subsystem. Memory profiling uses stdlib tracemalloc. Release validation tests verify all assets. Documentation in `docs/Benchmarks/` covers targets, results, and optimization notes.
+## Current State (Post PRD-013)
+The project validates backend-agnostic architecture through backend capability reporting, dynamic backend switching via the public API (`engine.load_backend`), and standard evaluation prompts. Phase 2 (Infrastructure) is completely proven.
 
 ---
 
@@ -185,3 +185,14 @@ The project now has a complete performance validation suite with regression thre
 | Regression suite          | ✅     | Threshold assertions on all benchmarks |
 | Documentation updated     | ✅     | `docs/Benchmarks/README.md`    |
 | Tests pass                | ✅     | Release validation 9/9 green   |
+
+## Verification Results (PRD-013)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Existing backends work    | ✅     | Kokoro and Dummy function normally |
+| Backend switching         | ✅     | `engine.load_backend` works   |
+| Capability reporting      | ✅     | `engine.get_backend_capabilities` added |
+| Evaluation utilities      | ✅     | `evaluation/compare.py` available |
+| Documentation complete    | ✅     | `docs/Backends/README.md` added |
+| Tests pass                | ✅     | Backend validation tests green |
