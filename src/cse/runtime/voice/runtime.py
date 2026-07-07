@@ -43,6 +43,12 @@ class VoiceRuntime:
         elif backend_id == "kokoro":
             from cse.backends.kokoro.backend import KokoroBackend
             backend = KokoroBackend()
+        elif backend_id == "fishspeech":
+            from cse.backends.fishspeech.backend import FishSpeechBackend
+            backend = FishSpeechBackend()
+        elif backend_id == "styletts2":
+            from cse.backends.styletts2.backend import StyleTTS2Backend
+            backend = StyleTTS2Backend()
         else:
             raise BackendNotFoundError(f"Unknown backend: {backend_id}")
             
