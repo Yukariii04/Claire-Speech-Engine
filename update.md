@@ -426,3 +426,17 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - ✅ Public API unchanged
 - ✅ Tests pass (10/10)
 
+## 2026-07-10 — PRD-014 (v1.0.0-beta Readiness)
+
+### Goal
+Certify the framework is ready to become v1.0.0-beta. Stop adding framework features and focus entirely on release engineering: stability, documentation, reproducibility, and contributor experience.
+
+### Plan
+1. **Repository Cleanup**: Rename `.benchmarks` to `benchmarks`, remove unused placeholder directories.
+2. **Documentation**: Verify/create `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`.
+3. **Architecture Docs**: Create `docs/Architecture/ARCHITECTURE.md`.
+4. **Vision Docs**: Create `docs/PVDs/PVD-001.md`.
+5. **Examples**: Add a clear end-to-end example.
+6. **COLAB-001 Verification**: Verify it still works perfectly for both backends.
+7. **Packaging & Testing**: Verify pip installability, run full test suite.
+8. **Final Tag**: Cut `v1.0.0-beta`.

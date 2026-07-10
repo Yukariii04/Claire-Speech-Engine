@@ -72,9 +72,9 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
-## Skills Evaluation (PRD-008)
+## Skills Evaluation (PRD-014)
 
-- **`ponytail`**: Highly applicable. The Kokoro backend must be a thin, replaceable adapter. Only `backends/kokoro/` imports Kokoro-specific libraries. The rest of CSE remains completely unaware that Kokoro exists. No architecture modifications allowed.
+- **`ponytail`**: Highly applicable. PRD-014 strictly forbids new framework functionality and focuses purely on stabilization, cleanup, documentation, and releasing v1.0.0-beta. The lazy/minimalist approach ensures we do not accidentally introduce scope creep.
 - **UI/UX Skills**: Not applicable.
 - **GSD Skills**: Not applicable.
 
@@ -84,7 +84,7 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-008             |
+| **Current PRD** | PRD-014             |
 | **Phase**       | ✅ Complete          |
 | **Blockers**    | None                |
 
@@ -219,3 +219,17 @@ The project validates backend-agnostic architecture through backend capability r
 | Public API unchanged             | ✅     | No modifications to SpeechEngine/Runtime    |
 | Tests pass                       | ✅     | 10/10 local tests green                     |
 
+---
+
+## Verification Results (PRD-014)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Repository cleaned        | ✅     | Removed placeholders, renamed .benchmarks |
+| Documentation complete    | ✅     | ARCHITECTURE, PVD, README, CONTRIBUTING, CHANGELOG, CODE_OF_CONDUCT |
+| Installation verified     | ✅     | `pip install -e .` passes      |
+| Examples verified         | ✅     | `examples/basic.py` matches PRD |
+| Tests pass                | ✅     | 256/256 passing tests          |
+| COLAB-001 reproducible    | ✅     | NLTK bug patched, verified by user |
+| Real audio generated      | ✅     | Verified in PRD-013.6/COLAB-001 |
+| Public API frozen         | ✅     | Version bumped to 1.0.0-beta   |

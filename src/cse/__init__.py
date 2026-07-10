@@ -1,10 +1,8 @@
-"""Claire Speech Engine (CSE).
+"""The Claire Speech Engine (CSE)."""
 
-Production-grade speech synthesis foundation.
-"""
+__version__ = "1.0.0-beta"
 
-__version__ = "0.11.0-alpha"
-
-from cse.api.engine import SpeechEngine
+from .api import SpeechEngine
+from .api.exceptions import SpeechEngineError
 
 __all__ = ["SpeechEngine", "__version__"]

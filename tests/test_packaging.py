@@ -6,7 +6,7 @@ import cse
 def test_version_exposed():
     assert hasattr(cse, "__version__")
     assert isinstance(cse.__version__, str)
-    assert cse.__version__ == "0.11.0-alpha"
+    assert cse.__version__ == "1.0.0-beta"
 
 def test_public_imports():
     from cse import SpeechEngine
