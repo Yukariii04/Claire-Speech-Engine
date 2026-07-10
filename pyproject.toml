@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claire-speech-engine"
-version = "1.0.0-beta"
+version = "1.0.0b1"
 description = "A backend-agnostic framework for advanced speech synthesis."
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,11 +13,13 @@ authors = [
 ]
 keywords = ["speech", "synthesis", "tts", "text-to-speech"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
 ]
+
 requires-python = ">=3.12"
 dependencies = [
     "torch",
@@ -29,6 +31,11 @@ dependencies = [
     "rich",
     "loguru",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Yukariii04/Claire-Speech-Engine"
+Repository = "https://github.com/Yukariii04/Claire-Speech-Engine"
+Changelog = "https://github.com/Yukariii04/Claire-Speech-Engine/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
