@@ -20,6 +20,11 @@ class StyleTTS2Backend(AcousticBackend):
     def initialize(self) -> None:
         try:
             import styletts2  # noqa: F401
+            # ponytail: nltk recently split 'punkt' into 'punkt_tab', which styletts2 
+            # doesn't auto-download. Force download on init to prevent inference crashes.
+            import nltk
+            nltk.download('punkt', quiet=True)
+            nltk.download('punkt_tab', quiet=True)
         except ImportError as e:
             raise StyleTTS2InitializationError(
                 "StyleTTS2 not installed. Run: pip install styletts2"
