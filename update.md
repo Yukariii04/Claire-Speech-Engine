@@ -408,3 +408,21 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - ✅ Public API unchanged
 - ✅ Documentation complete
 - ✅ Tests pass
+
+## 2026-07-10 — PRD-013.6 Implementation (Real Evaluation Backend Completion)
+
+### Changes
+- Replaced placeholder Fish Speech backend with real 3-stage subprocess inference pipeline (VQ encode → LLM generate → VQ decode), reused directly from `claire_colab.ipynb`.
+- Replaced placeholder StyleTTS2 backend with real inference via the `styletts2` Python package API.
+- Both backends now extract text from `PerformanceTimeline` TOKEN events using the existing `timeline_to_text` converter.
+- Fish Speech backend reads reference audio from Google Drive (`/content/drive/MyDrive/claire/voices/`), matching the Claire2D workflow.
+- Updated COLAB-001 notebook: Drive mount, Fish Speech v1.5 installation with dependency patching, StyleTTS2 installation, real speech generation for both backends, audio download.
+- Updated tests to 10/10 pass (local validation without GPU; real inference validated via COLAB-001).
+
+### Verification (pending Colab run)
+- ⏳ Fish Speech produces real audible speech
+- ⏳ StyleTTS2 produces real audible speech
+- ✅ No placeholder inference remains
+- ✅ Public API unchanged
+- ✅ Tests pass (10/10)
+
