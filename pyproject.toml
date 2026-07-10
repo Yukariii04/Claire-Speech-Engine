@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claire-speech-engine"
-version = "0.11.0-alpha"
-description = "Claire Speech Engine — production-grade speech synthesis foundation."
+version = "1.0.0-beta"
+description = "A backend-agnostic framework for advanced speech synthesis."
 readme = "README.md"
 license = {text = "MIT"}
 authors = [

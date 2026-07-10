@@ -50,14 +50,19 @@ We believe every feature should be easily discoverable. Check the `examples/` di
 - `examples/list_voices.py` — Querying the local voice registry.
 - `examples/generate_speech.py` — Handling output files and moving them dynamically.
 
+## Architecture & Vision
+
+Read these documents to understand the core philosophy and design of the engine:
+- [Project Vision Document (PVD-001)](docs/PVDs/PVD-001.md)
+- [Architecture Overview](docs/Architecture/ARCHITECTURE.md)
+
 ## Roadmap
 
-```text
-PRD-010 ✅ CLI & Examples
-PRD-011 ✅ Packaging & PyPI
-PRD-012 ✅ Performance
-PRD-013 🚧 Public Beta Readiness
-```
+The Claire Speech Engine (CSE) has officially reached **v1.0.0-beta**. The core framework is now **feature-frozen** to ensure a stable foundation. 
+
+Future development will transition to:
+1. **CPE (Claire Performance Engine)**: Prosody, emotion, and dialogue planning.
+2. **CSM (Claire Speech Model)**: Core acoustic ML model training.
 
 ## License
 
