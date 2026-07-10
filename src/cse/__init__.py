@@ -1,6 +1,6 @@
 """The Claire Speech Engine (CSE)."""
 
-__version__ = "1.0.0-beta"
+__version__ = "1.0.0b1"
 
 from .api import SpeechEngine
 from .api.exceptions import SpeechEngineError

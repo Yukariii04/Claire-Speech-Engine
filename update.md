@@ -419,9 +419,9 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Updated COLAB-001 notebook: Drive mount, Fish Speech v1.5 installation with dependency patching, StyleTTS2 installation, real speech generation for both backends, audio download.
 - Updated tests to 10/10 pass (local validation without GPU; real inference validated via COLAB-001).
 
-### Verification (pending Colab run)
-- ⏳ Fish Speech produces real audible speech
-- ⏳ StyleTTS2 produces real audible speech
+### Verification (verified on Colab)
+- ✅ Fish Speech produces real audible speech
+- ✅ StyleTTS2 produces real audible speech
 - ✅ No placeholder inference remains
 - ✅ Public API unchanged
 - ✅ Tests pass (10/10)
@@ -440,3 +440,19 @@ Certify the framework is ready to become v1.0.0-beta. Stop adding framework feat
 6. **COLAB-001 Verification**: Verify it still works perfectly for both backends.
 7. **Packaging & Testing**: Verify pip installability, run full test suite.
 8. **Final Tag**: Cut `v1.0.0-beta`.
+
+## 2026-07-10 — RELEASE-001 (v1.0.0-beta Publish)
+
+### Goal
+Publish the Claire Speech Engine as a real installable Python package on TestPyPI and PyPI. No framework changes — pure release engineering.
+
+### Plan
+1. Review and fix `pyproject.toml` metadata (classifiers, URLs, long_description).
+2. Build wheel and sdist via `python -m build`.
+3. Validate with `twine check dist/*`.
+4. Upload to TestPyPI, verify `pip install` from TestPyPI.
+5. Upload to PyPI.
+6. Fresh environment validation.
+7. Update COLAB-001 to install from PyPI.
+8. Publish GitHub Release with assets.
+9. Update README installation instructions.

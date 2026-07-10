@@ -84,9 +84,9 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-014             |
-| **Phase**       | ✅ Complete          |
-| **Blockers**    | None                |
+| **Current PRD** | RELEASE-001         |
+| **Phase**       | ⏳ In Progress      |
+| **Blockers**    | PyPI credentials required from user |
 
 ---
 
@@ -212,8 +212,8 @@ The project validates backend-agnostic architecture through backend capability r
 
 | Criterion                        | Status | Detail                                     |
 |----------------------------------|--------|---------------------------------------------|
-| Fish Speech real inference       | ⏳     | Implemented, pending Colab validation       |
-| StyleTTS2 real inference         | ⏳     | Implemented, pending Colab validation       |
+| Fish Speech real inference       | ✅     | Verified on Colab                           |
+| StyleTTS2 real inference         | ✅     | Verified on Colab                           |
 | No placeholder inference remains | ✅     | All dummy WAV headers removed               |
 | COLAB-001 updated                | ✅     | Drive mount, Fish Speech v1.5, StyleTTS2    |
 | Public API unchanged             | ✅     | No modifications to SpeechEngine/Runtime    |

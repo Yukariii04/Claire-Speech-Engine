@@ -2,15 +2,17 @@
 
 **The Claire Speech Engine** is a production-grade, backend-agnostic speech synthesis library built in Python. 
 
-## Installation (development)
-
-*(Note: CSE is currently in active development and not yet available on PyPI.)*
-
-To install from source:
+## Installation
 
 ```bash
-git clone <repo-url> ClaireSpeechEngine
-cd ClaireSpeechEngine
+pip install claire-speech-engine
+```
+
+To install from source for development:
+
+```bash
+git clone https://github.com/Yukariii04/Claire-Speech-Engine.git
+cd Claire-Speech-Engine
 pip install -e ".[dev]"
 ```
 
