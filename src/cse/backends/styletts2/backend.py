@@ -36,8 +36,16 @@ class StyleTTS2Backend(AcousticBackend):
         """Lazy-load the StyleTTS2 model on first use."""
         if self._tts is not None:
             return
-        from styletts2 import tts as styletts2_tts
-        self._tts = styletts2_tts.StyleTTS2()
+        # ponytail: StyleTTS2 checkpoints use pickle globals incompatible with
+        # PyTorch 2.6+ weights_only=True default. Patch for the load call only.
+        import torch
+        _original_load = torch.load
+        torch.load = lambda *a, **kw: _original_load(*a, **{**kw, "weights_only": False})
+        try:
+            from styletts2 import tts as styletts2_tts
+            self._tts = styletts2_tts.StyleTTS2()
+        finally:
+            torch.load = _original_load
 
     def load_voice(self, voice_name: str) -> str:
         self._voice = voice_name or "default"
