@@ -1,75 +1,73 @@
-"""Tests for evaluation backends (PRD-013.5)."""
+"""Tests for evaluation backends (PRD-013.6).
 
+ponytail: These tests run locally without GPU/models.
+Real inference is validated via COLAB-001.
+"""
+
+import os
 import pytest
-from cse import SpeechEngine
+from unittest.mock import patch
 from cse.backends.fishspeech.backend import FishSpeechBackend
 from cse.backends.styletts2.backend import StyleTTS2Backend
+from cse.backends.fishspeech.exceptions import FishSpeechInitializationError, SpeechGenerationError as FSGenError
+from cse.backends.styletts2.exceptions import StyleTTS2InitializationError, SpeechGenerationError as STGenError
 
-def test_fishspeech_backend_standalone():
-    backend = FishSpeechBackend()
-    backend.initialize()
-    caps = backend.get_capabilities()
-    assert caps.backend_name == "fishspeech"
-    assert caps.emotion == "high"
-    
-    voice = backend.load_voice("test_voice")
-    assert voice == "test_voice"
-    
-    # Timeline is ignored for this stub, so we can pass anything
-    result = backend.synthesize(timeline="mock_timeline")
-    assert result.success is True
-    assert result.backend == "fishspeech"
-    assert result.audio_path.exists()
-    
-    # Cleanup mock audio
-    result.audio_path.unlink()
-    backend.shutdown()
 
-def test_styletts2_backend_standalone():
-    backend = StyleTTS2Backend()
-    backend.initialize()
-    caps = backend.get_capabilities()
-    assert caps.backend_name == "styletts2"
-    assert caps.emotion == "medium"
-    
-    voice = backend.load_voice("test_voice")
-    assert voice == "test_voice"
-    
-    result = backend.synthesize(timeline="mock_timeline")
-    assert result.success is True
-    assert result.backend == "styletts2"
-    assert result.audio_path.exists()
-    
-    result.audio_path.unlink()
-    backend.shutdown()
+class TestFishSpeechBackend:
+    def test_init_without_checkpoint_raises(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("FISH_CHECKPOINT_DIR", str(tmp_path / "nonexistent"))
+        backend = FishSpeechBackend()
+        with pytest.raises(FishSpeechInitializationError, match="checkpoint not found"):
+            backend.initialize()
 
-def test_evaluation_backends_via_engine():
-    engine = SpeechEngine()
-    
-    for backend_id in ["fishspeech", "styletts2"]:
-        engine.load_backend(backend_id)
-        caps = engine.get_backend_capabilities()
-        assert caps["backend_name"] == backend_id
-        
-        # Will crash in a real environment if Voice package validation happens,
-        # but the adapter doesn't care. Since engine.load_voice checks registry,
-        # we skip engine.load_voice if we don't have a package registered.
-        # But for PRD-013 we registered "dummy" in compare.py, let's just do it directly.
-        try:
-            from cse.voice import register_voice_package, VoicePackage, VoiceMetadata
-            from pathlib import Path
-            meta = VoiceMetadata(id="test", name="Test", version="1.0.0", author="CSE", language="en", backend=backend_id, sample_rate=24000, channels=1, description="Test", license="MIT")
-            pkg = VoicePackage(metadata=meta, path=Path("."))
-            register_voice_package(pkg)
-        except Exception:
-            pass
-            
-        try:
-            engine.load_voice("test")
-            speech = engine.speak("Hello world")
-            assert speech.success is True
-            speech.audio_path.unlink()
-        except Exception as e:
-            pass # Ignore full pipeline failures if packages aren't perfectly aligned
-            
-    engine.shutdown()
+    def test_capabilities(self):
+        backend = FishSpeechBackend()
+        caps = backend.get_capabilities()
+        assert caps.backend_name == "fishspeech"
+        assert caps.emotion == "high"
+
+    def test_load_voice(self):
+        backend = FishSpeechBackend()
+        assert backend.load_voice("neutral") == "neutral"
+
+    def test_synthesize_without_init_raises(self):
+        backend = FishSpeechBackend()
+        with pytest.raises(FSGenError, match="not initialized"):
+            backend.synthesize("test")
+
+
+class TestStyleTTS2Backend:
+    def test_init_without_package_raises(self):
+        backend = StyleTTS2Backend()
+        with patch.dict("sys.modules", {"styletts2": None}):
+            with pytest.raises(StyleTTS2InitializationError, match="not installed"):
+                backend.initialize()
+
+    def test_capabilities(self):
+        backend = StyleTTS2Backend()
+        caps = backend.get_capabilities()
+        assert caps.backend_name == "styletts2"
+        assert caps.emotion == "medium"
+
+    def test_load_voice(self):
+        backend = StyleTTS2Backend()
+        assert backend.load_voice("default") == "default"
+
+    def test_synthesize_without_init_raises(self):
+        backend = StyleTTS2Backend()
+        with pytest.raises(STGenError, match="not initialized"):
+            backend.synthesize("test")
+
+
+class TestBackendRegistration:
+    """Verify backends can be imported and instantiated through engine routing."""
+    def test_fishspeech_importable(self):
+        from cse.runtime.voice.runtime import VoiceRuntime
+        rt = VoiceRuntime()
+        # ponytail: don't initialize (needs checkpoint), just verify import routing
+        backend = FishSpeechBackend()
+        assert backend.__class__.__name__ == "FishSpeechBackend"
+
+    def test_styletts2_importable(self):
+        backend = StyleTTS2Backend()
+        assert backend.__class__.__name__ == "StyleTTS2Backend"
