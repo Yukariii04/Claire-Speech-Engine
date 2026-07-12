@@ -1,16 +1,16 @@
-# Claire Speech Engine — Update Log
+# Claire Speech Engine â€” Update Log
 
 > Evolutionary history from initial commit to present.
 
 ---
 
-## 2026-07-06 — Project Inception
+## 2026-07-06 â€” Project Inception
 
-- **PRD-001.md** added to workspace — defines the bootstrap & foundation milestone.
-- **memory.md** created — stores architecture context, lore, and active state.
-- **update.md** created — this file; tracks all project history.
+- **PRD-001.md** added to workspace â€” defines the bootstrap & foundation milestone.
+- **memory.md** created â€” stores architecture context, lore, and active state.
+- **update.md** created â€” this file; tracks all project history.
 
-## 2026-07-06 — PRD-001 Implementation
+## 2026-07-06 â€” PRD-001 Implementation
 
 ### Phase 1: Scaffold
 - Created all base files: `pyproject.toml`, `requirements.txt`, `.gitignore`, `.editorconfig`, `.pre-commit-config.yaml`, `LICENSE`
@@ -37,22 +37,22 @@
 - `README.md` with Installation, Project Goals, Repository Structure, Running, Development, Contributing
 
 ### Bug Fixes
-- Fixed `pyproject.toml` build-backend (`setuptools.backends._legacy` → `setuptools.build_meta`)
-- Fixed `cse.py` name collision with `cse` package (module-level code → `__main__` guard + sys.path swap)
+- Fixed `pyproject.toml` build-backend (`setuptools.backends._legacy` â†’ `setuptools.build_meta`)
+- Fixed `cse.py` name collision with `cse` package (module-level code â†’ `__main__` guard + sys.path swap)
 - Fixed pytest import resolution via `conftest.py` force-loading the package with `importlib.util`
 
 ### Verification
 All 8 PRD-001 acceptance criteria passed:
-- ✅ Project installs (`pip install -e ".[dev]"`)
-- ✅ Runtime starts (exact banner match)
-- ✅ Runtime shuts down cleanly
-- ✅ Logger works (all 5 levels)
-- ✅ Configuration loads (YAML, env overrides, validation, reload)
-- ✅ Tests pass (24/24)
-- ✅ Benchmarks execute (2.08 ms mean, well under 300 ms)
-- ✅ Documentation complete
+- âœ… Project installs (`pip install -e ".[dev]"`)
+- âœ… Runtime starts (exact banner match)
+- âœ… Runtime shuts down cleanly
+- âœ… Logger works (all 5 levels)
+- âœ… Configuration loads (YAML, env overrides, validation, reload)
+- âœ… Tests pass (24/24)
+- âœ… Benchmarks execute (2.08 ms mean, well under 300 ms)
+- âœ… Documentation complete
 
-## 2026-07-06 — PRD-002 Implementation (CIR)
+## 2026-07-06 â€” PRD-002 Implementation (CIR)
 
 ### Phase 1: Foundation (TDD)
 - Created `exceptions.py` with 3 typed error classes.
@@ -75,17 +75,17 @@ All 8 PRD-001 acceptance criteria passed:
 
 ### Verification
 All PRD-002 acceptance criteria passed:
-- ✅ Immutable (Frozen dataclasses, tuple fields)
-- ✅ Serializable (Lossless JSON round-trip)
-- ✅ Versioned (`CIR_VERSION = "2.0.0"`)
-- ✅ UUIDs implemented (Deterministic UUID5)
-- ✅ Validation works (Catch duplicate UUIDs, malformed hierarchies)
-- ✅ Benchmarks pass (Builder: 0.65ms, 1000 builds: 35ms)
-- ✅ Tests pass (117/117 passed)
-- ✅ Documentation complete (README added)
-- ✅ Public API stable (5 functions only)
+- âœ… Immutable (Frozen dataclasses, tuple fields)
+- âœ… Serializable (Lossless JSON round-trip)
+- âœ… Versioned (`CIR_VERSION = "2.0.0"`)
+- âœ… UUIDs implemented (Deterministic UUID5)
+- âœ… Validation works (Catch duplicate UUIDs, malformed hierarchies)
+- âœ… Benchmarks pass (Builder: 0.65ms, 1000 builds: 35ms)
+- âœ… Tests pass (117/117 passed)
+- âœ… Documentation complete (README added)
+- âœ… Public API stable (5 functions only)
 
-## 2026-07-06 — PRD-003 Implementation (Performance Compiler)
+## 2026-07-06 â€” PRD-003 Implementation (Performance Compiler)
 
 ### Phase 1: Foundation (TDD)
 - Evaluated AI Skills and noted `ponytail` as highly applicable to keep implementation minimal without anticipating future PRDs.
@@ -106,17 +106,17 @@ All PRD-002 acceptance criteria passed:
 
 ### Verification
 All PRD-003 acceptance criteria passed:
-- ✅ Timeline builds
-- ✅ Events generated (Start, Token, End)
-- ✅ Validation works (Timestamps, parameters, order)
-- ✅ Serialization works (JSON round-trip)
-- ✅ Benchmarks pass (100-word: ~0.5ms, 1000 builds: ~20ms)
-- ✅ Golden tests pass
-- ✅ API documented
-- ✅ Thread safe (Stateless)
-- ✅ Immutable (Frozen dataclasses, tuples)
+- âœ… Timeline builds
+- âœ… Events generated (Start, Token, End)
+- âœ… Validation works (Timestamps, parameters, order)
+- âœ… Serialization works (JSON round-trip)
+- âœ… Benchmarks pass (100-word: ~0.5ms, 1000 builds: ~20ms)
+- âœ… Golden tests pass
+- âœ… API documented
+- âœ… Thread safe (Stateless)
+- âœ… Immutable (Frozen dataclasses, tuples)
 
-## 2026-07-06 — PRD-004 Implementation (Voice Runtime)
+## 2026-07-06 â€” PRD-004 Implementation (Voice Runtime)
 
 ### Phase 1: Foundation (TDD)
 - Evaluated AI Skills and noted `ponytail` as highly applicable to keep orchestration purely structural, strictly avoiding synthesis, streaming, and fake audio.
@@ -135,9 +135,9 @@ All PRD-003 acceptance criteria passed:
 
 ### Verification
 All PRD-004 acceptance criteria passed:
-- ✅ Runtime initializes
-- ✅ Voice metadata loads
-- ✅ Runtime state transitions work
+- âœ… Runtime initializes
+- âœ… Voice metadata loads
+- âœ… Runtime state transitions work
 - Implemented `capabilities.py`, `exceptions.py`, `interface.py`, and `dummy_backend.py`.
 - Implemented `registry.py` for thread-safe backend registration.
 - Implemented `manager.py` to handle backend initialization and lifecycle.
@@ -150,16 +150,16 @@ All PRD-004 acceptance criteria passed:
 
 ### Verification
 All PRD-005 acceptance criteria passed:
-- ✅ Registry works
-- ✅ Manager works
-- ✅ Interface complete
-- ✅ Capabilities implemented
-- ✅ Validation works
-- ✅ Tests pass
-- ✅ Benchmarks pass
-- ✅ Documentation complete
+- âœ… Registry works
+- âœ… Manager works
+- âœ… Interface complete
+- âœ… Capabilities implemented
+- âœ… Validation works
+- âœ… Tests pass
+- âœ… Benchmarks pass
+- âœ… Documentation complete
 
-## 2026-07-06 — PRD-006 Implementation (Audio Streaming Pipeline)
+## 2026-07-06 â€” PRD-006 Implementation (Audio Streaming Pipeline)
 
 ### Phase 1: Foundation (TDD)
 - Evaluated AI Skills: `ponytail` enforces a strictly internal data structure with zero actual I/O, networking, or playback. Frames remain immutable and PCM agnostic.
@@ -179,16 +179,16 @@ All PRD-005 acceptance criteria passed:
 
 ### Verification
 All PRD-006 acceptance criteria passed:
-- ✅ AudioFrame immutable
-- ✅ Stream works
-- ✅ FIFO buffer works
-- ✅ Controller works
-- ✅ Validation works
-- ✅ Tests pass
-- ✅ Benchmarks pass
-- ✅ Documentation complete
+- âœ… AudioFrame immutable
+- âœ… Stream works
+- âœ… FIFO buffer works
+- âœ… Controller works
+- âœ… Validation works
+- âœ… Tests pass
+- âœ… Benchmarks pass
+- âœ… Documentation complete
 
-## 2026-07-06 — PRD-007 Implementation (Voice Package System)
+## 2026-07-06 â€” PRD-007 Implementation (Voice Package System)
 
 ### Phase 1: Foundation (TDD)
 - Evaluated AI Skills: `ponytail` enforces a strictly metadata-only package system with no Torch, ONNX, or inference logic. We will establish the `cse.voice` package and refactor the PRD-004 `VoiceRuntime` to use it as the single source of truth for voices.
@@ -208,33 +208,33 @@ All PRD-006 acceptance criteria passed:
 
 ### Verification
 All PRD-007 acceptance criteria passed:
-- ✅ Package loads
-- ✅ Metadata validates
-- ✅ Registry works
-- ✅ Tests pass
-- ✅ Benchmarks pass
-- ✅ Documentation complete
+- âœ… Package loads
+- âœ… Metadata validates
+- âœ… Registry works
+- âœ… Tests pass
+- âœ… Benchmarks pass
+- âœ… Documentation complete
 
-## 2026-07-07 — PRD-008 Implementation (Kokoro Backend)
+## 2026-07-07 â€” PRD-008 Implementation (Kokoro Backend)
 
 ### Phase 1: Foundation
-- Evaluated AI Skills: `ponytail` enforces a thin adapter pattern — only `backends/kokoro/` imports Kokoro. The rest of CSE is completely unaware Kokoro exists. No architecture modifications.
+- Evaluated AI Skills: `ponytail` enforces a thin adapter pattern â€” only `backends/kokoro/` imports Kokoro. The rest of CSE is completely unaware Kokoro exists. No architecture modifications.
 - Initializing directory structure `src/cse/backends/kokoro/`.
 
 ### Phase 2: Core Components
-- Implemented `config.py` — immutable `KokoroConfig` with model paths, voice defaults, and output settings.
-- Implemented `exceptions.py` — `KokoroInitializationError`, `VoiceLoadError`, `SpeechGenerationError` hierarchy.
-- Implemented `converter.py` — `timeline_to_text()` extracts only TOKEN events, ignoring emphasis/pauses/breathing per PRD-008 §9.
-- Implemented `loader.py` — `resolve_voice()` maps voice names to Kokoro identifiers.
-- Implemented `result.py` — immutable `SpeechResult` frozen dataclass with all required fields.
-- Implemented `backend.py` — `KokoroBackend(AcousticBackend)` with full lifecycle: initialize → load_voice → synthesize → shutdown.
+- Implemented `config.py` â€” immutable `KokoroConfig` with model paths, voice defaults, and output settings.
+- Implemented `exceptions.py` â€” `KokoroInitializationError`, `VoiceLoadError`, `SpeechGenerationError` hierarchy.
+- Implemented `converter.py` â€” `timeline_to_text()` extracts only TOKEN events, ignoring emphasis/pauses/breathing per PRD-008 Â§9.
+- Implemented `loader.py` â€” `resolve_voice()` maps voice names to Kokoro identifiers.
+- Implemented `result.py` â€” immutable `SpeechResult` frozen dataclass with all required fields.
+- Implemented `backend.py` â€” `KokoroBackend(AcousticBackend)` with full lifecycle: initialize â†’ load_voice â†’ synthesize â†’ shutdown.
 - Kokoro-specific imports (`kokoro_onnx`, `soundfile`) confined exclusively to `backends/kokoro/`.
 
 ### Phase 3: Tests & Benchmarks
 - 19 tests: 18 unit tests (mocked Kokoro) + 1 integration test (real model).
 - Unit tests cover: exceptions, config, converter, loader, SpeechResult, backend init/shutdown/synthesize/validate.
 - Integration test validates full lifecycle with real Kokoro model files.
-- Benchmarks: Converter 1000x in ~279μs, mocked synthesis ~2.4ms, real Kokoro warm synthesis ~777ms.
+- Benchmarks: Converter 1000x in ~279Î¼s, mocked synthesis ~2.4ms, real Kokoro warm synthesis ~777ms.
 
 ### Phase 4: Documentation
 - Created `README.md` in `src/cse/backends/kokoro/` covering installation, dependencies, lifecycle, configuration, and known limitations.
@@ -245,14 +245,14 @@ All PRD-007 acceptance criteria passed:
 
 ### Verification
 All PRD-008 acceptance criteria passed:
-- ✅ Backend initializes (Kokoro ONNX pipeline)
-- ✅ Voice loads (`load_voice()` resolves names)
-- ✅ Speech generated (real Kokoro synthesis)
-- ✅ WAV saved (UUID-named in `temp/`)
-- ✅ SpeechResult returned (immutable frozen dataclass)
-- ✅ Tests pass (19/19, 213 total project-wide)
-- ✅ Benchmarks pass (warm synthesis ~777ms, target <1.5s)
-- ✅ Documentation complete (README in `src/cse/backends/kokoro/`)
+- âœ… Backend initializes (Kokoro ONNX pipeline)
+- âœ… Voice loads (`load_voice()` resolves names)
+- âœ… Speech generated (real Kokoro synthesis)
+- âœ… WAV saved (UUID-named in `temp/`)
+- âœ… SpeechResult returned (immutable frozen dataclass)
+- âœ… Tests pass (19/19, 213 total project-wide)
+- âœ… Benchmarks pass (warm synthesis ~777ms, target <1.5s)
+- âœ… Documentation complete (README in `src/cse/backends/kokoro/`)
 
 ### Architecture Validation
 PRD-008 proves the CSE architecture is genuinely backend-agnostic:
@@ -260,7 +260,7 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - The rest of CSE remains completely unaware Kokoro exists
 - Deleting `backends/kokoro/` and adding `backends/claire/` would require zero changes to the core
 
-## 2026-07-07 — PRD-009 Implementation (Public Speech Engine API)
+## 2026-07-07 â€” PRD-009 Implementation (Public Speech Engine API)
 
 ### Phase 1: Foundation
 - Evaluated AI Skills: `ponytail` enforces a minimal facade pattern. No extra logic, just strict delegation.
@@ -269,26 +269,26 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 ### Phase 2: Core Components
 - `SpeechEngine` class implemented to handle initialization, configuration loading, voice loading, and speech generation pipeline.
 - `EngineConfig` implemented to standardize overrides.
-- Refactored `src/cse/__init__.py` to export **only** the `SpeechEngine` class, strictly encapsulating all other modules as internal details per PRD-009 §17.
+- Refactored `src/cse/__init__.py` to export **only** the `SpeechEngine` class, strictly encapsulating all other modules as internal details per PRD-009 Â§17.
 
 ### Phase 3: Tests & Benchmarks
 - 14 API unit tests verify initialization, voice loading, speech generation, and lifecycle idempotency.
-- Benchmarks show Engine Creation overhead at ~1.6µs (<100ms target) and Speech Request overhead at ~134µs (<10ms target).
+- Benchmarks show Engine Creation overhead at ~1.6Âµs (<100ms target) and Speech Request overhead at ~134Âµs (<10ms target).
 
 ### Phase 4: Documentation
 - Created `src/cse/api/README.md` with Quick Start examples and lifecycle explanations.
 
 ### Verification
-- ✅ Engine initializes
-- ✅ Voice loads
-- ✅ Speech generates
-- ✅ SpeechResult returned
-- ✅ Shutdown works
-- ✅ Tests pass (14/14)
-- ✅ Benchmarks pass
-- ✅ Documentation complete
+- âœ… Engine initializes
+- âœ… Voice loads
+- âœ… Speech generates
+- âœ… SpeechResult returned
+- âœ… Shutdown works
+- âœ… Tests pass (14/14)
+- âœ… Benchmarks pass
+- âœ… Documentation complete
 
-## 2026-07-07 — PRD-010 Implementation (Developer Experience)
+## 2026-07-07 â€” PRD-010 Implementation (Developer Experience)
 
 ### Phase 1: Foundation
 - Evaluated AI Skills: `ponytail` enforced a minimalist approach to the CLI. We relied strictly on `argparse` from the standard library to avoid bloat and third-party dependencies like `click`.
@@ -307,13 +307,13 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Added `README.md` to `src/cse/cli/`.
 
 ### Verification
-- ✅ CLI works
-- ✅ Examples work
-- ✅ README updated
-- ✅ Tests pass (8/8 CLI tests)
-- ✅ Benchmarks pass (~0.5ms)
+- âœ… CLI works
+- âœ… Examples work
+- âœ… README updated
+- âœ… Tests pass (8/8 CLI tests)
+- âœ… Benchmarks pass (~0.5ms)
 
-## 2026-07-07 — PRD-011 Implementation (Release Architecture & Packaging)
+## 2026-07-07 â€” PRD-011 Implementation (Release Architecture & Packaging)
 
 ### Phase 1: Configuration
 - Reconfigured `pyproject.toml` to support `build` metadata, identifying dependencies and adding an explicit `project.scripts` mapping for `cse = "cse.cli.main:main"`.
@@ -328,14 +328,14 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Wrote `benchmarks/test_import_time.py` to ensure imports take `< 50ms`. Actual time: `~0.5ms`.
 
 ### Verification
-- ✅ Package builds
-- ✅ Entry point works
-- ✅ Public import works
-- ✅ Version exposed
-- ✅ README updated
-- ✅ Tests pass
+- âœ… Package builds
+- âœ… Entry point works
+- âœ… Public import works
+- âœ… Version exposed
+- âœ… README updated
+- âœ… Tests pass
 
-## 2026-07-07 — PRD-012 Implementation (Performance Optimization & Release Validation)
+## 2026-07-07 â€” PRD-012 Implementation (Performance Optimization & Release Validation)
 
 ### Phase 1: Regression Thresholds
 - Added threshold assertions to all existing benchmarks missing them: `test_cli.py` (< 200ms), `test_api_engine.py` (< 100ms creation, < 10ms overhead), `test_import_time.py` (< 50ms).
@@ -350,14 +350,14 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Created `docs/Benchmarks/README.md` with performance targets, measured results, regression threshold map, running instructions, and optimization notes.
 
 ### Verification
-- ✅ Performance targets met (all subsystems under target)
-- ✅ Memory targets met (idle < 100 MB, import < 50 MB)
-- ✅ Benchmarks complete (27 passed, 2 skipped — no Kokoro model files)
-- ✅ Regression suite implemented (threshold assertions on all benchmarks)
-- ✅ Documentation updated (`docs/Benchmarks/`)
-- ✅ Tests pass (release validation 9/9 green)
+- âœ… Performance targets met (all subsystems under target)
+- âœ… Memory targets met (idle < 100 MB, import < 50 MB)
+- âœ… Benchmarks complete (27 passed, 2 skipped â€” no Kokoro model files)
+- âœ… Regression suite implemented (threshold assertions on all benchmarks)
+- âœ… Documentation updated (`docs/Benchmarks/`)
+- âœ… Tests pass (release validation 9/9 green)
 
-## 2026-07-07 — PRD-013 Implementation (Multi-Backend Validation)
+## 2026-07-07 â€” PRD-013 Implementation (Multi-Backend Validation)
 
 ### Phase 1: Capability Reporting
 - Added `backend_name`, `emotion`, and `sample_rate` to `BackendCapabilities`.
@@ -375,14 +375,14 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Created `tests/test_backend_validation.py` to verify API routing and capability structure.
 
 ### Verification
-- ✅ Existing backends remain functional (Dummy, Kokoro)
-- ✅ Backend switching works (`engine.load_backend()`)
-- ✅ Capability reporting implemented (`engine.get_backend_capabilities()`)
-- ✅ Evaluation utilities available (`evaluation/compare.py`)
-- ✅ Documentation complete (`docs/Backends/README.md`)
-- ✅ Tests pass (backend validation tests green)
+- âœ… Existing backends remain functional (Dummy, Kokoro)
+- âœ… Backend switching works (`engine.load_backend()`)
+- âœ… Capability reporting implemented (`engine.get_backend_capabilities()`)
+- âœ… Evaluation utilities available (`evaluation/compare.py`)
+- âœ… Documentation complete (`docs/Backends/README.md`)
+- âœ… Tests pass (backend validation tests green)
 
-## 2026-07-07 — COLAB-001 (Engineering Validation Notebook)
+## 2026-07-07 â€” COLAB-001 (Engineering Validation Notebook)
 
 ### Phase 1: Notebook Construction
 - Generated `docs/Notebooks/COLAB-001.ipynb`.
@@ -390,7 +390,7 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Includes cells for environment setup, CSE installation from Git, dummy/fishspeech backend loading via the public API, audio generation, and output verification.
 - Validates the backend abstraction and API contract in a remote Colab environment.
 
-## 2026-07-07 — PRD-013.5 Implementation (Evaluation Backend Integration)
+## 2026-07-07 â€” PRD-013.5 Implementation (Evaluation Backend Integration)
 
 ### Phase 1: Backend Adapters
 - Scaffolded standard AcousticBackend adapters for `fishspeech` and `styletts2` inside `src/cse/backends/`.
@@ -402,17 +402,17 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Created `tests/test_evaluation_backends.py` achieving 100% pass rate for standalone instantiation and engine-routed orchestration.
 
 ### Verification
-- ✅ Fish Speech backend loads
-- ✅ StyleTTS2 backend loads
-- ✅ Speech generated (adapter stubs successfully emit mock wav output)
-- ✅ Public API unchanged
-- ✅ Documentation complete
-- ✅ Tests pass
+- âœ… Fish Speech backend loads
+- âœ… StyleTTS2 backend loads
+- âœ… Speech generated (adapter stubs successfully emit mock wav output)
+- âœ… Public API unchanged
+- âœ… Documentation complete
+- âœ… Tests pass
 
-## 2026-07-10 — PRD-013.6 Implementation (Real Evaluation Backend Completion)
+## 2026-07-10 â€” PRD-013.6 Implementation (Real Evaluation Backend Completion)
 
 ### Changes
-- Replaced placeholder Fish Speech backend with real 3-stage subprocess inference pipeline (VQ encode → LLM generate → VQ decode), reused directly from `claire_colab.ipynb`.
+- Replaced placeholder Fish Speech backend with real 3-stage subprocess inference pipeline (VQ encode â†’ LLM generate â†’ VQ decode), reused directly from `claire_colab.ipynb`.
 - Replaced placeholder StyleTTS2 backend with real inference via the `styletts2` Python package API.
 - Both backends now extract text from `PerformanceTimeline` TOKEN events using the existing `timeline_to_text` converter.
 - Fish Speech backend reads reference audio from Google Drive (`/content/drive/MyDrive/claire/voices/`), matching the Claire2D workflow.
@@ -420,13 +420,13 @@ PRD-008 proves the CSE architecture is genuinely backend-agnostic:
 - Updated tests to 10/10 pass (local validation without GPU; real inference validated via COLAB-001).
 
 ### Verification (verified on Colab)
-- ✅ Fish Speech produces real audible speech
-- ✅ StyleTTS2 produces real audible speech
-- ✅ No placeholder inference remains
-- ✅ Public API unchanged
-- ✅ Tests pass (10/10)
+- âœ… Fish Speech produces real audible speech
+- âœ… StyleTTS2 produces real audible speech
+- âœ… No placeholder inference remains
+- âœ… Public API unchanged
+- âœ… Tests pass (10/10)
 
-## 2026-07-10 — PRD-014 (v1.0.0-beta Readiness)
+## 2026-07-10 â€” PRD-014 (v1.0.0-beta Readiness)
 
 ### Goal
 Certify the framework is ready to become v1.0.0-beta. Stop adding framework features and focus entirely on release engineering: stability, documentation, reproducibility, and contributor experience.
@@ -457,32 +457,32 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 8. Publish GitHub Release with assets.
 9. Update README installation instructions.
 
-## 2026-07-12 � PRD-015 Implementation (Voice Discovery & Interactive CLI)
+## 2026-07-12 — PRD-015 Implementation (Voice Discovery & Interactive CLI)
 
 ### Phase 1: Core API & Backend Integration
-- Abstracted voice logic in AcousticBackend with list_voices() and validate_voice().
-- Implemented Kokoro backend discovery returning all 28 ONNX voices natively.
-- Implemented FishSpeech backend discovery dynamically finding claire_*.wav in VOICES_DIR.
-- Implemented StyleTTS2 backend discovery returning a basic default voice.
-- Refactored VoiceRuntime to delegate voice loading and validation to backends, bypassing the legacy VoicePackage boilerplate.
+- Abstracted voice logic in `AcousticBackend` with `list_voices()` and `validate_voice()`.
+- Implemented `Kokoro` backend discovery returning all 28 ONNX voices natively.
+- Implemented `FishSpeech` backend discovery dynamically finding `claire_*.wav` in `VOICES_DIR`.
+- Implemented `StyleTTS2` backend discovery returning a basic `default` voice.
+- Refactored `VoiceRuntime` to delegate voice loading and validation to backends, bypassing the legacy `VoicePackage` boilerplate.
 
 ### Phase 2: Configuration & Persistence
-- Created src/cse/config/user_config.py using standard OS paths to save CLI-level preferences persistently across runs.
-- Configured Engine.load_voice() to automatically pull from user_config when called without arguments.
+- Created `src/cse/config/user_config.py` using standard OS paths to save CLI-level preferences persistently across runs.
+- Configured `Engine.load_voice()` to automatically pull from `user_config` when called without arguments.
 
 ### Phase 3: Interactive CLI
-- Developed cse voices to universally display all available voices grouped by backend.
-- Developed cse voice (interactive selection), cse voice set, cse voice current, and cse voice reset.
-- Removed cse.py and relied purely on pyproject.toml's entry_points, solving import collisions.
+- Developed `cse voices` to universally display all available voices grouped by backend.
+- Developed `cse voice` (interactive selection), `cse voice set`, `cse voice current`, and `cse voice reset`.
+- Removed `cse.py` and relied purely on `pyproject.toml`'s entry_points, solving import collisions.
 
 ### Phase 4: Script & README Refactoring
-- Removed legacy register_voice_package hacks from interactive_kokoro.py and interactive_fish.py, updating them to leverage zero-arg engine.load_voice().
-- Updated README.md and src/cse/cli/README.md to reflect the new UI paradigm.
-- Generated ClaireSpeechEngine-PRD015.zip.
+- Removed legacy `register_voice_package` hacks from `interactive_kokoro.py` and `interactive_fish.py`, updating them to leverage zero-arg `engine.load_voice()`.
+- Updated `README.md` and `src/cse/cli/README.md` to reflect the new UI paradigm.
+- Generated `ClaireSpeechEngine-PRD015.zip`.
 
 ### Verification
-- [x] CLI voice config saves persistently.
-- [x] Backends enumerate voices correctly.
-- [x] Python API falls back to user preferences seamlessly.
-- [x] Tests pass (discovery and routing verified).
-- [x] Import issues fixed (cse.py collision resolved).
+- ✅ CLI voice config saves persistently.
+- ✅ Backends enumerate voices correctly.
+- ✅ Python API falls back to user preferences seamlessly.
+- ✅ Tests pass (discovery and routing verified).
+- ✅ Import issues fixed (`cse.py` collision resolved).
