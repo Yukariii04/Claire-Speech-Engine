@@ -170,3 +170,37 @@ class KokoroBackend(AcousticBackend):
             supported_languages=("en",),
             backend_version="1.0.0",
         )
+
+    def list_voices(self) -> list[dict[str, str]]:
+        """Return all Kokoro voices with structured metadata."""
+        return [
+            {"id": "af_alloy", "name": "Alloy", "language": "English (US)", "gender": "Female"},
+            {"id": "af_aoede", "name": "Aoede", "language": "English (US)", "gender": "Female"},
+            {"id": "af_bella", "name": "Bella", "language": "English (US)", "gender": "Female"},
+            {"id": "af_heart", "name": "Heart", "language": "English (US)", "gender": "Female"},
+            {"id": "af_jessica", "name": "Jessica", "language": "English (US)", "gender": "Female"},
+            {"id": "af_kore", "name": "Kore", "language": "English (US)", "gender": "Female"},
+            {"id": "af_nicole", "name": "Nicole", "language": "English (US)", "gender": "Female"},
+            {"id": "af_nova", "name": "Nova", "language": "English (US)", "gender": "Female"},
+            {"id": "af_river", "name": "River", "language": "English (US)", "gender": "Female"},
+            {"id": "af_sarah", "name": "Sarah", "language": "English (US)", "gender": "Female"},
+            {"id": "af_sky", "name": "Sky", "language": "English (US)", "gender": "Female"},
+            {"id": "am_adam", "name": "Adam", "language": "English (US)", "gender": "Male"},
+            {"id": "am_echo", "name": "Echo", "language": "English (US)", "gender": "Male"},
+            {"id": "am_eric", "name": "Eric", "language": "English (US)", "gender": "Male"},
+            {"id": "am_fable", "name": "Fable", "language": "English (US)", "gender": "Male"},
+            {"id": "am_liam", "name": "Liam", "language": "English (US)", "gender": "Male"},
+            {"id": "am_michael", "name": "Michael", "language": "English (US)", "gender": "Male"},
+            {"id": "am_onyx", "name": "Onyx", "language": "English (US)", "gender": "Male"},
+            {"id": "am_puck", "name": "Puck", "language": "English (US)", "gender": "Male"},
+            {"id": "am_santa", "name": "Santa", "language": "English (US)", "gender": "Male"},
+            {"id": "bf_alice", "name": "Alice", "language": "English (GB)", "gender": "Female"},
+            {"id": "bf_emma", "name": "Emma", "language": "English (GB)", "gender": "Female"},
+            {"id": "bf_isabella", "name": "Isabella", "language": "English (GB)", "gender": "Female"},
+            {"id": "bf_lily", "name": "Lily", "language": "English (GB)", "gender": "Female"},
+            {"id": "bm_daniel", "name": "Daniel", "language": "English (GB)", "gender": "Male"},
+            {"id": "bm_fable", "name": "Fable (GB)", "language": "English (GB)", "gender": "Male"},
+            {"id": "bm_george", "name": "George", "language": "English (GB)", "gender": "Male"},
+            {"id": "bm_lewis", "name": "Lewis", "language": "English (GB)", "gender": "Male"},
+        ]
+

@@ -96,3 +96,9 @@ class StyleTTS2Backend(AcousticBackend):
 
     def get_capabilities(self) -> BackendCapabilities:
         return get_styletts2_capabilities()
+
+    def list_voices(self) -> list[dict[str, str]]:
+        """StyleTTS2 has a single default voice."""
+        # ponytail: styletts2 package doesn't expose multi-voice; one entry
+        return [{"id": "default", "name": "Default", "language": "English", "gender": "Unknown"}]
+

@@ -143,3 +143,17 @@ class FishSpeechBackend(AcousticBackend):
 
     def get_capabilities(self) -> BackendCapabilities:
         return get_fishspeech_capabilities()
+
+    def list_voices(self) -> list[dict[str, str]]:
+        """Discover voices from wav files in the voices directory."""
+        # ponytail: voices are just wav files named claire_<voice>.wav
+        import glob
+        pattern = os.path.join(self._voices_dir, "claire_*.wav")
+        voices = []
+        for path in sorted(glob.glob(pattern)):
+            name = os.path.basename(path).replace("claire_", "").replace(".wav", "")
+            voices.append({"id": name, "name": name.title(), "language": "English", "gender": "Unknown"})
+        if not voices:
+            voices.append({"id": "default", "name": "Default", "language": "English", "gender": "Unknown"})
+        return voices
+
