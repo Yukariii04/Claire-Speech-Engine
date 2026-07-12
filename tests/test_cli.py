@@ -32,8 +32,8 @@ def test_version_command():
 def test_voices_command():
     result = subprocess.run([sys.executable, CSE_PY, "voices"], capture_output=True, text=True)
     assert result.returncode == 0
-    # Even if no voices exist, it should return 0 and not fail
-    assert "voices found" in result.stdout or "- " in result.stdout or "No voices" in result.stdout
+    # PRD-015: voices now shows backend headers
+    assert "KOKORO" in result.stdout
 
 def test_speak_command_missing_args():
     result = subprocess.run([sys.executable, CSE_PY, "speak"], capture_output=True, text=True)

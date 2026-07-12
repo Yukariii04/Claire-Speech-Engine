@@ -51,12 +51,12 @@ class TestVoiceRuntime:
         runtime.initialize()
         runtime.load_voice("claire")
         
-        voice = runtime.get_loaded_voice()
-        assert voice is not None
-        assert voice.metadata.name == "Claire"
+        # PRD-015: backend-native voices may not populate VoicePackage
+        from cse.runtime.voice.state import RuntimeState
+        assert runtime._state == RuntimeState.VOICE_LOADED
         
         runtime.unload_voice()
-        assert runtime.get_loaded_voice() is None
+        assert runtime._state == RuntimeState.READY
 
     def test_load_voice_uninitialized_raises(self, mock_package):
         runtime = VoiceRuntime()
@@ -67,6 +67,8 @@ class TestVoiceRuntime:
     def test_unknown_voice_raises(self):
         runtime = VoiceRuntime()
         runtime.initialize()
+        # PRD-015: use a backend with a voice list so validation rejects unknowns
+        runtime.load_backend("kokoro")
         
         with pytest.raises(VoiceNotFoundError):
             runtime.load_voice("unknown_voice_id_never_registered")

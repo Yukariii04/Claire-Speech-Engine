@@ -456,3 +456,33 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 7. Update COLAB-001 to install from PyPI.
 8. Publish GitHub Release with assets.
 9. Update README installation instructions.
+
+## 2026-07-12 — PRD-015 Implementation (Voice Discovery & Interactive CLI)
+
+### Phase 1: Core API & Backend Integration
+- Abstracted voice logic in AcousticBackend with list_voices() and validate_voice().
+- Implemented Kokoro backend discovery returning all 28 ONNX voices natively.
+- Implemented FishSpeech backend discovery dynamically finding claire_*.wav in VOICES_DIR.
+- Implemented StyleTTS2 backend discovery returning a basic default voice.
+- Refactored VoiceRuntime to delegate voice loading and validation to backends, bypassing the legacy VoicePackage boilerplate.
+
+### Phase 2: Configuration & Persistence
+- Created src/cse/config/user_config.py using standard OS paths to save CLI-level preferences persistently across runs.
+- Configured Engine.load_voice() to automatically pull from user_config when called without arguments.
+
+### Phase 3: Interactive CLI
+- Developed cse voices to universally display all available voices grouped by backend.
+- Developed cse voice (interactive selection), cse voice set, cse voice current, and cse voice reset.
+- Removed cse.py and relied purely on pyproject.toml's entry_points, solving import collisions.
+
+### Phase 4: Script & README Refactoring
+- Removed legacy register_voice_package hacks from interactive_kokoro.py and interactive_fish.py, updating them to leverage zero-arg engine.load_voice().
+- Updated README.md and src/cse/cli/README.md to reflect the new UI paradigm.
+- Generated ClaireSpeechEngine-PRD015.zip.
+
+### Verification
+- [x] CLI voice config saves persistently.
+- [x] Backends enumerate voices correctly.
+- [x] Python API falls back to user preferences seamlessly.
+- [x] Tests pass (discovery and routing verified).
+- [x] Import issues fixed (cse.py collision resolved).

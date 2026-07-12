@@ -1,4 +1,4 @@
-"""Public Speech Engine API (PRD-009 §4)."""
+"""Public Speech Engine API (PRD-009 §4, PRD-015 §10)."""
 
 from __future__ import annotations
 
@@ -15,7 +15,6 @@ from cse.api.lifecycle import EngineState
 from cse.language.cir.builder import build_cir
 from cse.performance.compiler import compile_performance
 from cse.runtime.voice.runtime import VoiceRuntime
-from cse.voice import list_voice_packages
 
 
 class SpeechEngine:
@@ -41,9 +40,25 @@ class SpeechEngine:
             return EngineConfig()
         raise ConfigurationError("Invalid configuration type provided.")
 
-    def load_voice(self, voice_id: str) -> bool:
-        """Load a voice by ID."""
+    def load_voice(self, voice_id: str | None = None) -> bool:
+        """Load a voice by ID.
+
+        PRD-015 §10: If no voice_id provided, checks user config,
+        then falls back to backend default.
+        """
         self._check_state()
+
+        if voice_id is None:
+            # ponytail: check user config, then backend default
+            from cse.config.user_config import get_preference
+            voice_id = get_preference("voice")
+
+        if voice_id is None:
+            # Use backend's default voice (first in list)
+            backend = self._runtime.get_backend()
+            voices = backend.list_voices()
+            voice_id = voices[0]["id"] if voices else "default"
+
         try:
             self._runtime.load_voice(voice_id)
             self._voice_loaded = True
@@ -56,20 +71,24 @@ class SpeechEngine:
         self._check_state()
         return self._runtime.get_loaded_voice()
 
-    def list_voices(self) -> list[str]:
-        """List all available voice package IDs."""
+    def list_voices(self) -> list[dict[str, str]]:
+        """List voices available for the current backend.
+
+        PRD-015 §4: Returns structured metadata from the backend.
+        """
         self._check_state()
-        return list_voice_packages()
+        return self._runtime.get_backend().list_voices()
 
     def load_backend(self, backend_id: str) -> None:
         """Load an acoustic backend."""
         self._check_state()
         self._runtime.load_backend(backend_id)
+        self._voice_loaded = False  # Reset voice state on backend switch
 
     def get_backend_capabilities(self) -> dict[str, Any]:
         """Get capabilities of the current backend."""
         self._check_state()
-        caps = self._runtime._backend.get_capabilities()
+        caps = self._runtime.get_backend().get_capabilities()
         return caps.__dict__ if hasattr(caps, "__dict__") else {}
 
     def speak(self, text: str) -> Any:
@@ -96,7 +115,7 @@ class SpeechEngine:
 
     def get_version(self) -> str:
         """Return the engine version."""
-        return "1.0.0"
+        return "1.0.1"
 
     def shutdown(self) -> None:
         """Safely shutdown the engine and release resources. Idempotent."""

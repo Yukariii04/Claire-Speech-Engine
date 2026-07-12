@@ -1,20 +1,31 @@
 # Claire Speech Engine CLI
 
-A minimal, fast, and simple command-line interface for generating speech.
+A minimal, fast, and simple command-line interface for managing backends, voices, and generating speech.
 
 ## Usage
 
 ```bash
 # Get help
-python cse.py help
-python cse.py speak --help
+cse help
 
 # Check version
-python cse.py version
+cse version
 
-# List installed voices
-python cse.py voices
+# List all available voices across all backends
+cse voices
 
-# Generate speech
-python cse.py speak --voice claire --text "Hello world"
+# Interactively select a default backend and voice
+cse voice
+
+# Check your currently selected backend and voice
+cse voice current
+
+# Manually set your default backend and voice
+cse voice set kokoro af_heart
+
+# Reset voice preferences to defaults
+cse voice reset
+
+# Generate speech (uses your saved default voice if --voice is omitted)
+cse speak --voice af_heart --text "Hello world"
 ```

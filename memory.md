@@ -233,3 +233,14 @@ The project validates backend-agnostic architecture through backend capability r
 | COLAB-001 reproducible    | ✅     | NLTK bug patched, verified by user |
 | Real audio generated      | ✅     | Verified in PRD-013.6/COLAB-001 |
 | Public API frozen         | ✅     | Version bumped to 1.0.0-beta   |
+
+## Verification Results (PRD-015)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Backends list voices      | [x]    | Kokoro lists 28, Fish 1, Style 1 |
+| Config saves preferences  | [x]    | Written safely via user_config.py|
+| CLI UI works              | [x]    | cse voice interactive select   |
+| API falls back gracefully | [x]    | load_voice() uses saved config |
+| cse.py imports fixed      | [x]    | Dropped root cse.py script     |
+

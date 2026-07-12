@@ -23,11 +23,14 @@ The quickest way to see CSE in action is using the CLI or the Python API.
 ### CLI
 
 ```bash
-# List available voices
+# List available voices across all backends
 cse voices
 
-# Generate speech
-cse speak --voice claire --text "Hello from The Claire Speech Engine."
+# Interactively select your default backend and voice
+cse voice
+
+# Generate speech (uses your selected default if --voice is omitted)
+cse speak --text "Hello from The Claire Speech Engine."
 ```
 
 ### Python API
@@ -36,7 +39,8 @@ cse speak --voice claire --text "Hello from The Claire Speech Engine."
 from cse import SpeechEngine
 
 engine = SpeechEngine()
-engine.load_voice("claire")
+# Loads your saved CLI preference, or falls back to backend default
+engine.load_voice()
 
 speech = engine.speak("Synthesis is now extremely simple.")
 if speech.success:

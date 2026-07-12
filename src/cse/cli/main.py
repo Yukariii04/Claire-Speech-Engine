@@ -1,4 +1,4 @@
-"""CLI Main Entry Point (PRD-010)."""
+"""CLI Main Entry Point (PRD-010, PRD-015)."""
 
 import sys
 import argparse
@@ -20,6 +20,8 @@ def main() -> int:
         return commands.command_version(args)
     elif args.command == "voices":
         return commands.command_voices(args)
+    elif args.command == "voice":
+        return commands.command_voice(args)
     elif args.command == "speak":
         return commands.command_speak(args)
     else:
