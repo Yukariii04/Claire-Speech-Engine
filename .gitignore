@@ -40,3 +40,4 @@ temp/
 .pytest_cache/
 htmlcov/
 .coverage
+*.code-workspace
