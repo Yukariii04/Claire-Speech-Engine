@@ -462,7 +462,7 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 ### Phase 1: Core API & Backend Integration
 - Abstracted voice logic in `AcousticBackend` with `list_voices()` and `validate_voice()`.
 - Implemented `Kokoro` backend discovery returning all 28 ONNX voices natively.
-- Implemented `FishSpeech` backend discovery dynamically finding `claire_*.wav` in `VOICES_DIR`.
+- Implemented `FishSpeech` backend discovery dynamically recursively finding any `.wav` file anywhere in the codebase (ignoring temp/venv) to register as a zero-shot reference voice.
 - Implemented `StyleTTS2` backend discovery returning a basic `default` voice.
 - Refactored `VoiceRuntime` to delegate voice loading and validation to backends, bypassing the legacy `VoicePackage` boilerplate.
 

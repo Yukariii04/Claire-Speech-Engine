@@ -10,8 +10,8 @@ This ensures that the engine can drive any compatible TTS model without requirin
 |---------|--------|-------|
 | `dummy` | Active | Used for testing and validation without GPU. |
 | `kokoro` | Active | Development backend. Requires `kokoro-onnx`. |
-| `fish_speech` | Planned | Future evaluation target. |
-| `styletts2` | Planned | Future evaluation target. |
+| `fishspeech` | Active | Zero-shot evaluation backend. |
+| `styletts2` | Active | Fast evaluation backend. |
 
 ## Backend Switching
 
