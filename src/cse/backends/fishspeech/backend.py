@@ -16,7 +16,6 @@ from cse.backends.fishspeech.exceptions import FishSpeechInitializationError, Sp
 # ponytail: defaults match claire_colab.ipynb paths on Colab T4
 _DEFAULT_FISH_DIR = "/content/fish-speech"
 _DEFAULT_CKPT_DIR = "/content/checkpoints/fish-speech-1.5"
-_DEFAULT_VOICES_DIR = "/content/drive/MyDrive/claire/voices"
 
 # ponytail: transcript for the neutral reference audio, reused from claire_colab
 _DEFAULT_REF_TRANSCRIPT = (
@@ -33,7 +32,6 @@ class FishSpeechBackend(AcousticBackend):
         # ponytail: env-overridable paths, no config class needed
         self._fish_dir = os.environ.get("FISH_SPEECH_DIR", _DEFAULT_FISH_DIR)
         self._ckpt_dir = os.environ.get("FISH_CHECKPOINT_DIR", _DEFAULT_CKPT_DIR)
-        self._voices_dir = os.environ.get("VOICES_DIR", _DEFAULT_VOICES_DIR)
         self._vqgan_ckpt = os.path.join(self._ckpt_dir, "firefly-gan-vq-fsq-8x1024-21hz-generator.pth")
 
     def initialize(self) -> None:
@@ -61,13 +59,19 @@ class FishSpeechBackend(AcousticBackend):
         if not text.strip():
             raise SpeechGenerationError("No text to synthesize.")
 
-        # ponytail: resolve reference audio, fall back to neutral
-        ref_wav = os.path.join(self._voices_dir, f"claire_{self._voice or 'neutral'}.wav")
-        if not os.path.exists(ref_wav):
-            ref_wav = os.path.join(self._voices_dir, "claire_neutral.wav")
-        if not os.path.exists(ref_wav):
+        # ponytail: resolve reference audio by scanning the codebase
+        voices_map = self._scan_for_wavs()
+        target_voice = self._voice or "default"
+        
+        if target_voice in voices_map:
+            ref_wav = voices_map[target_voice]
+        else:
+            # Fallback to the very first wav file found, if any
+            ref_wav = next(iter(voices_map.values())) if voices_map else None
+
+        if not ref_wav or not os.path.exists(ref_wav):
             raise SpeechGenerationError(
-                f"Reference audio not found. Upload claire_neutral.wav to {self._voices_dir}"
+                "No reference .wav files found anywhere in the codebase. Please add one to use FishSpeech."
             )
 
         work_id = _uuid.uuid4().hex[:8]
@@ -144,15 +148,31 @@ class FishSpeechBackend(AcousticBackend):
     def get_capabilities(self) -> BackendCapabilities:
         return get_fishspeech_capabilities()
 
+    def _scan_for_wavs(self) -> dict[str, str]:
+        """Recursively scan for .wav files, skipping common junk directories."""
+        voices_map = {}
+        # Start from VOICES_DIR if provided, otherwise scan the whole project root
+        search_root = os.environ.get("VOICES_DIR", os.getcwd())
+        excludes = {"temp", "venv", ".venv", "env", ".git", ".pytest_cache", "dist", "build"}
+        
+        for root, dirs, files in os.walk(search_root):
+            # Mutate dirs in-place to prevent os.walk from entering excluded directories
+            dirs[:] = [d for d in dirs if d not in excludes and not d.startswith(".")]
+            for file in files:
+                if file.lower().endswith(".wav"):
+                    voice_id = file[:-4]  # Remove .wav extension
+                    voices_map[voice_id] = os.path.join(root, file)
+        return voices_map
+
     def list_voices(self) -> list[dict[str, str]]:
-        """Discover voices from wav files in the voices directory."""
-        # ponytail: voices are just wav files named claire_<voice>.wav
-        import glob
-        pattern = os.path.join(self._voices_dir, "claire_*.wav")
+        """Discover voices recursively from any wav files in the codebase."""
+        voices_map = self._scan_for_wavs()
         voices = []
-        for path in sorted(glob.glob(pattern)):
-            name = os.path.basename(path).replace("claire_", "").replace(".wav", "")
-            voices.append({"id": name, "name": name.title(), "language": "English", "gender": "Unknown"})
+        for vid in sorted(voices_map.keys()):
+            # e.g. "my_custom_voice" -> "My Custom Voice"
+            human_name = vid.replace("_", " ").replace("-", " ").title()
+            voices.append({"id": vid, "name": human_name, "language": "English", "gender": "Unknown"})
+        
         if not voices:
             voices.append({"id": "default", "name": "Default", "language": "English", "gender": "Unknown"})
         return voices
