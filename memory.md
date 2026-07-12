@@ -72,9 +72,9 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 
 
-## Skills Evaluation (PRD-014)
+## Skills Evaluation (PRD-015)
 
-- **`ponytail`**: Highly applicable. PRD-014 strictly forbids new framework functionality and focuses purely on stabilization, cleanup, documentation, and releasing v1.0.0-beta. The lazy/minimalist approach ensures we do not accidentally introduce scope creep.
+- **`ponytail`**: Used to strictly rely on native python `json`/`os`/`platform` for `user_config.py` without introducing bulky dependency libraries like `appdirs`. Also used to enforce a minimalist interactive CLI loop in `claire_cli.py` instead of pulling in `click` or `prompt_toolkit`.
 - **UI/UX Skills**: Not applicable.
 - **GSD Skills**: Not applicable.
 
@@ -84,9 +84,9 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | RELEASE-001         |
-| **Phase**       | ⏳ In Progress      |
-| **Blockers**    | PyPI credentials required from user |
+| **Current PRD** | PRD-015             |
+| **Phase**       | ✅ Complete          |
+| **Blockers**    | None                |
 
 ---
 
@@ -238,9 +238,9 @@ The project validates backend-agnostic architecture through backend capability r
 
 | Criterion                 | Status | Detail                         |
 |---------------------------|--------|--------------------------------|
-| Backends list voices      | [x]    | Kokoro lists 28, Fish 1, Style 1 |
-| Config saves preferences  | [x]    | Written safely via user_config.py|
-| CLI UI works              | [x]    | cse voice interactive select   |
-| API falls back gracefully | [x]    | load_voice() uses saved config |
-| cse.py imports fixed      | [x]    | Dropped root cse.py script     |
+| Backends list voices      | ✅     | Kokoro lists 28, Fish 1, Style 1 |
+| Config saves preferences  | ✅     | Written safely via `user_config.py`|
+| CLI UI works              | ✅     | `cse voice` interactive select   |
+| API falls back gracefully | ✅     | `load_voice()` uses saved config |
+| `cse.py` imports fixed    | ✅     | Dropped root `cse.py` script     |
 
