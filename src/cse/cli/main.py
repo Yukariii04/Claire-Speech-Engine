@@ -26,6 +26,8 @@ def main() -> int:
         return commands.command_speak(args)
     elif args.command == "example":
         return commands.command_example(args)
+    elif args.command == "setup":
+        return commands.command_setup(args)
     elif args.command == "backends":
         return commands.command_backends(args)
     else:

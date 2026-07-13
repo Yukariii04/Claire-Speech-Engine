@@ -259,7 +259,18 @@ def command_backends(args: argparse.Namespace) -> int:
             voices = backend.list_voices()
             caps = backend.get_capabilities()
 
-            print(f"  Status         : Ready")
+            # ponytail: also check if checkpoints exist to avoid false "Ready"
+            status = "Ready"
+            if name == "FishSpeech":
+                import os
+                if not os.path.exists(backend._vqgan_ckpt):
+                    status = "Missing Checkpoint (Run 'cse setup fishspeech')"
+            elif name == "Kokoro":
+                from pathlib import Path
+                if not Path(backend._config.model_path).exists() or not Path(backend._config.voices_path).exists():
+                    status = "Missing Models (Run 'cse setup kokoro')"
+
+            print(f"  Status         : {status}")
             print(f"  Voices         : {len(voices)}")
             if hasattr(caps, 'supported_languages'):
                 langs = ", ".join(caps.supported_languages)
@@ -273,7 +284,7 @@ def command_backends(args: argparse.Namespace) -> int:
             dep = {"FishSpeech": "fish-speech", "Kokoro": "kokoro-onnx", "StyleTTS2": "styletts2"}.get(name, name.lower())
             print(f"  Status         : Missing Dependency")
             print(f"  Reason         : {dep} not installed")
-            print(f"  Install        : pip install {dep}")
+            print(f"  Install        : Run 'cse setup {name.lower()}'")
         except Exception as e:
             print(f"  Status         : Error")
             print(f"  Reason         : {e}")
@@ -282,3 +293,47 @@ def command_backends(args: argparse.Namespace) -> int:
 
     print()
     return 0
+
+
+def command_setup(args: argparse.Namespace) -> int:
+    """Handle 'cse setup <backend>' — automated installer (PRD-015/user request)."""
+    import subprocess
+    import sys
+
+    backend = args.backend_name.lower()
+
+    if backend == "kokoro":
+        print("Installing Kokoro dependencies (kokoro-onnx, soundfile)...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "kokoro-onnx", "soundfile"])
+        
+        print("\nDownloading Kokoro models to current directory...")
+        import urllib.request
+        def download(url, filename):
+            print(f"  -> Downloading {filename}...")
+            urllib.request.urlretrieve(url, filename)
+        
+        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/kokoro-v0_19.onnx", "kokoro-v0_19.onnx")
+        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.bin", "voices.bin")
+        print("\nKokoro setup complete! Run 'cse backends' to verify.")
+        return 0
+
+    elif backend == "styletts2":
+        print("Installing StyleTTS2 dependencies...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "styletts2"])
+        print("\nStyleTTS2 setup complete! Run 'cse backends' to verify.")
+        return 0
+
+    elif backend == "fishspeech":
+        print("FishSpeech requires a complex environment and 5GB+ checkpoints.")
+        print("We will install the huggingface_hub CLI for you, but you must manually clone the repo.")
+        print("1. Install CLI:")
+        subprocess.run([sys.executable, "-m", "pip", "install", "huggingface_hub"])
+        print("\n2. Clone the repo (run this yourself):")
+        print("   git clone https://github.com/fishaudio/fish-speech.git /content/fish-speech")
+        print("\n3. Download checkpoints (run this yourself):")
+        print("   huggingface-cli download fishaudio/fish-speech-1.5 --local-dir /content/checkpoints/fish-speech-1.5")
+        return 0
+
+    else:
+        print(f"Unknown backend '{backend}'. Supported: kokoro, styletts2, fishspeech")
+        return 1
