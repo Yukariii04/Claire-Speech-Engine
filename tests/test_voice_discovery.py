@@ -177,7 +177,7 @@ class TestSpeechEnginePRD015:
     def test_version_bumped(self):
         from cse import SpeechEngine
         engine = SpeechEngine()
-        assert engine.get_version() == "1.0.1"
+        assert engine.get_version() == "1.0.4"
         engine.shutdown()
 
     def test_backend_switch_resets_voice(self):
