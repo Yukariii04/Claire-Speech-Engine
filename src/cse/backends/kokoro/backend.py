@@ -40,7 +40,20 @@ class KokoroBackend(AcousticBackend):
     def initialize(self) -> None:
         """Initialize the Kokoro ONNX pipeline."""
         try:
-            from kokoro_onnx import Kokoro  # Only import here
+            import kokoro_onnx  # noqa: F401 — just verify importable
+        except ImportError as e:
+            raise KokoroInitializationError(
+                "kokoro-onnx is not installed. Run: pip install kokoro-onnx soundfile"
+            ) from e
+        # ponytail: no eager model load — deferred to first synthesize() per RELEASE-002 §1a
+        self._initialized = True
+
+    def _ensure_model(self):
+        """Lazy-load ONNX model on first use, not on backend load."""
+        if self._kokoro is not None:
+            return
+        try:
+            from kokoro_onnx import Kokoro
 
             model_path = str(self._config.model_path)
             voices_path = str(self._config.voices_path)
@@ -57,11 +70,6 @@ class KokoroBackend(AcousticBackend):
                 )
 
             self._kokoro = Kokoro(model_path, voices_path)
-            self._initialized = True
-        except ImportError as e:
-            raise KokoroInitializationError(
-                "kokoro-onnx is not installed. Run: pip install kokoro-onnx soundfile"
-            ) from e
         except KokoroInitializationError:
             raise
         except Exception as e:
@@ -94,8 +102,9 @@ class KokoroBackend(AcousticBackend):
         Returns:
             A SpeechResult containing the path to the generated WAV file.
         """
-        if not self._initialized or not self._kokoro:
+        if not self._initialized:
             raise SpeechGenerationError("Backend not initialized. Call initialize() first.")
+        self._ensure_model()
 
         if not self._voice:
             self._voice = self._config.default_voice
