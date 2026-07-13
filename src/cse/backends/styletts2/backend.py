@@ -1,4 +1,6 @@
 """StyleTTS2 AcousticBackend — real inference via styletts2 Python API (PRD-013.6)."""
+import logging
+import threading
 import uuid as _uuid
 from pathlib import Path
 from typing import Any
@@ -10,17 +12,28 @@ from cse.backends.kokoro.converter import timeline_to_text
 from cse.backends.styletts2.capabilities import get_styletts2_capabilities
 from cse.backends.styletts2.exceptions import StyleTTS2InitializationError, SpeechGenerationError
 
+# ponytail: reuse the same bundled asset from fishspeech
+_BUNDLED_ASSET = Path(__file__).parent.parent / "fishspeech" / "assets" / "claire_neutral.wav"
+
+_log = logging.getLogger(__name__)
+
+# ponytail: module-level lock so two concurrent first-loads can't race on torch.load patch.
+# Accepted limitation: while held, any other code calling torch.load also sees weights_only=False,
+# since torch.load is process-global and styletts2 doesn't expose the flag.
+_model_lock = threading.Lock()
+
 
 class StyleTTS2Backend(AcousticBackend):
     def __init__(self, config=None):
         self._initialized = False
         self._voice = None
-        self._tts = None  # ponytail: lazy-loaded styletts2 engine
+        self._ref_path = None  # ponytail: resolved reference wav path
+        self._tts = None
 
     def initialize(self) -> None:
         try:
             import styletts2  # noqa: F401
-            # ponytail: nltk recently split 'punkt' into 'punkt_tab', which styletts2 
+            # ponytail: nltk recently split 'punkt' into 'punkt_tab', which styletts2
             # doesn't auto-download. Force download on init to prevent inference crashes.
             import nltk
             nltk.download('punkt', quiet=True)
@@ -29,31 +42,42 @@ class StyleTTS2Backend(AcousticBackend):
             raise StyleTTS2InitializationError(
                 "StyleTTS2 not installed. Run: pip install styletts2"
             ) from e
-        # ponytail: defer model load to first synthesis call for fast startup
+        # ponytail: defer model load to first synthesis call per RELEASE-002 §1a
         self._initialized = True
 
     def shutdown(self) -> None:
         self._initialized = False
         self._tts = None
         self._voice = None
+        self._ref_path = None
 
     def _ensure_model(self):
-        """Lazy-load the StyleTTS2 model on first use."""
+        """Lazy-load the StyleTTS2 model on first use, thread-safe."""
         if self._tts is not None:
             return
-        # ponytail: StyleTTS2 checkpoints use pickle globals incompatible with
-        # PyTorch 2.6+ weights_only=True default. Patch for the load call only.
-        import torch
-        _original_load = torch.load
-        torch.load = lambda *a, **kw: _original_load(*a, **{**kw, "weights_only": False})
-        try:
-            from styletts2 import tts as styletts2_tts
-            self._tts = styletts2_tts.StyleTTS2()
-        finally:
-            torch.load = _original_load
+        with _model_lock:
+            # Double-check after acquiring lock
+            if self._tts is not None:
+                return
+            # ponytail: StyleTTS2 checkpoints use pickle globals incompatible with
+            # PyTorch 2.6+ weights_only=True default. Patch for the load call only.
+            import torch
+            _original_load = torch.load
+            torch.load = lambda *a, **kw: _original_load(*a, **{**kw, "weights_only": False})
+            try:
+                from styletts2 import tts as styletts2_tts
+                self._tts = styletts2_tts.StyleTTS2()
+            finally:
+                torch.load = _original_load
 
     def load_voice(self, voice_name: str) -> str:
-        self._voice = voice_name or "default"
+        self._voice = voice_name or "claire_neutral"
+        # ponytail: accept an explicit path or fall back to bundled default
+        candidate = Path(voice_name) if voice_name else _BUNDLED_ASSET
+        if candidate.exists() and candidate.suffix == ".wav":
+            self._ref_path = candidate
+        else:
+            self._ref_path = _BUNDLED_ASSET
         return self._voice
 
     def synthesize(self, timeline: Any) -> SpeechResult:
@@ -85,7 +109,7 @@ class StyleTTS2Backend(AcousticBackend):
                 sample_rate=24000,
                 channels=1,
                 backend="styletts2",
-                voice=self._voice or "default",
+                voice=self._voice or "claire_neutral",
                 metadata={"text": text}
             )
         except Exception as e:
@@ -98,7 +122,7 @@ class StyleTTS2Backend(AcousticBackend):
         return get_styletts2_capabilities()
 
     def list_voices(self) -> list[dict[str, str]]:
-        """StyleTTS2 has a single default voice."""
+        """StyleTTS2 ships with the bundled claire_neutral reference voice."""
         # ponytail: styletts2 package doesn't expose multi-voice; one entry
-        return [{"id": "default", "name": "Default", "language": "English", "gender": "Unknown"}]
+        return [{"id": "claire_neutral", "name": "Claire Neutral", "language": "English", "gender": "Female"}]
 
