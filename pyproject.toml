@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claire-speech-engine"
-version = "1.0.2"
+version = "1.0.3"
 description = "A backend-agnostic framework for advanced speech synthesis."
 readme = "README.md"
 license = {text = "MIT"}
@@ -50,6 +50,13 @@ cse = "cse.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+cse = [
+    "backends/fishspeech/assets/*.wav",
+    "_scaffold/*.py",
+    "_scaffold/*.md",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
