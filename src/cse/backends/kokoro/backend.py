@@ -176,17 +176,21 @@ class KokoroBackend(AcousticBackend):
             emotion="limited",
             sample_rate=24000,
             requires_gpu=False,
-            supported_languages=("en",),
+            # ponytail: full language set per VOICES.md (RELEASE-002 §1d)
+            supported_languages=("en", "ja", "zh", "es", "fr", "hi", "it", "pt"),
             backend_version="1.0.0",
         )
 
     def list_voices(self) -> list[dict[str, str]]:
-        """Return all Kokoro voices with structured metadata."""
+        """Full Kokoro voice set, verified against hexgrad/Kokoro-82M VOICES.md."""
+        # ponytail: hardcoded from upstream VOICES.md — 54 voices across 9 languages
+        # Note: am_fable was wrong in v1.0.2, corrected to am_fenrir per upstream
         return [
+            # American English (11F, 9M)
+            {"id": "af_heart", "name": "Heart", "language": "English (US)", "gender": "Female"},
             {"id": "af_alloy", "name": "Alloy", "language": "English (US)", "gender": "Female"},
             {"id": "af_aoede", "name": "Aoede", "language": "English (US)", "gender": "Female"},
             {"id": "af_bella", "name": "Bella", "language": "English (US)", "gender": "Female"},
-            {"id": "af_heart", "name": "Heart", "language": "English (US)", "gender": "Female"},
             {"id": "af_jessica", "name": "Jessica", "language": "English (US)", "gender": "Female"},
             {"id": "af_kore", "name": "Kore", "language": "English (US)", "gender": "Female"},
             {"id": "af_nicole", "name": "Nicole", "language": "English (US)", "gender": "Female"},
@@ -197,19 +201,53 @@ class KokoroBackend(AcousticBackend):
             {"id": "am_adam", "name": "Adam", "language": "English (US)", "gender": "Male"},
             {"id": "am_echo", "name": "Echo", "language": "English (US)", "gender": "Male"},
             {"id": "am_eric", "name": "Eric", "language": "English (US)", "gender": "Male"},
-            {"id": "am_fable", "name": "Fable", "language": "English (US)", "gender": "Male"},
+            {"id": "am_fenrir", "name": "Fenrir", "language": "English (US)", "gender": "Male"},
             {"id": "am_liam", "name": "Liam", "language": "English (US)", "gender": "Male"},
             {"id": "am_michael", "name": "Michael", "language": "English (US)", "gender": "Male"},
             {"id": "am_onyx", "name": "Onyx", "language": "English (US)", "gender": "Male"},
             {"id": "am_puck", "name": "Puck", "language": "English (US)", "gender": "Male"},
             {"id": "am_santa", "name": "Santa", "language": "English (US)", "gender": "Male"},
+            # British English (4F, 4M)
             {"id": "bf_alice", "name": "Alice", "language": "English (GB)", "gender": "Female"},
             {"id": "bf_emma", "name": "Emma", "language": "English (GB)", "gender": "Female"},
             {"id": "bf_isabella", "name": "Isabella", "language": "English (GB)", "gender": "Female"},
             {"id": "bf_lily", "name": "Lily", "language": "English (GB)", "gender": "Female"},
             {"id": "bm_daniel", "name": "Daniel", "language": "English (GB)", "gender": "Male"},
-            {"id": "bm_fable", "name": "Fable (GB)", "language": "English (GB)", "gender": "Male"},
+            {"id": "bm_fable", "name": "Fable", "language": "English (GB)", "gender": "Male"},
             {"id": "bm_george", "name": "George", "language": "English (GB)", "gender": "Male"},
             {"id": "bm_lewis", "name": "Lewis", "language": "English (GB)", "gender": "Male"},
+            # Japanese (4F, 1M) — requires misaki[ja] for G2P
+            {"id": "jf_alpha", "name": "Alpha", "language": "Japanese", "gender": "Female"},
+            {"id": "jf_gongitsune", "name": "Gongitsune", "language": "Japanese", "gender": "Female"},
+            {"id": "jf_nezumi", "name": "Nezumi", "language": "Japanese", "gender": "Female"},
+            {"id": "jf_tebukuro", "name": "Tebukuro", "language": "Japanese", "gender": "Female"},
+            {"id": "jm_kumo", "name": "Kumo", "language": "Japanese", "gender": "Male"},
+            # Mandarin Chinese (4F, 4M) — requires misaki[zh] for G2P
+            {"id": "zf_xiaobei", "name": "Xiaobei", "language": "Mandarin", "gender": "Female"},
+            {"id": "zf_xiaoni", "name": "Xiaoni", "language": "Mandarin", "gender": "Female"},
+            {"id": "zf_xiaoxiao", "name": "Xiaoxiao", "language": "Mandarin", "gender": "Female"},
+            {"id": "zf_xiaoyi", "name": "Xiaoyi", "language": "Mandarin", "gender": "Female"},
+            {"id": "zm_yunjian", "name": "Yunjian", "language": "Mandarin", "gender": "Male"},
+            {"id": "zm_yunxi", "name": "Yunxi", "language": "Mandarin", "gender": "Male"},
+            {"id": "zm_yunxia", "name": "Yunxia", "language": "Mandarin", "gender": "Male"},
+            {"id": "zm_yunyang", "name": "Yunyang", "language": "Mandarin", "gender": "Male"},
+            # Spanish (1F, 2M)
+            {"id": "ef_dora", "name": "Dora", "language": "Spanish", "gender": "Female"},
+            {"id": "em_alex", "name": "Alex", "language": "Spanish", "gender": "Male"},
+            {"id": "em_santa", "name": "Santa", "language": "Spanish", "gender": "Male"},
+            # French (1F)
+            {"id": "ff_siwis", "name": "Siwis", "language": "French", "gender": "Female"},
+            # Hindi (2F, 2M)
+            {"id": "hf_alpha", "name": "Alpha", "language": "Hindi", "gender": "Female"},
+            {"id": "hf_beta", "name": "Beta", "language": "Hindi", "gender": "Female"},
+            {"id": "hm_omega", "name": "Omega", "language": "Hindi", "gender": "Male"},
+            {"id": "hm_psi", "name": "Psi", "language": "Hindi", "gender": "Male"},
+            # Italian (1F, 1M)
+            {"id": "if_sara", "name": "Sara", "language": "Italian", "gender": "Female"},
+            {"id": "im_nicola", "name": "Nicola", "language": "Italian", "gender": "Male"},
+            # Brazilian Portuguese (1F, 2M)
+            {"id": "pf_dora", "name": "Dora", "language": "Portuguese (BR)", "gender": "Female"},
+            {"id": "pm_alex", "name": "Alex", "language": "Portuguese (BR)", "gender": "Male"},
+            {"id": "pm_santa", "name": "Santa", "language": "Portuguese (BR)", "gender": "Male"},
         ]
 
