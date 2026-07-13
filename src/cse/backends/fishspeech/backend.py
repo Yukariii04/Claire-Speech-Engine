@@ -1,4 +1,5 @@
 """Fish Speech AcousticBackend — real inference via upstream CLI (PRD-013.6)."""
+import logging
 import os
 import subprocess
 import uuid as _uuid
@@ -17,12 +18,17 @@ from cse.backends.fishspeech.exceptions import FishSpeechInitializationError, Sp
 _DEFAULT_FISH_DIR = "/content/fish-speech"
 _DEFAULT_CKPT_DIR = "/content/checkpoints/fish-speech-1.5"
 
+# ponytail: bundled default voice asset, shipped inside the wheel
+_BUNDLED_ASSET = Path(__file__).parent / "assets" / "claire_neutral.wav"
+
 # ponytail: transcript for the neutral reference audio, reused from claire_colab
 _DEFAULT_REF_TRANSCRIPT = (
     "I am currently running my system diagnostics and everything appears to be "
     "functioning within normal parameters. All subsystems are optimal and ready "
     "for your input."
 )
+
+_log = logging.getLogger(__name__)
 
 
 class FishSpeechBackend(AcousticBackend):
@@ -63,19 +69,19 @@ class FishSpeechBackend(AcousticBackend):
         if not text.strip():
             raise SpeechGenerationError("No text to synthesize.")
 
-        # ponytail: resolve reference audio by scanning the codebase
+        # ponytail: deterministic voice resolution per RELEASE-002 §1b
         voices_map = self._scan_for_wavs()
-        target_voice = self._voice or "default"
-        
+        target_voice = self._voice or "claire_neutral"
+
         if target_voice in voices_map:
             ref_wav = voices_map[target_voice]
+        elif "claire_neutral" in voices_map:
+            _log.warning("Voice '%s' not found, falling back to claire_neutral", target_voice)
+            ref_wav = voices_map["claire_neutral"]
         else:
-            # Fallback to the very first wav file found, if any
-            ref_wav = next(iter(voices_map.values())) if voices_map else None
-
-        if not ref_wav or not os.path.exists(ref_wav):
             raise SpeechGenerationError(
-                "No reference .wav files found anywhere in the codebase. Please add one to use FishSpeech."
+                "Bundled claire_neutral.wav is missing — broken install. "
+                "Reinstall: pip install --force-reinstall claire-speech-engine"
             )
 
         work_id = _uuid.uuid4().hex[:8]
@@ -153,31 +159,32 @@ class FishSpeechBackend(AcousticBackend):
         return get_fishspeech_capabilities()
 
     def _scan_for_wavs(self) -> dict[str, str]:
-        """Recursively scan for .wav files, skipping common junk directories."""
+        """Recursively scan for .wav files, then merge the bundled default."""
         voices_map = {}
-        # Start from VOICES_DIR if provided, otherwise scan the whole project root
         search_root = os.environ.get("VOICES_DIR", os.getcwd())
         excludes = {"temp", "venv", ".venv", "env", ".git", ".pytest_cache", "dist", "build"}
-        
+
         for root, dirs, files in os.walk(search_root):
-            # Mutate dirs in-place to prevent os.walk from entering excluded directories
             dirs[:] = [d for d in dirs if d not in excludes and not d.startswith(".")]
             for file in files:
                 if file.lower().endswith(".wav"):
-                    voice_id = file[:-4]  # Remove .wav extension
+                    voice_id = file[:-4]
                     voices_map[voice_id] = os.path.join(root, file)
+
+        # ponytail: always inject bundled asset as baseline; project-level overrides it
+        if "claire_neutral" not in voices_map and _BUNDLED_ASSET.exists():
+            voices_map["claire_neutral"] = str(_BUNDLED_ASSET)
         return voices_map
 
     def list_voices(self) -> list[dict[str, str]]:
-        """Discover voices recursively from any wav files in the codebase."""
+        """Discover voices recursively, always including the bundled default."""
         voices_map = self._scan_for_wavs()
         voices = []
         for vid in sorted(voices_map.keys()):
-            # e.g. "my_custom_voice" -> "My Custom Voice"
             human_name = vid.replace("_", " ").replace("-", " ").title()
             voices.append({"id": vid, "name": human_name, "language": "English", "gender": "Unknown"})
-        
+        # ponytail: if scan found nothing AND bundled asset is gone, still show a stub
         if not voices:
-            voices.append({"id": "default", "name": "Default", "language": "English", "gender": "Unknown"})
+            voices.append({"id": "claire_neutral", "name": "Claire Neutral", "language": "English", "gender": "Unknown"})
         return voices
 
