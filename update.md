@@ -486,3 +486,50 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - ✅ Python API falls back to user preferences seamlessly.
 - ✅ Tests pass (discovery and routing verified).
 - ✅ Import issues fixed (`cse.py` collision resolved).
+
+---
+
+## RELEASE-002 — v1.0.3 (2026-07-13)
+
+### §1a: Backend Self-Sufficiency
+- Deferred asset checks from `initialize()` to first `synthesize()` for FishSpeech and Kokoro.
+- StyleTTS2 already had this pattern (`_ensure_model()`) — FishSpeech and Kokoro now match.
+- `initialize()` across all 3 backends is now lightweight (import check only).
+
+### §1b: FishSpeech Default Voice
+- Moved `claire_neutral.wav` from repo root → `src/cse/backends/fishspeech/assets/`.
+- Bundled asset always injected as baseline in `_scan_for_wavs()`; project-level wav overrides.
+- Deterministic fallback: unknown voice falls back to `claire_neutral` with logged warning.
+- Missing bundled asset raises a clear "broken install" error, never an arbitrary wav.
+
+### §1c: StyleTTS2 Thread Safety + Default Voice
+- Added module-level `threading.Lock()` around `_ensure_model()` torch.load monkeypatch.
+- Double-check pattern after lock acquisition.
+- Reuses bundled `claire_neutral.wav` from fishspeech assets as default reference.
+- `list_voices()` now reports `claire_neutral` instead of generic `default`.
+
+### §1d: Kokoro Full Voice Set
+- Replaced 28-voice English-only list with full 54-voice set across 9 languages.
+- Verified against `hexgrad/Kokoro-82M` VOICES.md on Hugging Face.
+- Fixed `am_fable` → `am_fenrir` bug from v1.0.2.
+- Updated `supported_languages` from `("en",)` to `("en", "ja", "zh", "es", "fr", "hi", "it", "pt")`.
+- Added comments noting Japanese/Mandarin require `misaki[ja]`/`misaki[zh]` for G2P.
+
+### §2: Developer Toolkit
+- Created `src/cse/_scaffold/` with 3 example scripts + README.
+- `cse example` copies all scripts into cwd; `cse example <backend>` copies just one.
+- `cse backends` shows a health dashboard per backend (status, voices, languages).
+- All scaffold files ship inside the wheel via `package_data`.
+
+### §3: Packaging
+- Version bumped 1.0.2 → 1.0.3.
+- `pyproject.toml` `package-data` includes `backends/fishspeech/assets/*.wav` and `_scaffold/*`.
+
+### §4-5: Build + Twine Verification
+- ✅ Wheel builds, contains all voice assets + scaffold files.
+- ✅ `twine check dist/*` passes.
+
+### Remaining
+- §6: Local install dry run (pending user action)
+- §7: PyPI publish
+- §8-13: Post-publish validation, docs, GitHub release

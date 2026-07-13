@@ -12,7 +12,7 @@
 | **PRD**      | PRD-001 — Project Bootstrap & Foundation |
 | **Goal**     | Production-grade repo scaffold — **no speech features** |
 | **Python**   | ≥ 3.12                         |
-| **Version**  | 0.1.0                          |
+| **Version**  | 1.0.3                          |
 
 ---
 
@@ -84,8 +84,8 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-015             |
-| **Phase**       | ✅ Complete          |
+| **Current PRD** | RELEASE-002         |
+| **Phase**       | §1-§5 complete, pre-publish |
 | **Blockers**    | None                |
 
 ---
