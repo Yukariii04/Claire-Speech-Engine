@@ -41,20 +41,7 @@ class TestKokoroVoiceDiscovery:
         assert "af_heart" in ids
 
 
-class TestFishSpeechVoiceDiscovery:
-    def test_list_voices_returns_list(self):
-        from cse.backends.fishspeech.backend import FishSpeechBackend
-        backend = FishSpeechBackend()
-        voices = backend.list_voices()
-        assert isinstance(voices, list)
-        assert len(voices) > 0
 
-    def test_list_voices_has_required_keys(self):
-        from cse.backends.fishspeech.backend import FishSpeechBackend
-        backend = FishSpeechBackend()
-        for v in backend.list_voices():
-            assert "id" in v
-            assert "name" in v
 
 
 class TestStyleTTS2VoiceDiscovery:
@@ -68,7 +55,7 @@ class TestStyleTTS2VoiceDiscovery:
     def test_validate_voice_default(self):
         from cse.backends.styletts2.backend import StyleTTS2Backend
         backend = StyleTTS2Backend()
-        assert backend.validate_voice("default") is True
+        assert backend.validate_voice("claire_neutral") is True
 
 
 # ── AcousticBackend interface defaults ────────────────────────────────
@@ -160,7 +147,6 @@ class TestVoiceRuntimePRD015:
         from cse.runtime.voice.runtime import VoiceRuntime
         ids = VoiceRuntime.available_backend_ids()
         assert "kokoro" in ids
-        assert "fishspeech" in ids
         assert "styletts2" in ids
         assert "dummy" not in ids
 
@@ -183,8 +169,9 @@ class TestSpeechEnginePRD015:
         from cse import SpeechEngine
         engine = SpeechEngine()
         engine.load_backend("kokoro")
-        # Should not raise
-        engine.load_voice()
+        with patch("cse.config.user_config.get_preference", return_value=None):
+            # Should not raise
+            engine.load_voice()
         engine.shutdown()
 
     def test_version_bumped(self):

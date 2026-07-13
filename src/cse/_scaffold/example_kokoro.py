@@ -7,8 +7,14 @@ def main():
     engine = SpeechEngine()
     engine.load_backend("kokoro")
 
-    # ponytail: optionally accept a voice id from argv, default af_heart
-    voice = sys.argv[1] if len(sys.argv) > 1 else "af_heart"
+    # Read saved voice preference, fall back to af_heart
+    from cse.config.user_config import get_preference
+    saved_backend = get_preference("backend")
+    saved_voice = get_preference("voice")
+    if saved_backend == "kokoro" and saved_voice:
+        voice = saved_voice
+    else:
+        voice = sys.argv[1] if len(sys.argv) > 1 else "af_heart"
     engine.load_voice(voice)
 
     print(f"Kokoro example — using voice '{voice}'.")

@@ -77,7 +77,7 @@ def main() -> None:
     
     engine = SpeechEngine()
     
-    for backend in ["dummy", "kokoro", "fishspeech", "styletts2"]:
+    for backend in ["dummy", "kokoro", "styletts2"]:
         evaluate_backend(engine, backend, prompts)
 
     engine.shutdown()

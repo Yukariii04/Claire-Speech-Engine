@@ -28,7 +28,7 @@ def create_parser() -> argparse.ArgumentParser:
     
     # cse voice set <backend> <voice>
     set_parser = voice_sub.add_parser("set", help="Set voice preference")
-    set_parser.add_argument("backend", help="Backend ID (kokoro, fishspeech, styletts2)")
+    set_parser.add_argument("backend", help="Backend ID (kokoro, styletts2)")
     set_parser.add_argument("voice", help="Voice ID")
     
     # cse voice current
@@ -37,20 +37,17 @@ def create_parser() -> argparse.ArgumentParser:
     # cse voice reset
     voice_sub.add_parser("reset", help="Reset voice preference to defaults")
     
-    # cse speak
-    speak_parser = subparsers.add_parser("speak", help="Generate speech from text")
-    speak_parser.add_argument("--voice", required=True, help="Voice ID to use (e.g., 'claire')")
-    speak_parser.add_argument("--text", required=True, help="Text to speak")
+
 
     # cse example [backend] [--force]
     example_parser = subparsers.add_parser("example", help="Copy example scripts into current directory")
     example_parser.add_argument("backend_name", nargs="?", default=None,
-                                help="Optional: fishspeech, styletts2, or kokoro")
+                                help="Optional: styletts2 or kokoro")
     example_parser.add_argument("--force", action="store_true", help="Overwrite existing files")
 
     # cse setup <backend>
     setup_parser = subparsers.add_parser("setup", help="Automated setup and model download for a backend")
-    setup_parser.add_argument("backend_name", help="fishspeech, styletts2, or kokoro")
+    setup_parser.add_argument("backend_name", help="styletts2 or kokoro")
 
     # cse backends
     subparsers.add_parser("backends", help="Show installed backend status dashboard")

@@ -5,11 +5,11 @@ from cse import SpeechEngine
 def main():
     engine = SpeechEngine()
     
-    print("Loading backend 'fishspeech'...")
-    engine.load_backend("fishspeech")
+    print("Loading backend 'kokoro'...")
+    engine.load_backend("kokoro")
     
-    print("Loading voice 'default'...")
-    engine.load_voice("default")
+    print("Loading voice 'af_heart'...")
+    engine.load_voice("af_heart")
     
     print("Generating speech...")
     speech = engine.speak("Hello!")

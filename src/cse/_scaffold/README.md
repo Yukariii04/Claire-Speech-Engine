@@ -2,11 +2,10 @@
 
 Scaffolded by `cse example`. Each script is a standalone demo.
 
-| File | Purpose |
-|------|---------|
-| example_fishspeech.py | Fish Speech zero-shot cloning demo |
-| example_styletts2.py | StyleTTS2 synthesis demo |
-| example_kokoro.py | Kokoro multi-voice demo (pass voice id as arg) |
+| File | Purpose | Python Requirement |
+|------|---------|-------------------|
+| example_styletts2.py | StyleTTS2 synthesis demo | Python 3.12+ |
+| example_kokoro.py | Kokoro multi-voice demo | Python 3.12+ |
 
 ## Usage
 

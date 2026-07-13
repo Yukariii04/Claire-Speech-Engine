@@ -22,8 +22,7 @@ def main() -> int:
         return commands.command_voices(args)
     elif args.command == "voice":
         return commands.command_voice(args)
-    elif args.command == "speak":
-        return commands.command_speak(args)
+
     elif args.command == "example":
         return commands.command_example(args)
     elif args.command == "setup":

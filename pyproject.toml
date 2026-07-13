@@ -53,7 +53,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 cse = [
-    "backends/fishspeech/assets/*.wav",
+    "backends/styletts2/assets/*.wav",
     "_scaffold/*.py",
     "_scaffold/*.md",
 ]

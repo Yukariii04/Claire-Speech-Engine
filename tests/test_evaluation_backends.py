@@ -7,33 +7,8 @@ Real inference is validated via COLAB-001.
 import os
 import pytest
 from unittest.mock import patch
-from cse.backends.fishspeech.backend import FishSpeechBackend
 from cse.backends.styletts2.backend import StyleTTS2Backend
-from cse.backends.fishspeech.exceptions import FishSpeechInitializationError, SpeechGenerationError as FSGenError
 from cse.backends.styletts2.exceptions import StyleTTS2InitializationError, SpeechGenerationError as STGenError
-
-
-class TestFishSpeechBackend:
-    def test_init_without_checkpoint_raises(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("FISH_CHECKPOINT_DIR", str(tmp_path / "nonexistent"))
-        backend = FishSpeechBackend()
-        with pytest.raises(FishSpeechInitializationError, match="checkpoint not found"):
-            backend.initialize()
-
-    def test_capabilities(self):
-        backend = FishSpeechBackend()
-        caps = backend.get_capabilities()
-        assert caps.backend_name == "fishspeech"
-        assert caps.emotion == "high"
-
-    def test_load_voice(self):
-        backend = FishSpeechBackend()
-        assert backend.load_voice("neutral") == "neutral"
-
-    def test_synthesize_without_init_raises(self):
-        backend = FishSpeechBackend()
-        with pytest.raises(FSGenError, match="not initialized"):
-            backend.synthesize("test")
 
 
 class TestStyleTTS2Backend:
@@ -58,16 +33,32 @@ class TestStyleTTS2Backend:
         with pytest.raises(STGenError, match="not initialized"):
             backend.synthesize("test")
 
+    def test_synthesize_passes_target_voice_path(self, tmp_path):
+        from unittest.mock import MagicMock
+        import numpy as np
+        
+        backend = StyleTTS2Backend()
+        backend._initialized = True
+        backend.load_voice("claire_neutral")
+        
+        backend._ensure_model = MagicMock()
+        backend._tts = MagicMock()
+        backend._tts.inference.return_value = np.zeros(24000, dtype=np.float32)
+        
+        # Test synthesis
+        res = backend.synthesize("hello world")
+        
+        # Verify the actual call
+        backend._tts.inference.assert_called_once()
+        args, kwargs = backend._tts.inference.call_args
+        assert args[0] == "hello world"
+        assert "target_voice_path" in kwargs
+        assert "claire_neutral.wav" in str(kwargs["target_voice_path"])
+        assert res.success is True
+
 
 class TestBackendRegistration:
     """Verify backends can be imported and instantiated through engine routing."""
-    def test_fishspeech_importable(self):
-        from cse.runtime.voice.runtime import VoiceRuntime
-        rt = VoiceRuntime()
-        # ponytail: don't initialize (needs checkpoint), just verify import routing
-        backend = FishSpeechBackend()
-        assert backend.__class__.__name__ == "FishSpeechBackend"
-
     def test_styletts2_importable(self):
         backend = StyleTTS2Backend()
         assert backend.__class__.__name__ == "StyleTTS2Backend"

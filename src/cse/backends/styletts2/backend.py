@@ -12,8 +12,7 @@ from cse.backends.kokoro.converter import timeline_to_text
 from cse.backends.styletts2.capabilities import get_styletts2_capabilities
 from cse.backends.styletts2.exceptions import StyleTTS2InitializationError, SpeechGenerationError
 
-# ponytail: reuse the same bundled asset from fishspeech
-_BUNDLED_ASSET = Path(__file__).parent.parent / "fishspeech" / "assets" / "claire_neutral.wav"
+_BUNDLED_ASSET = Path(__file__).parent / "assets" / "claire_neutral.wav"
 
 _log = logging.getLogger(__name__)
 
@@ -94,7 +93,7 @@ class StyleTTS2Backend(AcousticBackend):
 
         try:
             # ponytail: styletts2 package provides a simple one-call API
-            wav = self._tts.inference(text)
+            wav = self._tts.inference(text, target_voice_path=str(self._ref_path))
 
             import soundfile as sf
             sf.write(str(out_path), wav, 24000)

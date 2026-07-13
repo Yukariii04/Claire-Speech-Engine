@@ -115,7 +115,7 @@ class SpeechEngine:
 
     def get_version(self) -> str:
         """Return the engine version."""
-        return "1.0.1"
+        return "1.0.3"
 
     def shutdown(self) -> None:
         """Safely shutdown the engine and release resources. Idempotent."""

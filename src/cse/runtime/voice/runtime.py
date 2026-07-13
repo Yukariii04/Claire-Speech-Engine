@@ -14,7 +14,6 @@ from cse.voice import get_voice_package, VoicePackage, VoicePackageNotFoundError
 _BACKEND_MAP = {
     "dummy": "cse.acoustic.backend.dummy_backend.DummyBackend",
     "kokoro": "cse.backends.kokoro.backend.KokoroBackend",
-    "fishspeech": "cse.backends.fishspeech.backend.FishSpeechBackend",
     "styletts2": "cse.backends.styletts2.backend.StyleTTS2Backend",
 }
 
@@ -53,9 +52,6 @@ class VoiceRuntime:
         elif backend_id == "kokoro":
             from cse.backends.kokoro.backend import KokoroBackend
             backend = KokoroBackend()
-        elif backend_id == "fishspeech":
-            from cse.backends.fishspeech.backend import FishSpeechBackend
-            backend = FishSpeechBackend()
         elif backend_id == "styletts2":
             from cse.backends.styletts2.backend import StyleTTS2Backend
             backend = StyleTTS2Backend()
