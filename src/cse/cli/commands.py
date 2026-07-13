@@ -191,3 +191,94 @@ def command_speak(args: argparse.Namespace) -> int:
         return 1
     finally:
         engine.shutdown()
+
+
+def command_example(args: argparse.Namespace) -> int:
+    """Handle 'cse example' — copy scaffold scripts into cwd (RELEASE-002 §2a)."""
+    import shutil
+    from pathlib import Path
+
+    scaffold_dir = Path(__file__).parent.parent / "_scaffold"
+    if not scaffold_dir.exists():
+        print("Error: scaffold directory not found. Reinstall claire-speech-engine.")
+        return 1
+
+    # ponytail: optional backend filter, otherwise copy all
+    target = getattr(args, "backend_name", None)
+    force = getattr(args, "force", False)
+
+    all_files = ["example_fishspeech.py", "example_styletts2.py", "example_kokoro.py", "README.md"]
+    if target:
+        # Copy just the one script + README
+        script = f"example_{target}.py"
+        if script not in all_files:
+            print(f"Unknown backend '{target}'. Available: fishspeech, styletts2, kokoro")
+            return 1
+        to_copy = [script, "README.md"]
+    else:
+        to_copy = all_files
+
+    copied = []
+    for filename in to_copy:
+        src = scaffold_dir / filename
+        dst = Path.cwd() / filename
+        if dst.exists() and not force:
+            print(f"  Skipped {filename} (already exists, use --force to overwrite)")
+            continue
+        shutil.copy2(str(src), str(dst))
+        copied.append(filename)
+
+    if copied:
+        print(f"Copied {len(copied)} file(s) to {Path.cwd()}:")
+        for f in copied:
+            print(f"  {f}")
+    else:
+        print("Nothing copied (all files already exist).")
+    return 0
+
+
+def command_backends(args: argparse.Namespace) -> int:
+    """Handle 'cse backends' — health dashboard (RELEASE-002 §2c)."""
+    print("\nInstalled Backends\n")
+
+    backends = [
+        ("FishSpeech", "cse.backends.fishspeech.backend", "FishSpeechBackend"),
+        ("Kokoro", "cse.backends.kokoro.backend", "KokoroBackend"),
+        ("StyleTTS2", "cse.backends.styletts2.backend", "StyleTTS2Backend"),
+    ]
+
+    for name, module_path, class_name in backends:
+        print(name)
+        try:
+            import importlib
+            mod = importlib.import_module(module_path)
+            backend_cls = getattr(mod, class_name)
+            backend = backend_cls()
+            backend.initialize()
+
+            voices = backend.list_voices()
+            caps = backend.get_capabilities()
+
+            print(f"  Status         : Ready")
+            print(f"  Voices         : {len(voices)}")
+            if hasattr(caps, 'supported_languages'):
+                langs = ", ".join(caps.supported_languages)
+                print(f"  Languages      : {langs}")
+            # ponytail: show default voice if only one
+            if len(voices) == 1:
+                print(f"  Default Voice  : {voices[0]['id']}")
+
+        except ImportError:
+            # ponytail: dependency not installed
+            dep = {"FishSpeech": "fish-speech", "Kokoro": "kokoro-onnx", "StyleTTS2": "styletts2"}.get(name, name.lower())
+            print(f"  Status         : Missing Dependency")
+            print(f"  Reason         : {dep} not installed")
+            print(f"  Install        : pip install {dep}")
+        except Exception as e:
+            print(f"  Status         : Error")
+            print(f"  Reason         : {e}")
+
+        print("────────────────────────")
+
+    print()
+    return 0
