@@ -41,5 +41,14 @@ def create_parser() -> argparse.ArgumentParser:
     speak_parser = subparsers.add_parser("speak", help="Generate speech from text")
     speak_parser.add_argument("--voice", required=True, help="Voice ID to use (e.g., 'claire')")
     speak_parser.add_argument("--text", required=True, help="Text to speak")
-    
+
+    # cse example [backend] [--force]
+    example_parser = subparsers.add_parser("example", help="Copy example scripts into current directory")
+    example_parser.add_argument("backend_name", nargs="?", default=None,
+                                help="Optional: fishspeech, styletts2, or kokoro")
+    example_parser.add_argument("--force", action="store_true", help="Overwrite existing files")
+
+    # cse backends
+    subparsers.add_parser("backends", help="Show installed backend status dashboard")
+
     return parser

@@ -24,6 +24,10 @@ def main() -> int:
         return commands.command_voice(args)
     elif args.command == "speak":
         return commands.command_speak(args)
+    elif args.command == "example":
+        return commands.command_example(args)
+    elif args.command == "backends":
+        return commands.command_backends(args)
     else:
         parser.print_help()
         return 0
