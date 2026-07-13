@@ -18,8 +18,8 @@ All four refinements are solid, and the architectural one is the most important 
 #
 # Release Engineering Checklist
 #
-# Release : v1.0.3
-# Version : 1.0.3
+# Release : v1.0.4
+# Version : 1.0.4
 #
 ################################################################################
 ````
@@ -207,7 +207,7 @@ Verify
   voice assets and the new `_scaffold/` directory
 - `cse example` and `cse backends` are registered and callable
   immediately after install
-- version bump (1.0.2 → 1.0.3)
+- version bump (1.0.2 → 1.0.4)
 - no new hard runtime dependencies
 
 ---
@@ -399,7 +399,7 @@ feat: deferred backend self-sufficiency, default voices, full Kokoro set, cse ex
 
 TAG
 
-v1.0.3
+v1.0.4
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -416,7 +416,7 @@ RELEASE-002
 (deferred self-sufficiency + default voices + full Kokoro set + dev toolkit)
         │
         ▼
-v1.0.3
+v1.0.4
         │
         ▼
 Local wheel dry run

@@ -3,7 +3,7 @@
 This is the ONLY module in CSE that imports Kokoro-specific libraries.
 The rest of CSE remains completely unaware that Kokoro exists.
 
-Uses `kokoro-onnx` for Python 3.13+ compatibility (avoids numpy==1.26.4 pin
+Uses `kokoro-onnx` for Python 3.12+ compatibility (avoids numpy==1.26.4 pin
 from the official `kokoro` package).
 """
 

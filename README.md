@@ -1,6 +1,6 @@
 # The Claire Speech Engine (CSE)
 
-**The Claire Speech Engine** is a production-grade, backend-agnostic speech synthesis library built in Python. 
+**The Claire Speech Engine** is a production-grade, backend-agnostic speech synthesis library built in Python.
 
 ## Installation
 
@@ -18,27 +18,45 @@ pip install -e ".[dev]"
 
 ## Quick Start
 
-### Backend Compatibility
+### 1. Setup Your Backend
+Because CSE is backend-agnostic, the core framework does not ship with heavy ML dependencies. You choose the backend you want and install its specific requirements. 
 
-Different machine learning backends have strict dependencies. The CSE framework currently supports the following backends on Python 3.12 and 3.13:
+Currently, CSE officially supports the following backends on **Python 3.12+**:
+* **Kokoro**
+* **StyleTTS2**
 
-* **Kokoro**: Python 3.12, 3.13
-* **StyleTTS2**: Python 3.12, 3.13
+Use the built-in setup tools to automatically download models and install all required ML dependencies for your chosen backend:
+```bash
+# Install dependencies and download models for Kokoro
+cse setup kokoro
 
-### CLI
+# Install dependencies and download models for StyleTTS2
+cse setup styletts2
+```
 
+### 2. Examples
+You can instantly scaffold a runnable example into your current directory to test your setup:
+```bash
+cse example kokoro
+python example_kokoro.py
+```
+
+### 3. Check Backend Health
+You can view a real-time dashboard of your installed backends, their status, and their voice counts:
+```bash
+cse backends
+```
+
+### 4. Interactive CLI
 ```bash
 # List available voices across all backends
 cse voices
 
 # Interactively select your default backend and voice
 cse voice
-
-# Generate speech (uses your selected default if --voice is omitted)
-cse speak --text "Hello from The Claire Speech Engine."
 ```
 
-### Python API
+### 5. Python API
 
 ```python
 from cse import SpeechEngine
@@ -52,15 +70,6 @@ if speech.success:
     print(f"Audio saved to: {speech.audio_path}")
 ```
 
-## Examples
-
-We believe every feature should be easily discoverable. Check the `examples/` directory for runnable scripts:
-
-- `examples/basic.py` — Simple end-to-end synthesis.
-- `examples/configuration.py` — How to pass custom overrides and load configurations.
-- `examples/list_voices.py` — Querying the local voice registry.
-- `examples/generate_speech.py` — Handling output files and moving them dynamically.
-
 ## Architecture & Vision
 
 Read these documents to understand the core philosophy and design of the engine:
@@ -69,7 +78,7 @@ Read these documents to understand the core philosophy and design of the engine:
 
 ## Roadmap
 
-The Claire Speech Engine (CSE) has officially reached **v1.0.0-beta**. The core framework is now **feature-frozen** to ensure a stable foundation. 
+The Claire Speech Engine (CSE) is currently at **v1.0.4**. The core framework is now **feature-frozen** to ensure a stable foundation. 
 
 Future development will transition to:
 1. **CPE (Claire Performance Engine)**: Prosody, emotion, and dialogue planning.
@@ -85,11 +94,11 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ### Running Tests
 ```bash
-pytest
+pytest tests/
 ```
 
 ### Running Benchmarks
 ```bash
-pytest benchmarks/ --benchmark-only
+pytest tests/golden/test_perf_golden.py
 ```
 *See [docs/Benchmarks/README.md](docs/Benchmarks/README.md) for full performance targets and reports.*

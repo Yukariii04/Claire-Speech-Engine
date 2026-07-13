@@ -120,4 +120,4 @@ class TestSpeechEngine:
 
     def test_get_version(self):
         engine = SpeechEngine()
-        assert engine.get_version() == "1.0.1"
+        assert engine.get_version() == "1.0.4"
