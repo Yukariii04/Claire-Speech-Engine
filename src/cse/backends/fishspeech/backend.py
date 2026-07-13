@@ -35,13 +35,16 @@ class FishSpeechBackend(AcousticBackend):
         self._vqgan_ckpt = os.path.join(self._ckpt_dir, "firefly-gan-vq-fsq-8x1024-21hz-generator.pth")
 
     def initialize(self) -> None:
-        # ponytail: just verify the checkpoint exists, no eager GPU load
+        # ponytail: no eager asset check — deferred to first synthesize() per RELEASE-002 §1a
+        self._initialized = True
+
+    def _ensure_model(self):
+        """Verify checkpoint exists on first use, not on load."""
         if not os.path.exists(self._vqgan_ckpt):
             raise FishSpeechInitializationError(
                 f"Fish Speech checkpoint not found at {self._vqgan_ckpt}. "
                 f"Run: huggingface-cli download fishaudio/fish-speech-1.5 --local-dir {self._ckpt_dir}"
             )
-        self._initialized = True
 
     def shutdown(self) -> None:
         self._initialized = False
@@ -54,6 +57,7 @@ class FishSpeechBackend(AcousticBackend):
     def synthesize(self, timeline: Any) -> SpeechResult:
         if not self._initialized:
             raise SpeechGenerationError("Backend not initialized.")
+        self._ensure_model()
 
         text = timeline_to_text(timeline) if hasattr(timeline, "events") else str(timeline)
         if not text.strip():
