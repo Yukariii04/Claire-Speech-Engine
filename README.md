@@ -18,7 +18,12 @@ pip install -e ".[dev]"
 
 ## Quick Start
 
-The quickest way to see CSE in action is using the CLI or the Python API.
+### Backend Compatibility
+
+Different machine learning backends have strict dependencies. The CSE framework currently supports the following backends on Python 3.12 and 3.13:
+
+* **Kokoro**: Python 3.12, 3.13
+* **StyleTTS2**: Python 3.12, 3.13
 
 ### CLI
 

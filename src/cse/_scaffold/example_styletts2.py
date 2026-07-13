@@ -4,7 +4,13 @@ from cse import SpeechEngine
 def main():
     engine = SpeechEngine()
     engine.load_backend("styletts2")
-    engine.load_voice()
+
+    # Read saved voice preference only if it was set for styletts2
+    from cse.config.user_config import get_preference
+    saved_backend = get_preference("backend")
+    saved_voice = get_preference("voice")
+    voice = saved_voice if saved_backend == "styletts2" and saved_voice else "claire_neutral"
+    engine.load_voice(voice)
 
     print("StyleTTS2 example — type text to synthesize, empty line to quit.")
     print("Tip: run `cse voices` to see all available voices.\n")

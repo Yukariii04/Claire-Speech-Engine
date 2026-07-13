@@ -529,7 +529,16 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - ✅ Wheel builds, contains all voice assets + scaffold files.
 - ✅ `twine check dist/*` passes.
 
-### Remaining
-- §6: Local install dry run (pending user action)
-- §7: PyPI publish
-- §8-13: Post-publish validation, docs, GitHub release
+### Fish Speech Removal (1.0.3 pivot)
+- Discovered severe environment conflicts between `FishSpeech` dependencies (`torch<=2.4.1`, `torchaudio`, `pytorch-lightning`, outdated `transformers`) and modern Python 3.12+ setups on Windows.
+- PyTorch C++ extension mismatch (`[WinError 127]`) made it impossible to maintain a unified, stable environment for Kokoro, StyleTTS2, and Fish Speech.
+- **Decision**: Removed `cse.backends.fishspeech`, removed `cse setup fishspeech`, and purged `example_fishspeech.py` from the scaffold.
+- Reverted `claire-speech-engine` constraints back to `requires-python = ">=3.12"`.
+- Documented in `memory.md` (AD-003) and `README.md`.
+
+### Completion (v1.0.3)
+- ✅ Local install dry run passed in fresh Python 3.12 environment (`cse` env).
+- ✅ Wheel rebuilt and tested successfully.
+- ✅ Fish Speech fully excised; `claire_neutral` migrated correctly to `styletts2`.
+- ✅ All acceptance criteria met (excluding PyPI publish which is left for user manual action if desired).
+- ✅ RELEASE-002 completed and repository zipped.

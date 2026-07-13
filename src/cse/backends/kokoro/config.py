@@ -14,5 +14,5 @@ class KokoroConfig:
     sample_rate: int = 24000
     default_voice: str = "af_heart"
     output_dir: str = "temp"
-    model_path: Path = Path("models/kokoro/kokoro-v1.0.onnx")
-    voices_path: Path = Path("models/kokoro/voices-v1.0.bin")
+    model_path: Path = Path("kokoro-v1.0.onnx")
+    voices_path: Path = Path("voices-v1.0.bin")

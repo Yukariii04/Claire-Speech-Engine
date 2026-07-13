@@ -28,9 +28,6 @@ def command_voices(args: argparse.Namespace) -> int:
             if backend_id == "kokoro":
                 from cse.backends.kokoro.backend import KokoroBackend
                 backend = KokoroBackend()
-            elif backend_id == "fishspeech":
-                from cse.backends.fishspeech.backend import FishSpeechBackend
-                backend = FishSpeechBackend()
             elif backend_id == "styletts2":
                 from cse.backends.styletts2.backend import StyleTTS2Backend
                 backend = StyleTTS2Backend()
@@ -87,9 +84,6 @@ def command_voice(args: argparse.Namespace) -> int:
         if backend_id == "kokoro":
             from cse.backends.kokoro.backend import KokoroBackend
             backend = KokoroBackend()
-        elif backend_id == "fishspeech":
-            from cse.backends.fishspeech.backend import FishSpeechBackend
-            backend = FishSpeechBackend()
         elif backend_id == "styletts2":
             from cse.backends.styletts2.backend import StyleTTS2Backend
             backend = StyleTTS2Backend()
@@ -137,9 +131,6 @@ def command_voice(args: argparse.Namespace) -> int:
     if backend_id == "kokoro":
         from cse.backends.kokoro.backend import KokoroBackend
         backend = KokoroBackend()
-    elif backend_id == "fishspeech":
-        from cse.backends.fishspeech.backend import FishSpeechBackend
-        backend = FishSpeechBackend()
     elif backend_id == "styletts2":
         from cse.backends.styletts2.backend import StyleTTS2Backend
         backend = StyleTTS2Backend()
@@ -173,26 +164,6 @@ def command_voice(args: argparse.Namespace) -> int:
     return 0
 
 
-def command_speak(args: argparse.Namespace) -> int:
-    """Handle 'cse speak' command."""
-    from cse import SpeechEngine
-    engine = SpeechEngine()
-    try:
-        engine.load_voice(args.voice)
-        result = engine.speak(args.text)
-        if result.success:
-            print(f"Speech generated successfully: {result.audio_path}")
-            return 0
-        else:
-            print("Failed to generate speech.")
-            return 1
-    except SpeechEngineError as e:
-        print(f"Error: {e}")
-        return 1
-    finally:
-        engine.shutdown()
-
-
 def command_example(args: argparse.Namespace) -> int:
     """Handle 'cse example' — copy scaffold scripts into cwd (RELEASE-002 §2a)."""
     import shutil
@@ -207,12 +178,12 @@ def command_example(args: argparse.Namespace) -> int:
     target = getattr(args, "backend_name", None)
     force = getattr(args, "force", False)
 
-    all_files = ["example_fishspeech.py", "example_styletts2.py", "example_kokoro.py", "README.md"]
+    all_files = ["example_styletts2.py", "example_kokoro.py", "README.md"]
     if target:
         # Copy just the one script + README
         script = f"example_{target}.py"
         if script not in all_files:
-            print(f"Unknown backend '{target}'. Available: fishspeech, styletts2, kokoro")
+            print(f"Unknown backend '{target}'. Available: styletts2, kokoro")
             return 1
         to_copy = [script, "README.md"]
     else:
@@ -242,7 +213,6 @@ def command_backends(args: argparse.Namespace) -> int:
     print("\nInstalled Backends\n")
 
     backends = [
-        ("FishSpeech", "cse.backends.fishspeech.backend", "FishSpeechBackend"),
         ("Kokoro", "cse.backends.kokoro.backend", "KokoroBackend"),
         ("StyleTTS2", "cse.backends.styletts2.backend", "StyleTTS2Backend"),
     ]
@@ -261,11 +231,7 @@ def command_backends(args: argparse.Namespace) -> int:
 
             # ponytail: also check if checkpoints exist to avoid false "Ready"
             status = "Ready"
-            if name == "FishSpeech":
-                import os
-                if not os.path.exists(backend._vqgan_ckpt):
-                    status = "Missing Checkpoint (Run 'cse setup fishspeech')"
-            elif name == "Kokoro":
+            if name == "Kokoro":
                 from pathlib import Path
                 if not Path(backend._config.model_path).exists() or not Path(backend._config.voices_path).exists():
                     status = "Missing Models (Run 'cse setup kokoro')"
@@ -281,7 +247,7 @@ def command_backends(args: argparse.Namespace) -> int:
 
         except ImportError:
             # ponytail: dependency not installed
-            dep = {"FishSpeech": "fish-speech", "Kokoro": "kokoro-onnx", "StyleTTS2": "styletts2"}.get(name, name.lower())
+            dep = {"Kokoro": "kokoro-onnx", "StyleTTS2": "styletts2"}.get(name, name.lower())
             print(f"  Status         : Missing Dependency")
             print(f"  Reason         : {dep} not installed")
             print(f"  Install        : Run 'cse setup {name.lower()}'")
@@ -289,7 +255,7 @@ def command_backends(args: argparse.Namespace) -> int:
             print(f"  Status         : Error")
             print(f"  Reason         : {e}")
 
-        print("────────────────────────")
+        print("-" * 24)
 
     print()
     return 0
@@ -312,28 +278,17 @@ def command_setup(args: argparse.Namespace) -> int:
             print(f"  -> Downloading {filename}...")
             urllib.request.urlretrieve(url, filename)
         
-        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/kokoro-v0_19.onnx", "kokoro-v0_19.onnx")
-        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.bin", "voices.bin")
+        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx", "kokoro-v1.0.onnx")
+        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin", "voices-v1.0.bin")
         print("\nKokoro setup complete! Run 'cse backends' to verify.")
         return 0
 
     elif backend == "styletts2":
         print("Installing StyleTTS2 dependencies...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "styletts2"])
+        subprocess.run([sys.executable, "-m", "pip", "install", "styletts2", "numpy<2.5"])
         print("\nStyleTTS2 setup complete! Run 'cse backends' to verify.")
         return 0
 
-    elif backend == "fishspeech":
-        print("FishSpeech requires a complex environment and 5GB+ checkpoints.")
-        print("We will install the huggingface_hub CLI for you, but you must manually clone the repo.")
-        print("1. Install CLI:")
-        subprocess.run([sys.executable, "-m", "pip", "install", "huggingface_hub"])
-        print("\n2. Clone the repo (run this yourself):")
-        print("   git clone https://github.com/fishaudio/fish-speech.git /content/fish-speech")
-        print("\n3. Download checkpoints (run this yourself):")
-        print("   huggingface-cli download fishaudio/fish-speech-1.5 --local-dir /content/checkpoints/fish-speech-1.5")
-        return 0
-
     else:
-        print(f"Unknown backend '{backend}'. Supported: kokoro, styletts2, fishspeech")
+        print(f"Unknown backend '{backend}'. Supported: kokoro, styletts2")
         return 1

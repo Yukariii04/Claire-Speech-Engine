@@ -68,6 +68,9 @@ Tokenizer, Prosody, Emotion, Speech, Streaming, TTS, Phonemes, Models, Training,
 ### AD-002: Banner output via Rich Console
 Startup banner uses `rich.Console` (clean text, no timestamps). All other log output goes through `loguru` (timestamped, colorized, leveled). This satisfies both the PRD's expected banner format and the "no print()" rule.
 
+### AD-003: Removal of Fish Speech Backend
+During the transition to 1.0.3, Fish Speech was entirely removed from the production framework. Reason: Fish Speech v1.5 enforces heavy, strictly pinned dependencies (`torch<=2.4.1`, `torchaudio`, `pytorch-lightning`, etc.) which caused profound environment instability (e.g., `[WinError 127]` due to mismatched C++ extensions). This severely conflicted with lighter, more flexible backends like Kokoro and StyleTTS2. To preserve the "it just works" philosophy of CSE on Python 3.12+, Fish Speech was excised.
+
 ---
 
 
@@ -244,3 +247,14 @@ The project validates backend-agnostic architecture through backend capability r
 | API falls back gracefully | ✅     | `load_voice()` uses saved config |
 | `cse.py` imports fixed    | ✅     | Dropped root `cse.py` script     |
 
+## Verification Results (RELEASE-002 / v1.0.3)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Packaging                 | ✅     | Scaffold and assets in wheel   |
+| Backend self-sufficiency  | ✅     | Asset checks deferred to `speak()` |
+| Default voices            | ✅     | StyleTTS2 uses bundled `claire_neutral` |
+| Full Kokoro set           | ✅     | 54 voices, 9 languages verified |
+| Developer Toolkit         | ✅     | `cse example` & `cse backends` |
+| Fish Speech removal       | ✅     | Removed due to env conflicts   |
+| Environment stability     | ✅     | Python 3.12 verified           |
