@@ -48,6 +48,10 @@ def create_parser() -> argparse.ArgumentParser:
                                 help="Optional: fishspeech, styletts2, or kokoro")
     example_parser.add_argument("--force", action="store_true", help="Overwrite existing files")
 
+    # cse setup <backend>
+    setup_parser = subparsers.add_parser("setup", help="Automated setup and model download for a backend")
+    setup_parser.add_argument("backend_name", help="fishspeech, styletts2, or kokoro")
+
     # cse backends
     subparsers.add_parser("backends", help="Show installed backend status dashboard")
 
