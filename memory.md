@@ -87,7 +87,7 @@ During the transition to 1.0.4, Fish Speech was entirely removed from the produc
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-016 (Performance Context) |
+| **Current PRD** | PRD-017 (Reasoning Pipeline) |
 | **Phase**       | Complete |
 | **Blockers**    | None                |
 
@@ -258,3 +258,18 @@ The project validates backend-agnostic architecture through backend capability r
 | Developer Toolkit         | ✅     | `cse example` & `cse backends` |
 | Fish Speech removal       | ✅     | Removed due to env conflicts   |
 | Environment stability     | ✅     | Python 3.12+ verified           |
+
+## Verification Results (PRD-016)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Schema Immutability       | ✅     | `PerformanceContext` frozen dataclass |
+| Validation Rules          | ✅     | Rejects empty text             |
+| Optional State            | ✅     | Accepts `character_state`      |
+
+## Verification Results (PRD-017)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Sequential Execution      | ✅     | `ReasoningPipeline` tests pass |
+| Input Validation          | ✅     | Rejects invalid context        |

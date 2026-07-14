@@ -550,3 +550,12 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Enforced mandatory `text` and optional `character_state` with runtime check in `__post_init__`.
 - Added test file `tests/test_perf_context.py` to verify schema, immutability, and validation.
 - All tests passing. Zipped as `ClaireSpeechEngine-PRD016.zip`.
+
+## 2026-07-15 — PRD-017 Implementation (Reasoning Pipeline)
+
+- **PRD-017** implemented utilizing Ponytail rules (simplest path).
+- Created `ReasoningPipeline` orchestrator in `src/cse/performance/pipeline.py`.
+- Accepts `PerformanceContext` and executes an arbitrary sequence of functional stages.
+- Validates input is exactly a `PerformanceContext`.
+- Added `tests/test_perf_pipeline.py` testing sequential execution and validation.
+- All tests passing. Zipped as `ClaireSpeechEngine-PRD017.zip`.
