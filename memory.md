@@ -85,7 +85,7 @@ During the transition to 1.0.4, Fish Speech was entirely removed from the produc
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-020 (Meaning Pass) |
+| **Current PRD** | PRD-021 (Intent Pass) |
 | **Phase**       | Complete |
 | **Blockers**    | None                |
 
@@ -295,3 +295,11 @@ The project validates backend-agnostic architecture through backend capability r
 | Semantic Output           | ✅     | `MeaningResult` dataclass produced |
 | Isolation                 | ✅     | Character state ignored in semantics |
 | Deterministic             | ✅     | Raw text strictly wrapped      |
+
+## Verification Results (PRD-021)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| Isolation                 | ✅     | Rejects non-meaning states     |
+| Deterministic             | ✅     | Evaluates based on punctuation |
+| Flat Forwarding           | ✅     | Forwards fields for pipeline   |

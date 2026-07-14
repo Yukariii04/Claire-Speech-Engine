@@ -585,3 +585,12 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Implemented minimal deterministic meaning extraction by wrapping the raw string into a semantic payload.
 - Added `tests/test_perf_meaning.py` verifying valid/invalid states and immutability.
 - All tests passing. Zipped as `ClaireSpeechEngine-PRD020.zip`.
+
+## 2026-07-15 — PRD-021 Implementation (Intent Pass)
+
+- **PRD-021** implemented utilizing Ponytail rules (simplest path).
+- Created `IntentResult` frozen dataclass and `intent_pass` in `src/cse/performance/passes/intent.py`.
+- Developed a simplistic, deterministic heuristic based on punctuation to extract communicative intent (question/exclamation/statement).
+- Ensured fields (`text`, `character_state`, `semantics`) are mapped to the top level of `IntentResult` so it seamlessly duck-types with later pipeline stages and the final builder.
+- Added `tests/test_perf_intent.py` verifying heuristics, rejections, and immutability.
+- All tests passing. Zipped as `ClaireSpeechEngine-PRD021.zip`.
