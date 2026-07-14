@@ -576,3 +576,12 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Integrated input validation directly into the base class `process()` method to guarantee all derived translators strictly receive a valid `PerformanceRepresentation`.
 - Added `tests/test_perf_translator.py` testing successful processing and rejection of invalid inputs.
 - All tests passing. Zipped as `ClaireSpeechEngine-PRD019.zip`.
+
+## 2026-07-15 — PRD-020 Implementation (Meaning Pass)
+
+- **PRD-020** implemented utilizing Ponytail rules (simplest path).
+- Created `MeaningResult` frozen dataclass and `meaning_pass` in `src/cse/performance/passes/meaning.py`.
+- Strictly isolated semantic extraction: ignored `character_state` entirely as per requirements.
+- Implemented minimal deterministic meaning extraction by wrapping the raw string into a semantic payload.
+- Added `tests/test_perf_meaning.py` verifying valid/invalid states and immutability.
+- All tests passing. Zipped as `ClaireSpeechEngine-PRD020.zip`.
