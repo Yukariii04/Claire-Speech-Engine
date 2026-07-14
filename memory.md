@@ -87,8 +87,8 @@ During the transition to 1.0.4, Fish Speech was entirely removed from the produc
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | RELEASE-002         |
-| **Phase**       | §1-§5 complete, pre-publish |
+| **Current PRD** | PRD-016 (Performance Context) |
+| **Phase**       | Complete |
 | **Blockers**    | None                |
 
 ---
