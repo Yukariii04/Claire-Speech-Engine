@@ -6,6 +6,21 @@ from cse import SpeechEngine
 def main():
     engine = SpeechEngine()
     engine.load_backend("kokoro")
+    
+    # Configure backend model paths to look in 'models/' if it exists
+    from pathlib import Path
+    model_dir = Path("models").absolute()
+    if model_dir.exists():
+        backend = engine._runtime.get_backend()
+        from cse.backends.kokoro.config import KokoroConfig
+        backend._config = KokoroConfig(
+            model_path=model_dir / "kokoro" / "kokoro-v1.0.onnx",
+            voices_path=model_dir / "kokoro" / "voices-v1.0.bin",
+        )
+        backend.shutdown()
+        backend.initialize()
+    else:
+        print("Warning: 'models' directory not found. Assuming models are in current directory.")
 
     # Read saved voice preference, fall back to af_heart
     from cse.config.user_config import get_preference

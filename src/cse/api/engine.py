@@ -12,8 +12,6 @@ from cse.api.exceptions import (
     VoiceNotLoadedError,
 )
 from cse.api.lifecycle import EngineState
-from cse.language.cir.builder import build_cir
-from cse.performance.compiler import compile_performance
 from cse.runtime.voice.runtime import VoiceRuntime
 
 
@@ -101,9 +99,31 @@ class SpeechEngine:
             raise VoiceNotLoadedError("Cannot speak without loading a voice first.")
         
         try:
-            cir = build_cir(text)
-            timeline = compile_performance(cir)
-            return self._runtime.process(timeline)
+            from cse.performance.context import PerformanceContext
+            from cse.performance.integration import execute_end_to_end
+            
+            context = PerformanceContext(text=text)
+            
+            # execute_end_to_end handles the CPE pipeline then calls the translator
+            # But wait! If we do that, we bypass `self._runtime.process()`, which tracks state.
+            # Instead, we should run the reasoning pipeline to get the graph, 
+            # then pass the graph to `self._runtime.process()`.
+            
+            from cse.performance.passes.meaning import meaning_pass
+            from cse.performance.passes.intent import intent_pass
+            from cse.performance.passes.planning import planning_pass
+            from cse.performance.graph import build_performance_graph
+            from cse.performance.pipeline import ReasoningPipeline
+            
+            pipeline = ReasoningPipeline([
+                meaning_pass,
+                intent_pass,
+                planning_pass,
+                build_performance_graph,
+            ])
+            graph = pipeline.execute(context)
+            
+            return self._runtime.process(graph)
         except Exception as e:
             raise SpeechEngineError(f"Speech generation failed: {e}") from e
 

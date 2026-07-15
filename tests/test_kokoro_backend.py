@@ -15,7 +15,6 @@ import numpy as np
 import pytest
 
 from cse.backends.kokoro.config import KokoroConfig
-from cse.backends.kokoro.converter import timeline_to_text
 from cse.backends.kokoro.exceptions import (
     KokoroBackendError,
     KokoroInitializationError,
@@ -24,51 +23,26 @@ from cse.backends.kokoro.exceptions import (
 )
 from cse.backends.kokoro.loader import resolve_voice
 from cse.backends.kokoro.result import SpeechResult
-from cse.performance.compiler.events import EVENT_TOKEN, EVENT_PAUSE, PerformanceEvent
-from cse.performance.compiler.timeline import PerformanceTimeline, PerformanceMetadata
+from cse.performance.graph import PerformanceGraph
 
 
 # ─── Fixtures ────────────────────────────────────────────────────────────────
 
 @pytest.fixture
-def simple_timeline():
-    """A timeline with spoken text tokens."""
-    events = (
-        PerformanceEvent(
-            uuid=uuid.uuid4(),
-            timestamp_ms=0,
-            event_type=EVENT_TOKEN,
-            parameters={"token": "Hello"},
-        ),
-        PerformanceEvent(
-            uuid=uuid.uuid4(),
-            timestamp_ms=100,
-            event_type=EVENT_PAUSE,
-            parameters={"duration_ms": 200},
-        ),
-        PerformanceEvent(
-            uuid=uuid.uuid4(),
-            timestamp_ms=300,
-            event_type=EVENT_TOKEN,
-            parameters={"token": "world"},
-        ),
-    )
-    return PerformanceTimeline(
-        uuid=uuid.uuid4(),
-        version="1.0.0",
-        events=events,
-        metadata=PerformanceMetadata(),
+def simple_graph():
+    """A graph with spoken text."""
+    return PerformanceGraph(
+        text="Hello world",
+        character_state=None, semantics={}, intent={}, plan={}
     )
 
 
 @pytest.fixture
-def empty_timeline():
-    """A timeline with no spoken text."""
-    return PerformanceTimeline(
-        uuid=uuid.uuid4(),
-        version="1.0.0",
-        events=(),
-        metadata=PerformanceMetadata(),
+def empty_graph():
+    """A graph with no spoken text."""
+    return PerformanceGraph(
+        text="",
+        character_state=None, semantics={}, intent={}, plan={}
     )
 
 
@@ -97,16 +71,7 @@ class TestKokoroConfig:
         assert config.output_dir == "output"
 
 
-# ─── Converter Tests ──────────────────────────────────────────────────────────
 
-class TestConverter:
-    def test_extracts_only_tokens(self, simple_timeline):
-        text = timeline_to_text(simple_timeline)
-        assert text == "Hello world"
-
-    def test_empty_timeline(self, empty_timeline):
-        text = timeline_to_text(empty_timeline)
-        assert text == ""
 
 
 # ─── Loader Tests ─────────────────────────────────────────────────────────────
@@ -155,14 +120,14 @@ class TestKokoroBackendUnit:
             with pytest.raises(KokoroInitializationError):
                 backend.initialize()
 
-    def test_synthesize_without_init(self, simple_timeline):
+    def test_translate_without_init(self, simple_graph):
         from cse.backends.kokoro.backend import KokoroBackend
 
         backend = KokoroBackend()
         with pytest.raises(SpeechGenerationError, match="not initialized"):
-            backend.synthesize(simple_timeline)
+            backend.translate(simple_graph)
 
-    def test_synthesize_empty_text(self, empty_timeline):
+    def test_translate_empty_text(self, empty_graph):
         from cse.backends.kokoro.backend import KokoroBackend
 
         backend = KokoroBackend()
@@ -171,7 +136,7 @@ class TestKokoroBackendUnit:
         backend._voice = "af_heart"
 
         with pytest.raises(SpeechGenerationError, match="no spoken text"):
-            backend.synthesize(empty_timeline)
+            backend.translate(empty_graph)
 
     def test_shutdown(self):
         from cse.backends.kokoro.backend import KokoroBackend
@@ -201,21 +166,21 @@ class TestKokoroBackendUnit:
         assert caps.requires_gpu is False
         assert "en" in caps.supported_languages
 
-    def test_validate_timeline_empty(self, empty_timeline):
+    def test_validate_graph_empty(self, empty_graph):
         from cse.backends.kokoro.backend import KokoroBackend
         from cse.acoustic.backend.exceptions import BackendValidationError
 
         backend = KokoroBackend()
         with pytest.raises(BackendValidationError):
-            backend.validate_timeline(empty_timeline)
+            backend.validate_graph(empty_graph)
 
-    def test_validate_timeline_none(self):
+    def test_validate_graph_none(self):
         from cse.backends.kokoro.backend import KokoroBackend
 
         backend = KokoroBackend()
-        backend.validate_timeline(None)  # Should not raise
+        backend.validate_graph(None)  # Should not raise
 
-    def test_synthesize_mocked(self, simple_timeline, tmp_path):
+    def test_translate_mocked(self, simple_graph, tmp_path):
         """Full synthesis flow with mocked Kokoro."""
         from cse.backends.kokoro.backend import KokoroBackend
 
@@ -230,7 +195,7 @@ class TestKokoroBackendUnit:
         mock_kokoro.create.return_value = (fake_audio, 24000)
         backend._kokoro = mock_kokoro
 
-        result = backend.synthesize(simple_timeline)
+        result = backend.translate(simple_graph)
 
         assert result.success is True
         assert result.audio_path.exists()
@@ -255,7 +220,7 @@ kokoro_model = pytest.mark.skipif(
 
 @kokoro_model
 class TestKokoroBackendIntegration:
-    def test_full_lifecycle(self, simple_timeline, tmp_path):
+    def test_full_lifecycle(self, simple_graph, tmp_path):
         from cse.backends.kokoro.backend import KokoroBackend
 
         config = KokoroConfig(
@@ -274,7 +239,7 @@ class TestKokoroBackendIntegration:
         assert voice == "af_heart"
 
         # Synthesize
-        result = backend.synthesize(simple_timeline)
+        result = backend.translate(simple_graph)
         assert result.success is True
         assert result.audio_path.exists()
         assert result.duration_seconds > 0

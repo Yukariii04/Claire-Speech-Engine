@@ -18,7 +18,6 @@ import numpy as np
 from cse.acoustic.backend.capabilities import BackendCapabilities
 from cse.acoustic.backend.interface import AcousticBackend
 from cse.backends.kokoro.config import KokoroConfig
-from cse.backends.kokoro.converter import timeline_to_text
 from cse.backends.kokoro.exceptions import (
     KokoroInitializationError,
     SpeechGenerationError,
@@ -26,8 +25,7 @@ from cse.backends.kokoro.exceptions import (
 )
 from cse.backends.kokoro.loader import resolve_voice
 from cse.backends.kokoro.result import SpeechResult
-
-
+from cse.performance.graph import PerformanceGraph
 class KokoroBackend(AcousticBackend):
     """Concrete AcousticBackend implementation using Kokoro TTS (ONNX)."""
 
@@ -93,11 +91,11 @@ class KokoroBackend(AcousticBackend):
         self._voice = resolve_voice(voice_name, self._config.default_voice)
         return self._voice
 
-    def synthesize(self, timeline: Any) -> SpeechResult:
-        """Synthesize speech from a PerformanceTimeline.
+    def translate(self, graph: PerformanceGraph) -> SpeechResult:
+        """Translate a Performance Graph and synthesize speech.
 
         Args:
-            timeline: A PerformanceTimeline instance.
+            graph: A PerformanceGraph instance.
 
         Returns:
             A SpeechResult containing the path to the generated WAV file.
@@ -109,10 +107,9 @@ class KokoroBackend(AcousticBackend):
         if not self._voice:
             self._voice = self._config.default_voice
 
-        # PRD-008 §9: Convert timeline to plain text
-        text = timeline_to_text(timeline)
+        text = graph.text
         if not text.strip():
-            raise SpeechGenerationError("Timeline contains no spoken text.")
+            raise SpeechGenerationError("Graph contains no spoken text.")
 
         # Generate audio using kokoro-onnx
         try:
@@ -155,15 +152,14 @@ class KokoroBackend(AcousticBackend):
             metadata={"text": text},
         )
 
-    def validate_timeline(self, timeline: Any) -> None:
-        """Validate a timeline for the Kokoro backend."""
-        if timeline is None:
+    def validate_graph(self, graph: PerformanceGraph) -> None:
+        """Validate a Performance Graph for the Kokoro backend."""
+        if graph is None:
             return
-        text = timeline_to_text(timeline)
-        if not text.strip():
+        if not graph.text.strip():
             from cse.acoustic.backend.exceptions import BackendValidationError
 
-            raise BackendValidationError("Timeline contains no spoken text for Kokoro.")
+            raise BackendValidationError("Graph contains no spoken text for Kokoro.")
 
     def get_capabilities(self) -> BackendCapabilities:
         """Return Kokoro backend capabilities."""

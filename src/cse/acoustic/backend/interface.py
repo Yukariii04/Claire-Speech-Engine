@@ -6,9 +6,10 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from cse.acoustic.backend.capabilities import BackendCapabilities
+from cse.performance.translator import BaseTranslator
+from cse.performance.graph import PerformanceGraph
 
-
-class AcousticBackend(ABC):
+class AcousticBackend(BaseTranslator):
     """Abstract interface for all acoustic synthesis backends."""
 
     @abstractmethod
@@ -22,8 +23,8 @@ class AcousticBackend(ABC):
         pass
 
     @abstractmethod
-    def synthesize(self, timeline: Any) -> Any:
-        """Synthesize a performance timeline into audio."""
+    def translate(self, graph: PerformanceGraph) -> Any:
+        """Translate a Performance Graph into backend-specific instructions and synthesize audio."""
         pass
 
     @abstractmethod
@@ -32,8 +33,8 @@ class AcousticBackend(ABC):
         pass
 
     @abstractmethod
-    def validate_timeline(self, timeline: Any) -> None:
-        """Validate a timeline for this specific backend."""
+    def validate_graph(self, graph: PerformanceGraph) -> None:
+        """Validate a Performance Graph for this specific backend."""
         pass
 
     def list_voices(self) -> list[dict[str, str]]:

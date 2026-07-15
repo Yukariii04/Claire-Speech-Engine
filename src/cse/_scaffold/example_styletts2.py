@@ -4,6 +4,20 @@ from cse import SpeechEngine
 def main():
     engine = SpeechEngine()
     engine.load_backend("styletts2")
+    
+    # Configure backend model paths to look in 'models/' if it exists
+    from pathlib import Path
+    model_dir = Path("models").absolute()
+    if model_dir.exists():
+        backend = engine._runtime.get_backend()
+        from cse.backends.styletts2.config import StyleTTS2Config
+        backend._config = StyleTTS2Config(
+            model_dir=model_dir / "styletts2"
+        )
+        backend.shutdown()
+        backend.initialize()
+    else:
+        print("Warning: 'models' directory not found. Assuming models are in current directory.")
 
     # Read saved voice preference only if it was set for styletts2
     from cse.config.user_config import get_preference

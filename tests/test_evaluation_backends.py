@@ -6,7 +6,7 @@ Real inference is validated via COLAB-001.
 
 import os
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from cse.backends.styletts2.backend import StyleTTS2Backend
 from cse.backends.styletts2.exceptions import StyleTTS2InitializationError, SpeechGenerationError as STGenError
 
@@ -28,12 +28,12 @@ class TestStyleTTS2Backend:
         backend = StyleTTS2Backend()
         assert backend.load_voice("default") == "default"
 
-    def test_synthesize_without_init_raises(self):
+    def test_translate_without_init_raises(self):
         backend = StyleTTS2Backend()
         with pytest.raises(STGenError, match="not initialized"):
-            backend.synthesize("test")
+            backend.translate(MagicMock(text="test"))
 
-    def test_synthesize_passes_target_voice_path(self, tmp_path):
+    def test_translate_passes_target_voice_path(self, tmp_path):
         from unittest.mock import MagicMock
         import numpy as np
         
@@ -46,7 +46,7 @@ class TestStyleTTS2Backend:
         backend._tts.inference.return_value = np.zeros(24000, dtype=np.float32)
         
         # Test synthesis
-        res = backend.synthesize("hello world")
+        res = backend.translate(MagicMock(text="hello world"))
         
         # Verify the actual call
         backend._tts.inference.assert_called_once()

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from cse.performance.compiler.timeline import PerformanceTimeline
+from cse.performance.graph import PerformanceGraph
 from cse.acoustic.backend import AcousticBackend, DummyBackend
 from cse.acoustic.backend.exceptions import BackendNotFoundError
 from cse.runtime.voice.exceptions import BackendNotRegisteredError, InvalidRuntimeStateError
@@ -112,8 +112,8 @@ class VoiceRuntime:
             self._active_voice = None
             self._state = RuntimeState.READY
 
-    def process(self, timeline: PerformanceTimeline) -> object:
-        """Process a timeline and return synthesized audio."""
+    def process(self, graph: PerformanceGraph) -> object:
+        """Process a performance graph and return synthesized audio."""
         if self._state != RuntimeState.VOICE_LOADED:
             raise InvalidRuntimeStateError(f"Cannot process from {self._state}")
         
@@ -122,8 +122,8 @@ class VoiceRuntime:
 
         self._state = RuntimeState.PROCESSING
         try:
-            # For PRD-004, dummy backend will raise NotImplementedError
-            return self._backend.synthesize(timeline)
+            # Backend now implements BaseTranslator
+            return self._backend.process(graph)
         finally:
             self._state = RuntimeState.VOICE_LOADED
 

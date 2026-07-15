@@ -43,11 +43,11 @@ class BackendManager:
             self._active_backend.shutdown()
             self._initialized = False
 
-    def validate_before_synthesis(self, timeline: Any) -> None:
+    def validate_before_synthesis(self, graph: Any) -> None:
         """Validate state before synthesis."""
         validate_backend_state(
             backend_initialized=self._initialized,
             backend_active=self._active_backend is not None
         )
         if self._active_backend:
-            self._active_backend.validate_timeline(timeline)
+            self._active_backend.validate_graph(graph)

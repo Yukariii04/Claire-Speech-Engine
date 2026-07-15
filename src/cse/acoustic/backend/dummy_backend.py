@@ -5,6 +5,7 @@ from typing import Any
 
 from cse.acoustic.backend.capabilities import BackendCapabilities
 from cse.acoustic.backend.interface import AcousticBackend
+from cse.performance.graph import PerformanceGraph
 
 
 class DummyBackend(AcousticBackend):
@@ -16,7 +17,7 @@ class DummyBackend(AcousticBackend):
     def shutdown(self) -> None:
         pass
 
-    def synthesize(self, timeline: Any) -> Any:
+    def translate(self, graph: PerformanceGraph) -> Any:
         raise NotImplementedError("Dummy backend does not synthesize")
 
     def get_capabilities(self) -> BackendCapabilities:
@@ -33,5 +34,5 @@ class DummyBackend(AcousticBackend):
             backend_version="1.0.0",
         )
 
-    def validate_timeline(self, timeline: Any) -> None:
+    def validate_graph(self, graph: PerformanceGraph) -> None:
         pass
