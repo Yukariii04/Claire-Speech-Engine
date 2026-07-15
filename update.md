@@ -594,3 +594,12 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Ensured fields (`text`, `character_state`, `semantics`) are mapped to the top level of `IntentResult` so it seamlessly duck-types with later pipeline stages and the final builder.
 - Added `tests/test_perf_intent.py` verifying heuristics, rejections, and immutability.
 - All tests passing. Zipped as `ClaireSpeechEngine-PRD021.zip`.
+
+## 2026-07-15 — PRD-022 Implementation (Performance Planning Pass)
+
+- **PRD-022** implemented utilizing Ponytail rules (simplest path).
+- Created `PerformancePlan` frozen dataclass and `planning_pass` in `src/cse/performance/passes/planning.py`.
+- Deterministic intent-to-delivery mapping: questions get rising pitch, exclamations get fast pace + peaked pitch, statements get flat delivery.
+- Forwards all upstream fields (`text`, `character_state`, `semantics`, `intent`) plus new `plan` dict.
+- Added `tests/test_perf_planning.py` with 6 tests verifying all intent types, immutability, field preservation, and input rejection.
+- All tests passing (6/6). Zipped as `ClaireSpeechEngine-PRD022.zip`.
