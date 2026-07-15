@@ -603,3 +603,11 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Forwards all upstream fields (`text`, `character_state`, `semantics`, `intent`) plus new `plan` dict.
 - Added `tests/test_perf_planning.py` with 6 tests verifying all intent types, immutability, field preservation, and input rejection.
 - All tests passing (6/6). Zipped as `ClaireSpeechEngine-PRD022.zip`.
+
+## 2026-07-15 — PRD-023 Implementation (Performance Graph Builder)
+
+- **PRD-023** implemented utilizing Ponytail rules (simplest path).
+- Created `PerformanceGraph` frozen dataclass and `build_performance_graph()` in `src/cse/performance/graph.py`.
+- Seals all reasoning outputs (`text`, `character_state`, `semantics`, `intent`, `plan`) into the canonical backend-independent representation consumed by translators.
+- Added `tests/test_perf_graph.py` with 5 tests verifying construction, field preservation, immutability, input rejection, and plan non-modification.
+- All tests passing (5/5). Zipped as `ClaireSpeechEngine-PRD023.zip`.
