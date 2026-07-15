@@ -83,7 +83,7 @@ During the transition to 1.0.4, Fish Speech was entirely removed from the produc
 
 | Key             | Value               |
 |-----------------|---------------------|
-| **Current PRD** | PRD-024 (Backend Translation Contract) |
+| **Current PRD** | PRD-025 (End-to-End Pipeline Integration) |
 | **Phase**       | Complete |
 | **Blockers**    | None                |
 
@@ -118,6 +118,16 @@ During the transition to 1.0.4, Fish Speech was entirely removed from the produc
 | Preserves graph           | ✅     | Original graph unmutated       |
 | Backend output            | ✅     | Contract expects backend-specific return |
 | Backend-independent       | ✅     | Interface has no backend logic |
+
+## Verification Results (PRD-025)
+
+| Criterion                 | Status | Detail                         |
+|---------------------------|--------|--------------------------------|
+| End-to-end execution      | ✅     | Context to Translator succeeds |
+| Stage ordering            | ✅     | All stages run in correct sequence |
+| Graph to Translator       | ✅     | Final graph successfully translated |
+| Immutable objects         | ✅     | Original inputs preserved intact |
+| Phase 1 Complete          | ✅     | The full pipeline is now integrated |
 
 ---
 
