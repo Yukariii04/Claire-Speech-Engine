@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import Any
-from cse.performance.representation import PerformanceRepresentation
+from cse.performance.graph import PerformanceGraph
 
 class BaseTranslator(ABC):
-    def process(self, representation: Any) -> Any:
-        if not isinstance(representation, PerformanceRepresentation):
-            raise TypeError("Translator requires a valid PerformanceRepresentation")
-        return self.translate(representation)
+    def process(self, graph: Any) -> Any:
+        """Process the canonical Performance Graph."""
+        if not isinstance(graph, PerformanceGraph):
+            raise TypeError("Translator requires a valid PerformanceGraph")
+        return self.translate(graph)
         
     @abstractmethod
-    def translate(self, representation: PerformanceRepresentation) -> Any:
+    def translate(self, graph: PerformanceGraph) -> Any:
+        """Produce backend-specific translation output from the Performance Graph."""
         pass
