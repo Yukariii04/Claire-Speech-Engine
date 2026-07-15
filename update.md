@@ -629,3 +629,14 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Completes Phase 1 of CPE by fully integrating all previously built reasoning logic components.
 - Added `tests/test_perf_integration.py` with 3 tests verifying end-to-end operation, type safety, and deterministic flow.
 - All tests passing (3/3). Zipped as `ClaireSpeechEngine-PRD025.zip`.
+
+## 2026-07-15 — CSE + CPE End-to-End Integration
+
+- Successfully integrated the Claire Performance Engine (CPE) pipeline directly into `SpeechEngine.speak`.
+- Refactored `SpeechEngine.speak` to orchestrate Text → PerformanceContext → ReasoningPipeline → PerformanceGraph → Runtime → BaseTranslator.
+- All backend adapters (`DummyBackend`, `KokoroBackend`, `StyleTTS2Backend`) updated to inherit `BaseTranslator` and process `PerformanceGraph` instead of legacy timelines.
+- Removed legacy `PerformanceTimeline` from the entire codebase.
+- Repaired the entire test suite (310 tests pass) to align with the new `PerformanceGraph` schema.
+- Updated `examples/` and CLI scaffold templates to robustly locate `models/` directory for testing the built `.whl` in external environments.
+- Built wheel (`.whl`) for v1.0.4 with the integrated pipeline.
+- Regenerated `ClaireSpeechEngine-PRD025.zip` to include all these integration fixes.

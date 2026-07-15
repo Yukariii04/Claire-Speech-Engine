@@ -8,7 +8,7 @@ from typing import Any
 from cse.acoustic.backend.capabilities import BackendCapabilities
 from cse.acoustic.backend.interface import AcousticBackend
 from cse.backends.kokoro.result import SpeechResult
-from cse.backends.kokoro.converter import timeline_to_text
+from cse.performance.graph import PerformanceGraph
 from cse.backends.styletts2.capabilities import get_styletts2_capabilities
 from cse.backends.styletts2.exceptions import StyleTTS2InitializationError, SpeechGenerationError
 
@@ -79,11 +79,11 @@ class StyleTTS2Backend(AcousticBackend):
             self._ref_path = _BUNDLED_ASSET
         return self._voice
 
-    def synthesize(self, timeline: Any) -> SpeechResult:
+    def translate(self, graph: PerformanceGraph) -> SpeechResult:
         if not self._initialized:
             raise SpeechGenerationError("Backend not initialized.")
 
-        text = timeline_to_text(timeline) if hasattr(timeline, "events") else str(timeline)
+        text = graph.text
         if not text.strip():
             raise SpeechGenerationError("No text to synthesize.")
 
@@ -114,7 +114,7 @@ class StyleTTS2Backend(AcousticBackend):
         except Exception as e:
             raise SpeechGenerationError(f"StyleTTS2 inference failed: {e}") from e
 
-    def validate_timeline(self, timeline: Any) -> None:
+    def validate_graph(self, graph: PerformanceGraph) -> None:
         pass
 
     def get_capabilities(self) -> BackendCapabilities:

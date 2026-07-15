@@ -13,7 +13,7 @@ class TestDummyBackend:
         backend.initialize()
         
         with pytest.raises(NotImplementedError, match="Dummy backend does not synthesize"):
-            backend.synthesize(None)
+            backend.translate(None)
             
         backend.shutdown()
 
@@ -29,7 +29,7 @@ class TestDummyBackend:
         assert "en" in caps.supported_languages
         assert caps.backend_version == "1.0.0"
 
-    def test_validate_timeline(self):
+    def test_validate_graph(self):
         backend = DummyBackend()
         # dummy backend doesn't raise anything
-        backend.validate_timeline(None)
+        backend.validate_graph(None)

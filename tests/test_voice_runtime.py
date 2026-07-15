@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from cse.performance.compiler.timeline import PerformanceTimeline, PerformanceMetadata
+from cse.performance.graph import PerformanceGraph
 from cse.runtime.voice.exceptions import InvalidRuntimeStateError, VoiceNotFoundError
 from cse.runtime.voice.runtime import VoiceRuntime
 from cse.voice import register_voice_package, VoicePackage, VoiceMetadata
@@ -83,11 +83,8 @@ class TestVoiceRuntime:
             
         runtime.load_voice("claire")
         
-        tl = PerformanceTimeline(
-            uuid=uuid.uuid4(),
-            version="1.0.0",
-            events=(),
-            metadata=PerformanceMetadata()
+        tl = PerformanceGraph(
+            text="test", character_state=None, semantics={}, intent={}, plan={}
         )
         
         with pytest.raises(NotImplementedError, match="Dummy backend does not synthesize"):
@@ -97,11 +94,8 @@ class TestVoiceRuntime:
         runtime = VoiceRuntime()
         runtime.initialize()
         
-        tl = PerformanceTimeline(
-            uuid=uuid.uuid4(),
-            version="1.0.0",
-            events=(),
-            metadata=PerformanceMetadata()
+        tl = PerformanceGraph(
+            text="test", character_state=None, semantics={}, intent={}, plan={}
         )
         
         with pytest.raises(InvalidRuntimeStateError):
