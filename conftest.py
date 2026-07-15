@@ -1,4 +1,4 @@
-"""Root conftest — ensure the cse *package* is found, not the cse.py script."""
+"""Root conftest — ensure the cse *package* is found, not the claire_cli.py script."""
 
 import sys
 from pathlib import Path
@@ -15,7 +15,7 @@ sys.path = [_src] + [
 ]
 
 # Also forcibly place the correct package in sys.modules
-# so pytest's assertion rewriter finds it, not cse.py
+# so pytest's assertion rewriter finds it, not claire_cli.py
 import importlib.util
 
 _pkg_init = str(Path(_src) / "cse" / "__init__.py")
