@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Documented `numpy` version conflicts between Kokoro and StyleTTS2 backends.
+- Added notes regarding the future transition to the Claire Acoustic Model (CAM) and the temporary nature of third-party backends.
+
 ## [1.0.4] - 2026-07-13
 
 ### Fixed
@@ -49,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Shifted from single-backend implementation to agnostic adapter pattern.
-- Separated Claire Performance Engine (CPE) and Claire Speech Model (CSM) into future distinct workstreams.
+- Separated Claire Performance Engine (CPE) and Claire Acoustic Model (CAM) into future distinct workstreams.
 
 ### Fixed
 - Pre-installed dependency conflicts in Colab (NLTK punkt dataset split, PyTorch 2.6+ `weights_only` defaults).

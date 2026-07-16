@@ -12,6 +12,12 @@ This ensures that the engine can drive any compatible TTS model without requirin
 | `kokoro` | Active | Development backend. Requires `kokoro-onnx`. |
 | `styletts2` | Active | Fast evaluation backend. |
 
+> [!WARNING]
+> **Numpy Conflict:** Running setup for both `kokoro` and `styletts2` consecutively and then trying to switch between them will not work due to a `numpy` version conflict. You must run the setup for the backend you intend to use right before using it.
+
+> [!NOTE]
+> **Future Development:** Third-party backends (like `kokoro` and `styletts2`) are currently supported because CSE's own acoustic model (Claire Acoustic Model) is under development. Since these external backends differ in design, they cannot fully adopt the Claire Performance Engine. After the Claire acoustic model is released, support for these backends will continue as long as they don't conflict with CSE's core architecture.
+
 ## Backend Switching
 
 Switching backends is done seamlessly via the public API:

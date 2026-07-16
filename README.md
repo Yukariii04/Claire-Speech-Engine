@@ -25,6 +25,12 @@ Currently, CSE officially supports the following backends on **Python 3.12+**:
 * **Kokoro**
 * **StyleTTS2**
 
+> [!WARNING]
+> **Important note on multiple backends:** Running both backends setup first, then using both one by one won't work because of a `numpy` version conflict. Run the setup for the backend you want to use first. If you want to use the second backend later, run its setup just before using it.
+
+> [!NOTE]
+> **Future Development:** These backends are currently available to use because CSE's own acoustic model is under development. Because the development of these backends (Kokoro and StyleTTS2) is external, they cannot fully adopt the Claire Performance Engine. After the Claire acoustic model becomes available, support for these other backends will still be maintained as long as they do not conflict with CSE's architecture.
+
 Use the built-in setup tools to automatically download models and install all required ML dependencies for your chosen backend:
 ```bash
 # Install dependencies and download models for Kokoro
@@ -82,7 +88,7 @@ The Claire Speech Engine (CSE) is currently at **v1.0.4**. The core framework is
 
 Future development will transition to:
 1. **CPE (Claire Performance Engine)**: Prosody, emotion, and dialogue planning.
-2. **CSM (Claire Speech Model)**: Core acoustic ML model training.
+2. **CAM (Claire Acoustic Model)**: Core acoustic ML model training.
 
 ## License
 
