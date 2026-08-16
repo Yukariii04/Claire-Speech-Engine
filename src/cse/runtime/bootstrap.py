@@ -17,6 +17,16 @@ _console = Console()
 _runtime_ready = False
 
 
+def _get_version() -> str:
+    """Retrieve the authoritative package version."""
+    try:
+        from importlib.metadata import version
+        return version("claire-speech-engine")
+    except Exception:
+        from cse import __version__
+        return __version__
+
+
 def bootstrap() -> None:
     """Boot the Claire Speech Engine.
 
@@ -38,7 +48,7 @@ def bootstrap() -> None:
     _set_config(config)
 
     engine_name: str = config.get("engine.name", "Claire Speech Engine")
-    engine_version: str = config.get("engine.version", "0.1.0")
+    engine_version: str = config.get("engine.version", _get_version())
 
     # 2 — Logger
     debug = args.debug or config.get("runtime.debug", False)
@@ -74,7 +84,7 @@ def _parse_cli() -> argparse.Namespace:
     parser.add_argument(
         "--version",
         action="version",
-        version="Claire Speech Engine 0.1.0",
+        version=f"Claire Speech Engine {_get_version()}",
     )
     parser.add_argument(
         "--debug",

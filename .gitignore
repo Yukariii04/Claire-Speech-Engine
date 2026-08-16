@@ -34,7 +34,6 @@ models/**/*.bin
 models/**/*.onnx
 models/**/*.pt
 temp/
-/kokoro/
 
 # Testing
 .pytest_cache/

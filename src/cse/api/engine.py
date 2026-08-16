@@ -47,7 +47,7 @@ class SpeechEngine:
         self._check_state()
 
         if voice_id is None:
-            # ponytail: check user config, then backend default
+            # Check user config, then backend default
             from cse.config.user_config import get_preference
             voice_id = get_preference("voice")
 
@@ -92,7 +92,7 @@ class SpeechEngine:
     def speak(self, text: str) -> Any:
         """Generate speech from text.
         
-        Orchestrates: Text -> CIR -> Timeline -> Runtime -> Backend -> Result.
+        Orchestrates: Text -> PerformanceContext -> ReasoningPipeline -> PerformanceGraph -> Runtime -> Backend -> Result.
         """
         self._check_state()
         if not self._voice_loaded:
@@ -100,20 +100,13 @@ class SpeechEngine:
         
         try:
             from cse.performance.context import PerformanceContext
-            from cse.performance.integration import execute_end_to_end
-            
-            context = PerformanceContext(text=text)
-            
-            # execute_end_to_end handles the CPE pipeline then calls the translator
-            # But wait! If we do that, we bypass `self._runtime.process()`, which tracks state.
-            # Instead, we should run the reasoning pipeline to get the graph, 
-            # then pass the graph to `self._runtime.process()`.
-            
             from cse.performance.passes.meaning import meaning_pass
             from cse.performance.passes.intent import intent_pass
             from cse.performance.passes.planning import planning_pass
             from cse.performance.graph import build_performance_graph
             from cse.performance.pipeline import ReasoningPipeline
+            
+            context = PerformanceContext(text=text)
             
             pipeline = ReasoningPipeline([
                 meaning_pass,
@@ -130,12 +123,11 @@ class SpeechEngine:
     def reload_config(self) -> None:
         """Reload the engine configuration."""
         self._check_state()
-        # Minimal implementation for PRD-009
-        pass
 
-    def get_version(self) -> str:
-        """Return the engine version."""
-        return "1.0.4"
+    @staticmethod
+    def get_version() -> str:
+        """Return the Claire Speech Engine version string."""
+        return "1.0.5"
 
     def shutdown(self) -> None:
         """Safely shutdown the engine and release resources. Idempotent."""

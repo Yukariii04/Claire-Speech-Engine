@@ -1,1 +1,0 @@
-"""StyleTTS2 Backend."""

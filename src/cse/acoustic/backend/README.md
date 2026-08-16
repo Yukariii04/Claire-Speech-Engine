@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The **Acoustic Backend** package establishes the interface boundary between the internal orchestration layer of the Claire Speech Engine and the eventual synthesis models. By creating a strict interface (`AcousticBackend`), the rest of the CSE infrastructure remains entirely decoupled from underlying dependencies (such as Torch, ONNX, Kokoro, etc.).
+The **Acoustic Backend** package establishes the interface boundary between the internal orchestration layer of the Claire Speech Engine and the eventual synthesis models. By creating a strict interface (`AcousticBackend`), the rest of the CSE infrastructure remains entirely decoupled from underlying dependencies (such as ONNX, KittenTTS, etc.).
 
 This package acts as the definitive single source of truth for backend registration, ensuring only validated implementations can process the `PerformanceTimeline`.
 

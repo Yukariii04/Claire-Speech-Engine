@@ -68,7 +68,7 @@ class TestVoiceRuntime:
         runtime = VoiceRuntime()
         runtime.initialize()
         # PRD-015: use a backend with a voice list so validation rejects unknowns
-        runtime.load_backend("kokoro")
+        runtime.load_backend("kittentts")
         
         with pytest.raises(VoiceNotFoundError):
             runtime.load_voice("unknown_voice_id_never_registered")

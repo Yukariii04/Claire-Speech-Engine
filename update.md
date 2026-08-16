@@ -640,3 +640,161 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
 - Updated `examples/` and CLI scaffold templates to robustly locate `models/` directory for testing the built `.whl` in external environments.
 - Built wheel (`.whl`) for v1.0.4 with the integrated pipeline.
 - Regenerated `ClaireSpeechEngine-PRD025.zip` to include all these integration fixes.
+
+## 2026-08-16 — Pre-Phase 3 Targeted CSE/CPE Cleanup
+
+- **Legacy Performance Representation Removed**:
+  - Deleted `src/cse/performance/representation.py` and `src/cse/performance/builder.py`.
+  - Deleted `tests/test_perf_representation.py` (exclusive unit test for obsolete representation).
+  - Canonical active pipeline reaffirmed: `PerformanceContext` → `MeaningResult` → `IntentResult` → `PerformancePlan` → `PerformanceGraph`.
+- **Runtime Version Consistency**:
+  - Refactored `src/cse/runtime/bootstrap.py` to dynamically resolve version from installed package metadata or `cse.__version__` instead of hardcoded `0.1.0`.
+  - Synchronized `configs/default.yaml` and `tests/test_bootstrap.py` with the authoritative version `1.0.4`.
+- **Terminology & Pipeline Modernization**:
+  - Updated `src/cse/performance/integration.py` docstring from "Phase 1 pipeline" to "Phase 2.5 CPE pipeline".
+  - Updated `src/cse/performance/__init__.py` docstring to accurately reflect the canonical `PerformanceGraph`-based architecture.
+  - Updated `src/cse/api/README.md` and `src/cse/api/engine.py` pipeline flow descriptions (`Text -> PerformanceContext -> ReasoningPipeline -> PerformanceGraph -> Runtime -> Backend -> Result`).
+- **Engine Residue & Comments Cleaned**:
+  - Cleaned `SpeechEngine.speak()` in `src/cse/api/engine.py`, removing development commentary and unused imports.
+  - Retained `SpeechEngine.reload_config()` cleanly satisfying the PRD-009 public API contract with state validation.
+  - Removed development-history `ponytail:` comments across active `src/cse/` codebase while strictly preserving logic.
+- **RFD Formatting Fix**:
+  - Removed stray markdown code fence near the header in `docs/RFDs/CAM-RFD-001.md`.
+- **Validation**:
+  - Full test suite passing (308/308 tests green).
+
+## 2026-08-16 — Complete Acoustic Backend Migration to KittenTTS (v1.1.0)
+
+- **Old Backends Excised**:
+  - Completely deleted `src/cse/backends/kokoro/` and `src/cse/backends/styletts2/` implementations, assets, exceptions, configs, and loaders.
+  - Deleted `models/kokoro/` model weights.
+  - Deleted old backend test suites: `tests/test_kokoro_backend.py`, `tests/test_evaluation_backends.py`, and `benchmarks/test_kokoro_backend.py`.
+  - Deleted old examples: `src/cse/_scaffold/example_kokoro.py`, `src/cse/_scaffold/example_styletts2.py`, and `examples/test_both_backends.py`.
+- **KittenTTS Backend Added**:
+  - Created `src/cse/backends/kittentts/` containing `backend.py`, `config.py`, `exceptions.py`, `result.py`, and `README.md`.
+  - Implemented `KittenTTSBackend` implementing `AcousticBackend` and `BaseTranslator` with deferred asset loading (zero model loading during `initialize()`, loaded on first synthesis).
+  - Implemented PerformanceGraph mapping: text → Kitten text input, voice → Kitten voice, pace → Kitten speed, with logging of unsupported performance fields.
+  - Supported 8 native KittenTTS voices: `expr-voice-2-f`, `expr-voice-2-m`, `expr-voice-3-f`, `expr-voice-3-m`, `expr-voice-4-f`, `expr-voice-4-m`, `expr-voice-5-f`, `expr-voice-5-m`.
+- **PyTorch Excised**:
+  - Removed `torch` and `torchaudio` from `pyproject.toml` and `requirements.txt`.
+  - CSE now runs on a completely lightweight, CPU-optimized stack (`kittentts`, `onnxruntime`, `numpy`, `sounddevice`, `soundfile`, `pyyaml`, `rich`, `loguru`).
+- **CLI & Scaffolding Updated**:
+  - Updated `cse voices`, `cse voice`, `cse example`, `cse setup`, and `cse backends` to work exclusively with KittenTTS.
+  - Created `src/cse/_scaffold/example_kittentts.py` and updated `src/cse/_scaffold/README.md`.
+  - Updated `examples/basic.py`, `examples/generate_speech.py`, and `evaluation/compare.py`.
+- **Test Suite Modernized**:
+  - Added `tests/test_kittentts_backend.py` with comprehensive unit and real-synthesis integration tests.
+  - Synchronized `tests/test_voice_discovery.py`, `tests/test_cli.py`, `tests/test_backend_validation.py`, `tests/test_api_engine.py`, `tests/test_bootstrap.py`, `tests/test_packaging.py`, and `tests/test_voice_runtime.py`.
+- **Package Version Bump**:
+  - Bumped package version to `1.1.0`.
+- **Validation**:
+  - 300/300 tests passing green.
+
+## 2026-08-16 — Cleanup 1: KittenTTS Backend Fix & Stabilization (Target: v0.8.1)
+
+- **Target KittenTTS 0.8.1 Pinned**:
+  - Explicitly pinned target KittenTTS 0.8.1 release wheel (`https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl`) in `pyproject.toml` and `requirements.txt`.
+- **API & Voice Alias Support**:
+  - Verified and integrated KittenTTS 0.8.1 API (`KittenTTS(model_name="KittenML/kitten-tts-nano-0.8")`).
+  - Added support for all public voice alias names (`Bella`, `Jasper`, `Luna`, `Bruno`, `Rosie`, `Hugo`, `Kiki`, `Leo`) alongside internal IDs (`expr-voice-2-f` through `expr-voice-5-m`).
+- **Dynamic Version Reporting**:
+  - Updated `KittenTTSBackend.get_capabilities()` to dynamically resolve installed package version via `importlib.metadata`.
+- **Explicit eSpeak Error Handling**:
+  - Replaced silent `except Exception: pass` in eSpeak configuration with explicit logging (`logger.debug`, `logger.warning`).
+- **Deferred Model Loading Preserved**:
+  - Model initialization occurs strictly upon first synthesis invocation (`translate()`).
+- **CLI Windows Compatibility**:
+  - Replaced non-ASCII checkmark character in CLI output with standard ASCII strings to prevent cp1252 `UnicodeEncodeError` on Windows consoles.
+- **Validation**:
+  - Full test suite passing (303/303 tests green).
+  - Multi-voice end-to-end audio synthesis verified (Bella and Bruno).
+
+## 2026-08-16 — Cleanup 2: CLI Model Management & Discovery Cleanup
+
+- **Top-Level `cse voices` Removed**:
+  - Removed obsolete top-level discovery command `cse voices` across `src/cse/cli/parser.py`, `src/cse/cli/commands.py`, `src/cse/cli/main.py`, and documentation.
+  - Command invocations of `cse voices` are now strictly rejected as invalid subcommands by the CLI parser.
+- **Top-Level `cse models` Added**:
+  - Added `cse models` command to display all supported KittenTTS models (`kitten-tts-nano-0.8`, `kitten-tts-micro-0.8`, `kitten-tts-mini-0.8`, `kitten-tts-nano-0.1`) with size, parameter count, and active status indicator.
+- **Model Selection Commands Added**:
+  - Implemented `cse model` (interactive selection), `cse model current`, `cse model set <model_id>`, and `cse model reset`.
+  - Persisted model selection in user configuration and resolved model dynamically on synthesis.
+- **Voice Selection Preserved**:
+  - Maintained voice management CLI under `cse voice` (`current`, `set`, `reset`, interactive mode) with support for all 8 KittenTTS voices and public aliases.
+- **Backend Model Integration**:
+  - Added `list_models()`, `validate_model()`, and `resolve_model_repo_id()` helper functions to `src/cse/backends/kittentts/backend.py`.
+  - Updated `KittenTTSBackend._ensure_model()` to honor the user's configured model selection during synthesis.
+- **Documentation & Tests Modernized**:
+  - Updated `README.md`, `src/cse/cli/README.md`, `src/cse/_scaffold/README.md`, and `src/cse/runtime/voice/runtime.py`.
+  - Updated `tests/test_cli.py` and `tests/test_kittentts_backend.py` with model testing and verification of `cse voices` rejection.
+- **Validation**:
+  - Full test suite passing (314/314 tests green).
+  - End-to-end model switching synthesis verified across multiple models (`kitten-tts-nano-0.8` and `kitten-tts-micro-0.8`).
+
+## 2026-08-16 — Cleanup 3: Python 3.13 Upgrade, Release v1.0.5, & CLI Streamlining
+
+- **Version Synchronized to `v1.0.5`**:
+  - Aligned package version to `1.0.5` following the previous `1.0.4` PyPI release across `pyproject.toml`, `src/cse/__init__.py`, `src/cse/api/engine.py`, `configs/default.yaml`, and all test suites.
+- **Python 3.13 Target**:
+  - Configured project dependencies and documentation targeting Python 3.13+.
+- **Top-Level `cse backends` Removed**:
+  - Excised obsolete multi-backend discovery command `cse backends` from `src/cse/cli/parser.py`, `src/cse/cli/commands.py`, and `src/cse/cli/main.py`.
+- **Direct Voice Selection**:
+  - Removed redundant backend prompt in `cse voice`, allowing users to select KittenTTS voices directly in 1 step.
+  - Simplified `cse voice set` so `cse voice set Bella` works directly while preserving legacy multi-arg compatibility (`cse voice set kittentts Bella`).
+- **Automated Model Pre-downloading in `cse setup`**:
+  - Enhanced `cse setup` to pre-download all 4 supported KittenTTS models (`nano-0.8`, `micro-0.8`, `mini-0.8`, `nano-0.1`) directly via `hf_hub_download` without symlink permission errors on Windows.
+- **Dead Code Cleanup**:
+  - Excised all unused imports, obsolete helpers, and stale backend checks.
+## 2026-08-16 — Cleanup 4: Benchmark Suite Restoration, Docs & Dependency Hardening (v1.0.5)
+
+- **KittenTTS Install Flow Streamlined**:
+  - Pointed `KittenTTSInitializationError` to `cse setup`.
+  - Pinned `command_setup()` installation directly to the 0.8.1 wheel URL (`https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl`).
+- **Benchmark Suite Restored & Validated**:
+  - Restored all benchmark test suites and created `benchmarks/test_kittentts_backend.py`.
+  - Confirmed all PRD-012 performance benchmarks (bootstrap <300ms, import <50ms, idle memory <100MB) pass.
+  - Excised `.benchmarks/.gitkeep` artifact.
+- **Prose Docs Deep Cleaned**:
+  - Excised old Kokoro/StyleTTS2 mentions from `ARCHITECTURE.md`, `PVD-001.md`, `lexicon.md`, `constitution.md`, and deleted `/kokoro/` rule from `.gitignore`.
+- **Direct Dependencies Hardened**:
+  - Declared `phonemizer` and `huggingface_hub` as explicit direct dependencies in `pyproject.toml` and `requirements.txt`.
+- **Validation**:
+  - Full test and benchmark suite passing (345/345 passed: 317 tests + 28 benchmarks).
+
+## 2026-08-16 — Cleanup 5: Final CLI, Documentation & Legacy Cleanup Pass (v1.0.5)
+
+- **Removed Legacy KittenTTS 0.1 Model**:
+  - Excised `kitten-tts-nano-0.1` from `src/cse/backends/kittentts/backend.py` model registry.
+  - Active models strictly limited to KittenTTS 0.8.1 models (`kitten-tts-nano-0.8`, `kitten-tts-micro-0.8`, `kitten-tts-mini-0.8`).
+- **Updated KittenTTS Backend Documentation**:
+  - Updated `src/cse/backends/kittentts/README.md` to document the KittenTTS 0.8.1 integration, supported models table, and voice aliases.
+- **Excised Legacy Voice Command Multi-Argument Syntax**:
+  - Cleaned `src/cse/cli/parser.py` and `src/cse/cli/commands.py` to only accept single-argument syntax (`cse voice set <voice>`).
+- **Cleaned Legacy Tests**:
+  - Removed `test_command_voice_set_legacy_backend_arg` and `test_parser_voice_set_with_legacy_backend`.
+  - Added thorough single-argument CLI tests for alias and ID voice setting, reset, current, and invalid voice handling.
+- **Validation**:
+  - Full test and benchmark suite passing (**357/357 passed**: 329 tests + 28 benchmarks).
+  - Clean isolated editable install (`pip install -e .`) and end-to-end synthesis across multiple models (`nano-0.8`, `micro-0.8`) and voices verified 100%.
+
+## 2026-08-16 — Final Audit Fixes & Documentation Synchronization (v1.0.5)
+
+- **Backend Capabilities Corrected**:
+  - Updated `KittenTTSBackend.get_capabilities()` with `supports_batch=False` and `supports_multispeaker=False`.
+- **`cse setup` Error Handling & Exit Codes**:
+  - Validated subprocess return code for pip installs and added explicit error reporting/exit codes when model pre-downloads fail.
+- **Model Download Error Tracking**:
+  - Updated `download_all_models()` to track and report failed models without stopping early.
+- **Removed Positional Backend Arg from `cse setup`**:
+  - `cse setup --help` simplified to `cse setup [-h]`.
+- **Documentation & CPE Status Synchronized**:
+  - Updated `README.md` and `docs/PVDs/PVD-001.md` to reflect the operational state of CPE v1 (`PerformanceGraph` reasoning passes) and Python `3.10 – 3.12` support bounds required by `misaki`.
+  - Updated `CHANGELOG.md` 1.0.5 entry.
+- **Wheel & Archive Built**:
+  - Clean wheel generated in `dist/` and archive updated as `ClaireSpeechEngine-Cleanup.zip`.
+
+
+
+
+

@@ -10,11 +10,9 @@ from cse.runtime.voice.state import RuntimeState
 from cse.voice import get_voice_package, VoicePackage, VoicePackageNotFoundError
 
 
-# ponytail: map of known backend IDs, no registry class needed
 _BACKEND_MAP = {
     "dummy": "cse.acoustic.backend.dummy_backend.DummyBackend",
-    "kokoro": "cse.backends.kokoro.backend.KokoroBackend",
-    "styletts2": "cse.backends.styletts2.backend.StyleTTS2Backend",
+    "kittentts": "cse.backends.kittentts.backend.KittenTTSBackend",
 }
 
 
@@ -49,12 +47,9 @@ class VoiceRuntime:
         if backend_id == "dummy":
             from cse.acoustic.backend.dummy_backend import DummyBackend
             backend = DummyBackend()
-        elif backend_id == "kokoro":
-            from cse.backends.kokoro.backend import KokoroBackend
-            backend = KokoroBackend()
-        elif backend_id == "styletts2":
-            from cse.backends.styletts2.backend import StyleTTS2Backend
-            backend = StyleTTS2Backend()
+        elif backend_id == "kittentts":
+            from cse.backends.kittentts.backend import KittenTTSBackend
+            backend = KittenTTSBackend()
         else:
             raise BackendNotFoundError(f"Unknown backend: {backend_id}")
             
@@ -77,7 +72,6 @@ class VoiceRuntime:
 
         # PRD-015: Let the backend validate the voice first
         if self._backend.validate_voice(voice_id):
-            # ponytail: backend owns this voice, tell it to load directly
             if hasattr(self._backend, 'load_voice'):
                 self._backend.load_voice(voice_id)
             self._active_voice = None  # No VoicePackage needed
@@ -93,7 +87,7 @@ class VoiceRuntime:
             raise VoiceNotFoundError(
                 f'Voice "{voice_id}" is not available for {backend_name}.\n'
                 f"Available voices: {voice_list}\n"
-                f"Run: cse voices"
+                f"Run: cse voice"
             )
 
         # Fallback: try VoicePackage registry (backwards compat)

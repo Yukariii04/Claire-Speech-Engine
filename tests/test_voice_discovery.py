@@ -1,4 +1,4 @@
-"""Tests for PRD-015: Backend Voice Discovery, Validation & Selection."""
+"""Tests for Backend Voice Discovery, Validation & Selection with KittenTTS."""
 
 import json
 import os
@@ -9,53 +9,46 @@ from unittest.mock import patch
 
 # ── Backend list_voices / validate_voice ──────────────────────────────
 
-class TestKokoroVoiceDiscovery:
+class TestKittenTTSVoiceDiscovery:
     def test_list_voices_returns_list(self):
-        from cse.backends.kokoro.backend import KokoroBackend
-        backend = KokoroBackend()
+        from cse.backends.kittentts.backend import KittenTTSBackend
+        backend = KittenTTSBackend()
         voices = backend.list_voices()
         assert isinstance(voices, list)
-        assert len(voices) > 0
+        assert len(voices) == 8
 
     def test_list_voices_has_required_keys(self):
-        from cse.backends.kokoro.backend import KokoroBackend
-        backend = KokoroBackend()
+        from cse.backends.kittentts.backend import KittenTTSBackend
+        backend = KittenTTSBackend()
         for v in backend.list_voices():
             assert "id" in v
             assert "name" in v
+            assert "language" in v
+            assert "gender" in v
 
     def test_validate_voice_known(self):
-        from cse.backends.kokoro.backend import KokoroBackend
-        backend = KokoroBackend()
-        assert backend.validate_voice("af_heart") is True
+        from cse.backends.kittentts.backend import KittenTTSBackend
+        backend = KittenTTSBackend()
+        assert backend.validate_voice("expr-voice-2-f") is True
+        assert backend.validate_voice("expr-voice-2-m") is True
 
     def test_validate_voice_unknown(self):
-        from cse.backends.kokoro.backend import KokoroBackend
-        backend = KokoroBackend()
+        from cse.backends.kittentts.backend import KittenTTSBackend
+        backend = KittenTTSBackend()
         assert backend.validate_voice("nonexistent_voice_xyz") is False
 
+    def test_validate_voice_alias(self):
+        from cse.backends.kittentts.backend import KittenTTSBackend
+        backend = KittenTTSBackend()
+        assert backend.validate_voice("Bella") is True
+        assert backend.validate_voice("Jasper") is True
+        assert backend.validate_voice("Leo") is True
+
     def test_default_voice_in_list(self):
-        from cse.backends.kokoro.backend import KokoroBackend
-        backend = KokoroBackend()
+        from cse.backends.kittentts.backend import KittenTTSBackend
+        backend = KittenTTSBackend()
         ids = [v["id"] for v in backend.list_voices()]
-        assert "af_heart" in ids
-
-
-
-
-
-class TestStyleTTS2VoiceDiscovery:
-    def test_list_voices_returns_list(self):
-        from cse.backends.styletts2.backend import StyleTTS2Backend
-        backend = StyleTTS2Backend()
-        voices = backend.list_voices()
-        assert isinstance(voices, list)
-        assert len(voices) > 0
-
-    def test_validate_voice_default(self):
-        from cse.backends.styletts2.backend import StyleTTS2Backend
-        backend = StyleTTS2Backend()
-        assert backend.validate_voice("claire_neutral") is True
+        assert "expr-voice-2-f" in ids
 
 
 # ── AcousticBackend interface defaults ────────────────────────────────
@@ -86,21 +79,21 @@ class TestUserConfig:
     def test_save_and_load_config(self, tmp_path):
         with patch("cse.config.user_config._config_dir", return_value=tmp_path):
             from cse.config.user_config import save_config, load_config
-            save_config({"backend": "kokoro", "voice": "af_bella"})
+            save_config({"backend": "kittentts", "voice": "expr-voice-2-f"})
             cfg = load_config()
-            assert cfg["backend"] == "kokoro"
-            assert cfg["voice"] == "af_bella"
+            assert cfg["backend"] == "kittentts"
+            assert cfg["voice"] == "expr-voice-2-f"
 
     def test_set_and_get_preference(self, tmp_path):
         with patch("cse.config.user_config._config_dir", return_value=tmp_path):
             from cse.config.user_config import set_preference, get_preference
-            set_preference("backend", "fishspeech")
-            assert get_preference("backend") == "fishspeech"
+            set_preference("backend", "kittentts")
+            assert get_preference("backend") == "kittentts"
 
     def test_clear_preferences(self, tmp_path):
         with patch("cse.config.user_config._config_dir", return_value=tmp_path):
             from cse.config.user_config import set_preference, clear_preferences, load_config
-            set_preference("backend", "kokoro")
+            set_preference("backend", "kittentts")
             clear_preferences()
             assert load_config() == {}
 
@@ -110,17 +103,17 @@ class TestUserConfig:
             assert get_preference("nonexistent") is None
 
 
-# ── VoiceRuntime PRD-015 changes ──────────────────────────────────────
+# ── VoiceRuntime changes ──────────────────────────────────────────────
 
-class TestVoiceRuntimePRD015:
-    def test_load_voice_kokoro_native(self):
-        """Loading a known Kokoro voice should succeed without VoicePackage."""
+class TestVoiceRuntimeVoiceManagement:
+    def test_load_voice_kittentts_native(self):
+        """Loading a known KittenTTS voice should succeed without VoicePackage."""
         from cse.runtime.voice.runtime import VoiceRuntime
         runtime = VoiceRuntime()
         runtime.initialize()
-        runtime.load_backend("kokoro")
+        runtime.load_backend("kittentts")
         # This should NOT raise — backend validates the voice natively
-        runtime.load_voice("af_heart")
+        runtime.load_voice("expr-voice-2-f")
         runtime.shutdown()
 
     def test_load_voice_invalid_raises(self):
@@ -129,7 +122,7 @@ class TestVoiceRuntimePRD015:
         from cse.runtime.voice.exceptions import VoiceNotFoundError
         runtime = VoiceRuntime()
         runtime.initialize()
-        runtime.load_backend("kokoro")
+        runtime.load_backend("kittentts")
         with pytest.raises(VoiceNotFoundError, match="not available"):
             runtime.load_voice("completely_bogus_voice")
         runtime.shutdown()
@@ -139,28 +132,27 @@ class TestVoiceRuntimePRD015:
         runtime = VoiceRuntime()
         runtime.initialize()
         assert runtime.get_backend_id() == "dummy"
-        runtime.load_backend("kokoro")
-        assert runtime.get_backend_id() == "kokoro"
+        runtime.load_backend("kittentts")
+        assert runtime.get_backend_id() == "kittentts"
         runtime.shutdown()
 
     def test_available_backend_ids(self):
         from cse.runtime.voice.runtime import VoiceRuntime
         ids = VoiceRuntime.available_backend_ids()
-        assert "kokoro" in ids
-        assert "styletts2" in ids
+        assert "kittentts" in ids
         assert "dummy" not in ids
 
 
-# ── SpeechEngine PRD-015 changes ─────────────────────────────────────
+# ── SpeechEngine changes ─────────────────────────────────────────────
 
-class TestSpeechEnginePRD015:
+class TestSpeechEngineVoiceManagement:
     def test_list_voices_returns_backend_voices(self):
         from cse import SpeechEngine
         engine = SpeechEngine()
-        engine.load_backend("kokoro")
+        engine.load_backend("kittentts")
         voices = engine.list_voices()
         assert isinstance(voices, list)
-        assert len(voices) > 0
+        assert len(voices) == 8
         assert all("id" in v for v in voices)
         engine.shutdown()
 
@@ -168,7 +160,7 @@ class TestSpeechEnginePRD015:
         """load_voice() with no args should pick the backend's default."""
         from cse import SpeechEngine
         engine = SpeechEngine()
-        engine.load_backend("kokoro")
+        engine.load_backend("kittentts")
         with patch("cse.config.user_config.get_preference", return_value=None):
             # Should not raise
             engine.load_voice()
@@ -177,15 +169,14 @@ class TestSpeechEnginePRD015:
     def test_version_bumped(self):
         from cse import SpeechEngine
         engine = SpeechEngine()
-        assert engine.get_version() == "1.0.4"
+        assert engine.get_version() == "1.0.5"
         engine.shutdown()
 
     def test_backend_switch_resets_voice(self):
         from cse import SpeechEngine
         engine = SpeechEngine()
-        engine.load_backend("kokoro")
-        engine.load_voice("af_heart")
-        # ponytail: use dummy backend to avoid needing styletts2 installed
+        engine.load_backend("kittentts")
+        engine.load_voice("expr-voice-2-f")
         engine.load_backend("dummy")
         # Voice should be reset after switching backend
         with pytest.raises(Exception):
@@ -195,7 +186,7 @@ class TestSpeechEnginePRD015:
 
 # ── CLI ───────────────────────────────────────────────────────────────
 
-class TestCLIPRD015:
+class TestCLIVoiceCommands:
     def test_parser_has_voice_command(self):
         from cse.cli.parser import create_parser
         parser = create_parser()
@@ -206,11 +197,10 @@ class TestCLIPRD015:
     def test_parser_voice_set(self):
         from cse.cli.parser import create_parser
         parser = create_parser()
-        args = parser.parse_args(["voice", "set", "kokoro", "af_bella"])
+        args = parser.parse_args(["voice", "set", "expr-voice-2-f"])
         assert args.command == "voice"
         assert args.voice_command == "set"
-        assert args.backend == "kokoro"
-        assert args.voice == "af_bella"
+        assert args.voice == "expr-voice-2-f"
 
     def test_parser_voice_reset(self):
         from cse.cli.parser import create_parser
@@ -231,27 +221,18 @@ class TestCLIPRD015:
         import argparse
         with patch("cse.config.user_config._config_dir", return_value=tmp_path):
             from cse.cli.commands import command_voice
-            args = argparse.Namespace(voice_command="set", backend="kokoro", voice="af_heart")
+            args = argparse.Namespace(voice_command="set", voice="expr-voice-2-f")
             result = command_voice(args)
             assert result == 0
 
             from cse.config.user_config import get_preference
-            assert get_preference("backend") == "kokoro"
-            assert get_preference("voice") == "af_heart"
+            assert get_preference("voice") == "expr-voice-2-f"
 
     def test_command_voice_set_invalid_voice(self, tmp_path):
         import argparse
         with patch("cse.config.user_config._config_dir", return_value=tmp_path):
             from cse.cli.commands import command_voice
-            args = argparse.Namespace(voice_command="set", backend="kokoro", voice="bogus_voice")
-            result = command_voice(args)
-            assert result == 1
-
-    def test_command_voice_set_invalid_backend(self, tmp_path):
-        import argparse
-        with patch("cse.config.user_config._config_dir", return_value=tmp_path):
-            from cse.cli.commands import command_voice
-            args = argparse.Namespace(voice_command="set", backend="not_a_backend", voice="x")
+            args = argparse.Namespace(voice_command="set", voice="bogus_voice")
             result = command_voice(args)
             assert result == 1
 
@@ -259,7 +240,7 @@ class TestCLIPRD015:
         import argparse
         with patch("cse.config.user_config._config_dir", return_value=tmp_path):
             from cse.config.user_config import set_preference
-            set_preference("backend", "kokoro")
+            set_preference("voice", "expr-voice-3-m")
             from cse.cli.commands import command_voice
             args = argparse.Namespace(voice_command="reset")
             result = command_voice(args)

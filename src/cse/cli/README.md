@@ -1,6 +1,6 @@
 # Claire Speech Engine CLI
 
-A minimal, fast, and simple command-line interface for managing backends, voices, and generating speech.
+A minimal, fast, and simple command-line interface for managing models, voices, and generating speech.
 
 ## Usage
 
@@ -11,21 +11,36 @@ cse help
 # Check version
 cse version
 
-# List all available voices across all backends
-cse voices
+# Setup KittenTTS and pre-download models for offline access
+cse setup
 
-# Interactively select a default backend and voice
+# List all available KittenTTS models
+cse models
+
+# Interactively select a default KittenTTS model
+cse model
+
+# Check currently selected model
+cse model current
+
+# Manually set default model
+cse model set kitten-tts-micro-0.8
+
+# Reset model preference to default
+cse model reset
+
+# Interactively select a default voice
 cse voice
 
-# Check your currently selected backend and voice
+# Check your currently selected voice
 cse voice current
 
-# Manually set your default backend and voice
-cse voice set kokoro af_heart
+# Manually set your default voice
+cse voice set Bella
 
-# Reset voice preferences to defaults
+# Reset voice preferences to default
 cse voice reset
 
-# Generate speech (uses your saved default voice if --voice is omitted)
-cse speak --voice af_heart --text "Hello world"
+# Copy runnable example scripts into the current directory
+cse example
 ```

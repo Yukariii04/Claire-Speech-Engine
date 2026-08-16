@@ -8,7 +8,7 @@ The framework is divided into three major architectural boundaries:
 
 1. **CSE (Orchestration & API):** The outer shell. Manages configuration, lifecycle, backends, and API surfaces.
 2. **CPE (Claire Performance Engine):** The brain. Responsible for semantic reasoning, communicative intent, and performance planning.
-3. **Acoustic Backends (e.g., CAM, Kokoro, StyleTTS2):** The vocal cords. Responsible for turning the abstract performance plans into actual audio waveforms.
+3. **Acoustic Backends (e.g., CAM, KittenTTS):** The vocal cords. Responsible for turning the abstract performance plans into actual audio waveforms.
 
 ```mermaid
 flowchart TD
@@ -39,12 +39,10 @@ flowchart TD
     subgraph Backends [Acoustic Generation Layer]
         Translator[Backend Translator]
         
-        Translator -->|Backend Specific Format| Kokoro[Kokoro Backend]
-        Translator -->|Backend Specific Format| StyleTTS[StyleTTS2 Backend]
+        Translator -->|Backend Specific Format| KittenTTS[KittenTTS Backend]
         Translator -->|Native Graph Support| CAM[CAM - Claire Acoustic Model <br/>*Future*]
         
-        Kokoro --> Audio[Audio Waveform]
-        StyleTTS --> Audio
+        KittenTTS --> Audio[Audio Waveform]
         CAM --> Audio
     end
     
@@ -104,8 +102,8 @@ CPE produces an immutable, backend-agnostic **Performance Graph**.
 
 ### 3. Acoustic Backends
 The `AcousticBackend` is an abstract interface that defines how the engine interacts with speech models. 
-- **External Models (Kokoro, StyleTTS2):** These models were not trained natively on the CPE Performance Graph. They rely on a **Translator** inside their CSE integration package to parse the graph and do their best to approximate the requested performance.
-- **CAM (Claire Acoustic Model):** This is the future, purpose-built acoustic model for this project. Unlike Kokoro or StyleTTS2, CAM will be trained *specifically* to consume the rich nodes of the Performance Graph directly, allowing for unparalleled expressive control.
+- **External Models (e.g., KittenTTS):** These models were not trained natively on the CPE Performance Graph. They rely on a **Translator** inside their CSE integration package to parse the graph and do their best to approximate the requested performance (e.g., mapping pace to generation speed).
+- **CAM (Claire Acoustic Model):** This is the future, purpose-built acoustic model for this project. CAM will be trained *specifically* to consume the rich nodes of the Performance Graph directly, allowing for unparalleled expressive control.
 
 ## `SpeechResult`
 A `SpeechResult` is the immutable output object returned to the user upon successful (or failed) synthesis. It encapsulates:

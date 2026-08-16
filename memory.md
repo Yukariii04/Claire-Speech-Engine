@@ -10,33 +10,9 @@
 |--------------|--------------------------------|
 | **Name**     | Claire Speech Engine (CSE)     |
 | **PRD**      | PRD-001 — Project Bootstrap & Foundation |
-| **Goal**     | Production-grade repo scaffold — **no speech features** |
-| **Python**   | >= 3.12                         |
-| **Version**  | 1.0.4                          |
-
----
-
-## PRD-001 Scope Summary
-
-### What to build
-- Repository structure (dirs + base files)
-- `pyproject.toml` packaging with pinned dependency whitelist
-- Entry point `cse.py` → calls `cse.runtime.bootstrap()`
-- **Runtime bootstrap** (`src/cse/runtime/bootstrap.py`): config → logger → registry → runtime → banner → exit
-- **Configuration system** (`src/cse/config/`): YAML-based, env overrides, defaults, validation, hot-reload stub
-- **Logger**: Centralized via `loguru`, colorized, timestamped — no `print()`
-- **Module Registry**: Register/discover pattern, initially empty
-- **Plugin System**: Architecture only (`src/cse/plugins/`), interfaces: `initialize()`, `shutdown()`, `metadata()`
-- **CLI**: `--help`, `--version`, `--debug` only
-- **Tests**: Real tests for config, logger, bootstrap, CLI, registry
-- **Benchmarks**: Bootstrap timing < 300 ms
-- **README.md**: Install, goals, structure, running, dev, contributing
-
-### What is forbidden
-Tokenizer, Prosody, Emotion, Speech, Streaming, TTS, Phonemes, Models, Training, Inference, anything AI-related.
-
-### Public API surface
-`bootstrap()`, `shutdown()`, `get_logger()`, `get_config()`, `get_registry()`
+| **Goal**     | Production-grade repo scaffold |
+| **Python**   | >= 3.13                         |
+| **Version**  | 1.0.5                          |
 
 ---
 
@@ -44,7 +20,10 @@ Tokenizer, Prosody, Emotion, Speech, Streaming, TTS, Phonemes, Models, Training,
 
 | Package            | Purpose           |
 |--------------------|-------------------|
-| `torch`            | Future ML runtime |
+| `kittentts` (0.8.1) | Acoustic backend  |
+| `espeakng-loader`  | Phonemizer support|
+| `phonemizer`       | Phonemizer        |
+| `huggingface_hub`  | Asset download    |
 | `numpy`            | Numerics          |
 | `onnxruntime`      | Inference         |
 | `sounddevice`      | Audio I/O         |
@@ -71,20 +50,17 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 ### AD-003: Removal of Fish Speech Backend
 During the transition to 1.0.4, Fish Speech was entirely removed from the production framework. Reason: Fish Speech v1.5 enforces heavy, strictly pinned dependencies (`torch<=2.4.1`, `torchaudio`, `pytorch-lightning`, etc.) which caused profound environment instability (e.g., `[WinError 127]` due to mismatched C++ extensions). This severely conflicted with lighter, more flexible backends like Kokoro and StyleTTS2. To preserve the "it just works" philosophy of CSE on Python 3.12, Fish Speech was excised.
 
----
-
-## Skills Evaluation (PRD-015)
-
-- **`ponytail`**: Used to strictly rely on native python `json`/`os`/`platform` for `user_config.py` without introducing bulky dependency libraries like `appdirs`. Also used to enforce a minimalist interactive CLI loop in `claire_cli.py` instead of pulling in `click` or `prompt_toolkit`.
+### AD-004: Migration to KittenTTS Backend & Excising PyTorch
+In v1.0.5, Kokoro and StyleTTS2 were completely replaced with KittenTTS. KittenTTS is an ultra-lightweight, CPU-optimized text-to-speech backend powered exclusively by ONNX Runtime. This allowed excising `torch` and `torchaudio` completely from runtime dependencies, eliminating cross-platform C++ extension issues and ensuring a truly lightweight, stable install on modern Python (3.13+).
 
 ---
 
 ## Active State
 
-| Key             | Value               |
-|-----------------|---------------------|
-| **Current PRD** | PRD-025 (End-to-End Pipeline Integration) |
-| **Phase**       | Complete |
+| **Current State**| KittenTTS Migration, Direct Dependency Hardening & Benchmarks (v1.0.5) |
+| **Backend**     | KittenTTS (ONNX 0.8.1) |
+| **Torch Status**| Completely Excised  |
+| **CLI Status**   | `cse models` / `cse model` / `cse voice` / `cse setup` / `cse example` |
 | **Blockers**    | None                |
 
 ---

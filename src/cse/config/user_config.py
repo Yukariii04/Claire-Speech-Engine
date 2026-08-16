@@ -13,7 +13,6 @@ from pathlib import Path
 
 def _config_dir() -> Path:
     """Platform-specific config directory."""
-    # ponytail: stdlib only, no appdirs dependency
     system = platform.system()
     if system == "Windows":
         base = os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")

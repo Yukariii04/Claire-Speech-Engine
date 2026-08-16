@@ -15,8 +15,7 @@ def planning_pass(result: Any) -> PerformancePlan:
     if not isinstance(result, IntentResult):
         raise TypeError("Planning pass requires a valid IntentResult")
 
-    # ponytail: simplest deterministic plan — map intent to delivery style.
-    # Upgrade to LLM-driven planning when expressiveness PRDs land.
+    # Deterministic plan — map intent to delivery style.
     intent_type = result.intent.get("primary_intent", "statement")
     delivery = {
         "question": {"pace": "moderate", "pitch_contour": "rising", "emphasis": "final_word"},

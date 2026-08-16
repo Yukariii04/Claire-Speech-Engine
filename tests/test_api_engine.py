@@ -87,8 +87,8 @@ class TestSpeechEngine:
 
     def test_voice_loading_fails(self):
         engine = SpeechEngine()
-        # PRD-015: use kokoro backend so unknown voices are rejected
-        engine.load_backend("kokoro")
+        # PRD-015: use kittentts backend so unknown voices are rejected
+        engine.load_backend("kittentts")
         with pytest.raises(SpeechEngineError, match="Failed to load voice"):
             engine.load_voice("does_not_exist")
 
@@ -108,11 +108,11 @@ class TestSpeechEngine:
     def test_list_voices(self, dummy_voice):
         engine = SpeechEngine()
         # PRD-015: list_voices returns backend voices (dicts), not registry
-        engine.load_backend("kokoro")
+        engine.load_backend("kittentts")
         voices = engine.list_voices()
         assert isinstance(voices, list)
         ids = [v["id"] for v in voices]
-        assert "af_heart" in ids
+        assert "expr-voice-2-f" in ids
 
     def test_reload_config(self):
         engine = SpeechEngine()
@@ -120,4 +120,4 @@ class TestSpeechEngine:
 
     def test_get_version(self):
         engine = SpeechEngine()
-        assert engine.get_version() == "1.0.4"
+        assert engine.get_version() == "1.0.5"

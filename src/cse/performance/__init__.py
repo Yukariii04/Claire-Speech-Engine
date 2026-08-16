@@ -1,1 +1,1 @@
-"""Performance module — generates Performance Timelines from CIR."""
+"""Claire Performance Engine (CPE) module — transforms PerformanceContext into canonical PerformanceGraphs."""
