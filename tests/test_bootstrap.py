@@ -46,7 +46,7 @@ class TestBootstrap:
 
         captured = capsys.readouterr().out
         assert "Claire Speech Engine" in captured
-        assert "Version 0.1.0" in captured
+        assert "Version 1.0.5" in captured
         assert "Configuration Loaded" in captured
         assert "Logger Initialized" in captured
         assert "Module Registry Initialized" in captured

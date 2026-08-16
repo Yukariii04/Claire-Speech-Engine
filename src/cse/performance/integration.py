@@ -8,7 +8,7 @@ from cse.performance.passes.planning import planning_pass
 from cse.performance.graph import build_performance_graph
 
 def execute_end_to_end(context: PerformanceContext, translator: BaseTranslator) -> Any:
-    """Execute the complete Phase 1 pipeline from context to translated backend instructions."""
+    """Execute the Phase 2.5 CPE pipeline from context to translated backend instructions."""
     pipeline = ReasoningPipeline([
         meaning_pass,
         intent_pass,

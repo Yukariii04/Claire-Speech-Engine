@@ -75,7 +75,7 @@ print(current_voice.metadata.name)
 
 ## Speech Generation
 
-Calling `speak()` executes the entire generation pipeline: Text -> CIR -> Performance Timeline -> Backend Synthesis -> WAV File.
+Calling `speak()` executes the generation pipeline: Text -> PerformanceContext -> ReasoningPipeline -> PerformanceGraph -> Runtime -> Backend Synthesis -> WAV File.
 
 ```python
 result = engine.speak("Synthesis is now extremely simple.")

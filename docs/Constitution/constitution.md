@@ -94,8 +94,7 @@ The representation of speech performance must remain independent of every acoust
 
 No part of CPE may depend on:
 
-- Kokoro
-- StyleTTS2
+- KittenTTS
 - Claire
 - Any future renderer
 

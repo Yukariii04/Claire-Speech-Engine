@@ -14,133 +14,132 @@ def command_version(args: argparse.Namespace) -> int:
     return 0
 
 
-def command_voices(args: argparse.Namespace) -> int:
-    """Handle 'cse voices' — list voices from all backends (PRD-015 §4)."""
-    from cse.runtime.voice.runtime import VoiceRuntime
+def command_models(args: argparse.Namespace) -> int:
+    """Handle 'cse models' — list available KittenTTS models."""
+    from cse.backends.kittentts.backend import list_models
+    from cse.config.user_config import get_preference
 
-    for backend_id in VoiceRuntime.available_backend_ids():
-        print(f"\n{'=' * 50}")
-        print(f"  {backend_id.upper()}")
-        print(f"{'=' * 50}\n")
+    active_model = get_preference("model") or "kitten-tts-nano-0.8"
+    models = list_models()
 
-        try:
-            # ponytail: instantiate backend directly, no full engine init needed
-            if backend_id == "kokoro":
-                from cse.backends.kokoro.backend import KokoroBackend
-                backend = KokoroBackend()
-            elif backend_id == "styletts2":
-                from cse.backends.styletts2.backend import StyleTTS2Backend
-                backend = StyleTTS2Backend()
-            else:
-                continue
+    print("\nAvailable KittenTTS Models\n")
+    print(f"  {'ID':<25} {'Name':<25} {'Size / Parameters':<25} {'Status'}")
+    print(f"  {'-' * 25} {'-' * 25} {'-' * 25} {'-' * 10}")
 
-            voices = backend.list_voices()
-            if not voices:
-                print("  (no voices found)")
-            else:
-                for v in voices:
-                    parts = [f"{v['id']:<16}", v.get("name", ""), v.get("language", ""), v.get("gender", "")]
-                    print("  " + "  ".join(p for p in parts if p))
-        except Exception as e:
-            print(f"  (error loading backend: {e})")
-
+    for m in models:
+        is_active = (m["id"] == active_model or m["repo_id"] == active_model)
+        status = "Active (*)" if is_active else "Available"
+        print(f"  {m['id']:<25} {m['name']:<25} {m['size']:<25} {status}")
     print()
     return 0
 
 
-def command_voice(args: argparse.Namespace) -> int:
-    """Handle 'cse voice' — interactive selection or subcommands (PRD-015 §5-8)."""
-    from cse.config.user_config import get_preference, set_preference, clear_preferences
+def command_model(args: argparse.Namespace) -> int:
+    """Handle 'cse model' — interactive model selection or subcommands."""
+    from cse.backends.kittentts.backend import list_models, validate_model
+    from cse.config.user_config import get_preference, set_preference
 
-    sub = getattr(args, "voice_command", None)
+    sub = getattr(args, "model_command", None)
 
     if sub == "current":
-        backend = get_preference("backend")
-        voice = get_preference("voice")
-        if not backend and not voice:
-            print("No voice preference saved. Using backend defaults.")
-        else:
-            print(f"Backend : {backend or '(not set)'}")
-            print(f"Voice   : {voice or '(not set)'}")
+        current = get_preference("model") or "kitten-tts-nano-0.8 (default)"
+        print(f"Active Model : {current}")
         return 0
 
     if sub == "reset":
-        clear_preferences()
-        print("Voice preference reset. Using backend defaults.")
+        set_preference("model", "kitten-tts-nano-0.8")
+        print("Model preference reset to default (kitten-tts-nano-0.8).")
         return 0
 
     if sub == "set":
-        backend_id = args.backend
-        voice_id = args.voice
-
-        # Validate the backend exists
-        from cse.runtime.voice.runtime import VoiceRuntime
-        valid_backends = VoiceRuntime.available_backend_ids()
-        if backend_id not in valid_backends:
-            print(f'Unknown backend "{backend_id}". Available: {", ".join(valid_backends)}')
+        model_id = args.model_id
+        if not validate_model(model_id):
+            models = list_models()
+            available = ", ".join(m["id"] for m in models)
+            print(f'Model "{model_id}" is not valid.')
+            print(f"Available: {available}")
             return 1
 
-        # Validate voice belongs to backend
-        if backend_id == "kokoro":
-            from cse.backends.kokoro.backend import KokoroBackend
-            backend = KokoroBackend()
-        elif backend_id == "styletts2":
-            from cse.backends.styletts2.backend import StyleTTS2Backend
-            backend = StyleTTS2Backend()
-        else:
-            print(f"Unknown backend: {backend_id}")
-            return 1
-
-        if not backend.validate_voice(voice_id):
-            voices = backend.list_voices()
-            voice_list = ", ".join(v["id"] for v in voices)
-            print(f'Voice "{voice_id}" is not available for {backend_id}.')
-            print(f"Available: {voice_list}")
-            return 1
-
-        set_preference("backend", backend_id)
-        set_preference("voice", voice_id)
-        print(f"\nSelected\n")
-        print(f"  Backend : {backend_id}")
-        print(f"  Voice   : {voice_id}")
-        print(f"\n✓ Saved")
+        set_preference("model", model_id)
+        print(f"\nSelected Model: {model_id}")
+        print("Saved\n")
         return 0
 
-    # No subcommand → interactive selection (PRD-015 §5)
-    from cse.runtime.voice.runtime import VoiceRuntime
-    backend_ids = VoiceRuntime.available_backend_ids()
-
-    print("\nSelect Backend\n")
-    for i, bid in enumerate(backend_ids, 1):
-        print(f"  {i}) {bid.title()}")
+    # Interactive selection
+    models = list_models()
+    current = get_preference("model") or "kitten-tts-nano-0.8"
+    print("\nSelect KittenTTS Model\n")
+    for i, m in enumerate(models, 1):
+        marker = " (current)" if (m["id"] == current or m["repo_id"] == current) else ""
+        print(f"  {i}) {m['name']} [{m['id']}] - {m['size']}{marker}")
     print()
 
     try:
         choice = input("> ")
         idx = int(choice) - 1
-        if idx < 0 or idx >= len(backend_ids):
+        if idx < 0 or idx >= len(models):
             print("Invalid selection.")
             return 1
     except (ValueError, EOFError, KeyboardInterrupt):
         print("\nCancelled.")
         return 1
 
-    backend_id = backend_ids[idx]
+    selected = models[idx]["id"]
+    set_preference("model", selected)
+    print(f"\nSelected Model: {selected}")
+    print("Saved\n")
+    return 0
 
-    # Instantiate to get voices
-    if backend_id == "kokoro":
-        from cse.backends.kokoro.backend import KokoroBackend
-        backend = KokoroBackend()
-    elif backend_id == "styletts2":
-        from cse.backends.styletts2.backend import StyleTTS2Backend
-        backend = StyleTTS2Backend()
-    else:
-        return 1
 
+def command_voice(args: argparse.Namespace) -> int:
+    """Handle 'cse voice' — interactive selection or subcommands."""
+    from cse.backends.kittentts.backend import KittenTTSBackend
+    from cse.config.user_config import get_preference, set_preference, clear_preferences
+
+    sub = getattr(args, "voice_command", None)
+
+    if sub == "current":
+        voice = get_preference("voice")
+        if not voice:
+            print("No voice preference saved. Using default (expr-voice-2-f / Bella).")
+        else:
+            print(f"Active Voice : {voice}")
+        return 0
+
+    if sub == "reset":
+        set_preference("voice", "expr-voice-2-f")
+        print("Voice preference reset to default (expr-voice-2-f / Bella).")
+        return 0
+
+    if sub == "set":
+        raw_voice = args.voice
+        backend = KittenTTSBackend()
+        if not backend.validate_voice(raw_voice):
+            voices = backend.list_voices()
+            voice_list = ", ".join(f"{v['id']} ({v['alias']})" for v in voices)
+            print(f'Voice "{raw_voice}" is not valid.')
+            print(f"Available voices: {voice_list}")
+            return 1
+
+        set_preference("backend", "kittentts")
+        set_preference("voice", raw_voice)
+        print(f"\nSelected Voice: {raw_voice}")
+        print("Saved\n")
+        return 0
+
+    # Interactive selection (direct voice list — no backend prompt needed)
+    backend = KittenTTSBackend()
     voices = backend.list_voices()
-    print(f"\nAvailable {backend_id.title()} Voices\n")
+    current_voice = get_preference("voice") or "expr-voice-2-f"
+
+    print("\nSelect KittenTTS Voice\n")
     for i, v in enumerate(voices, 1):
-        print(f"  {i}) {v['id']}")
+        is_current = (
+            v["id"].lower() == current_voice.lower()
+            or v.get("alias", "").lower() == current_voice.lower()
+        )
+        marker = " (current)" if is_current else ""
+        print(f"  {i}) {v['id']} ({v['alias']}){marker}")
     print()
 
     try:
@@ -153,19 +152,17 @@ def command_voice(args: argparse.Namespace) -> int:
         print("\nCancelled.")
         return 1
 
-    voice_id = voices[idx]["id"]
-    set_preference("backend", backend_id)
-    set_preference("voice", voice_id)
+    selected = voices[idx]["id"]
+    set_preference("backend", "kittentts")
+    set_preference("voice", selected)
 
-    print(f"\nSelected\n")
-    print(f"  Backend : {backend_id}")
-    print(f"  Voice   : {voice_id}")
-    print(f"\n✓ Saved")
+    print(f"\nSelected Voice: {selected}")
+    print("Saved\n")
     return 0
 
 
 def command_example(args: argparse.Namespace) -> int:
-    """Handle 'cse example' — copy scaffold scripts into cwd (RELEASE-002 §2a)."""
+    """Handle 'cse example' — copy scaffold scripts into cwd."""
     import shutil
     from pathlib import Path
 
@@ -174,16 +171,14 @@ def command_example(args: argparse.Namespace) -> int:
         print("Error: scaffold directory not found. Reinstall claire-speech-engine.")
         return 1
 
-    # ponytail: optional backend filter, otherwise copy all
     target = getattr(args, "backend_name", None)
     force = getattr(args, "force", False)
 
-    all_files = ["example_styletts2.py", "example_kokoro.py", "README.md"]
+    all_files = ["example_kittentts.py", "README.md"]
     if target:
-        # Copy just the one script + README
         script = f"example_{target}.py"
         if script not in all_files:
-            print(f"Unknown backend '{target}'. Available: styletts2, kokoro")
+            print(f"Unknown backend '{target}'. Available: kittentts")
             return 1
         to_copy = [script, "README.md"]
     else:
@@ -208,87 +203,30 @@ def command_example(args: argparse.Namespace) -> int:
     return 0
 
 
-def command_backends(args: argparse.Namespace) -> int:
-    """Handle 'cse backends' — health dashboard (RELEASE-002 §2c)."""
-    print("\nInstalled Backends\n")
-
-    backends = [
-        ("Kokoro", "cse.backends.kokoro.backend", "KokoroBackend"),
-        ("StyleTTS2", "cse.backends.styletts2.backend", "StyleTTS2Backend"),
-    ]
-
-    for name, module_path, class_name in backends:
-        print(name)
-        try:
-            import importlib
-            mod = importlib.import_module(module_path)
-            backend_cls = getattr(mod, class_name)
-            backend = backend_cls()
-            backend.initialize()
-
-            voices = backend.list_voices()
-            caps = backend.get_capabilities()
-
-            # ponytail: also check if checkpoints exist to avoid false "Ready"
-            status = "Ready"
-            if name == "Kokoro":
-                from pathlib import Path
-                if not Path(backend._config.model_path).exists() or not Path(backend._config.voices_path).exists():
-                    status = "Missing Models (Run 'cse setup kokoro')"
-
-            print(f"  Status         : {status}")
-            print(f"  Voices         : {len(voices)}")
-            if hasattr(caps, 'supported_languages'):
-                langs = ", ".join(caps.supported_languages)
-                print(f"  Languages      : {langs}")
-            # ponytail: show default voice if only one
-            if len(voices) == 1:
-                print(f"  Default Voice  : {voices[0]['id']}")
-
-        except ImportError:
-            # ponytail: dependency not installed
-            dep = {"Kokoro": "kokoro-onnx", "StyleTTS2": "styletts2"}.get(name, name.lower())
-            print(f"  Status         : Missing Dependency")
-            print(f"  Reason         : {dep} not installed")
-            print(f"  Install        : Run 'cse setup {name.lower()}'")
-        except Exception as e:
-            print(f"  Status         : Error")
-            print(f"  Reason         : {e}")
-
-        print("-" * 24)
-
-    print()
-    return 0
-
-
 def command_setup(args: argparse.Namespace) -> int:
-    """Handle 'cse setup <backend>' — automated installer (PRD-015/user request)."""
+    """Handle 'cse setup' — automated installer and pre-downloader for all KittenTTS models."""
     import subprocess
     import sys
+    from cse.backends.kittentts.backend import download_all_models
 
-    backend = args.backend_name.lower()
-
-    if backend == "kokoro":
-        print("Installing Kokoro dependencies (kokoro-onnx, soundfile)...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "kokoro-onnx", "soundfile"])
-        
-        print("\nDownloading Kokoro models to current directory...")
-        import urllib.request
-        def download(url, filename):
-            print(f"  -> Downloading {filename}...")
-            urllib.request.urlretrieve(url, filename)
-        
-        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx", "kokoro-v1.0.onnx")
-        download("https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin", "voices-v1.0.bin")
-        print("\nKokoro setup complete! Run 'cse backends' to verify.")
-        return 0
-
-    elif backend == "styletts2":
-        print("Installing StyleTTS2 dependencies...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "styletts2", "numpy<2.5"])
-        print("\nStyleTTS2 setup complete! Run 'cse backends' to verify.")
-        return 0
-
-    else:
-        print(f"Unknown backend '{backend}'. Supported: kokoro, styletts2")
+    print("Installing/verifying KittenTTS dependencies...")
+    wheel_url = "https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl"
+    proc = subprocess.run([sys.executable, "-m", "pip", "install", wheel_url, "soundfile"])
+    if proc.returncode != 0:
+        print(f"\nError: Dependency installation failed with exit code {proc.returncode}.")
         return 1
+
+    print("\nPre-downloading all supported KittenTTS models for offline use...")
+    try:
+        failed_models = download_all_models()
+    except Exception as e:
+        print(f"\nError: Model download encountered an issue: {e}")
+        return 1
+
+    if failed_models:
+        print(f"\nError: Failed to pre-download {len(failed_models)} model(s): {', '.join(failed_models)}")
+        print("Models will be downloaded automatically on first use.")
+        return 1
+
+    print("\nAll KittenTTS models successfully downloaded and ready!")
+    return 0

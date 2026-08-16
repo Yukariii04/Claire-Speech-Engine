@@ -1,4 +1,4 @@
-"""SpeechResult (PRD-008 §6)."""
+"""SpeechResult for KittenTTS and acoustic backends."""
 
 from __future__ import annotations
 

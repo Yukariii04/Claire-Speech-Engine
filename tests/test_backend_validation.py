@@ -14,17 +14,13 @@ def test_backend_switching():
     caps1 = engine.get_backend_capabilities()
     assert caps1["backend_name"] == "dummy"
 
-    # Switch to kokoro (lazy load, might fail if ONNX not present but API shouldn't crash here)
-    # The initialize() might raise an error if files are missing, which is acceptable.
-    # We will test the API routing.
+    # Switch to kittentts
     try:
-        engine.load_backend("kokoro")
+        engine.load_backend("kittentts")
         caps2 = engine.get_backend_capabilities()
-        assert caps2["backend_name"] == "kokoro"
+        assert caps2["backend_name"] == "kittentts"
         assert "emotion" in caps2
-    except Exception as e:
-        # If kokoro fails to initialize due to missing models, that's fine.
-        # The routing itself works.
+    except Exception:
         pass
 
     # Switch back to dummy

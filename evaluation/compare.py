@@ -37,18 +37,20 @@ def evaluate_backend(engine: SpeechEngine, backend: str, prompts: list[str]) -> 
     print_capabilities(backend, engine.get_backend_capabilities())
 
     try:
-        from cse.voice import register_voice_package, VoicePackage, VoiceMetadata
-        from pathlib import Path
-        meta = VoiceMetadata(id="dummy", name="Dummy", version="1.0.0", author="CSE", language="en", backend="dummy", sample_rate=24000, channels=1, description="Test", license="MIT")
-        pkg = VoicePackage(metadata=meta, path=Path("."))
-        register_voice_package(pkg)
-    except Exception:
-        pass
-
-    try:
-        if backend == "kokoro":
-            engine.load_voice("dummy") # Kokoro uses its own voice internally for now in compare or will fall back
+        if backend == "kittentts":
+            engine.load_voice("expr-voice-2-f")
         else:
+            from cse.voice import register_voice_package, VoicePackage, VoiceMetadata
+            meta = VoiceMetadata(
+                id="dummy", name="Dummy", version="1.0.0", author="CSE",
+                language="en", backend="dummy", sample_rate=24000, channels=1,
+                description="Test", license="MIT"
+            )
+            pkg = VoicePackage(metadata=meta, path=Path("."))
+            try:
+                register_voice_package(pkg)
+            except Exception:
+                pass
             engine.load_voice("dummy")
     except Exception as e:
         print(f"  Skipped (failed to load voice: {e})")
@@ -77,7 +79,7 @@ def main() -> None:
     
     engine = SpeechEngine()
     
-    for backend in ["dummy", "kokoro", "styletts2"]:
+    for backend in ["dummy", "kittentts"]:
         evaluate_backend(engine, backend, prompts)
 
     engine.shutdown()

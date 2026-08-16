@@ -10,7 +10,6 @@
 # Status          : Ratified
 #
 ###############################################################################
-````
 
 # 1. Purpose
 
@@ -72,7 +71,7 @@ CAM performs no communication reasoning.
 
 Any acoustic backend supported by CSE other than Claire.
 
-Examples include Kokoro and StyleTTS2.
+Examples include KittenTTS.
 
 Compatible backends reproduce as much of the Performance Graph as their capabilities permit.
 

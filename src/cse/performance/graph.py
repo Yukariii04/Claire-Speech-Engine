@@ -16,8 +16,6 @@ def build_performance_graph(result: Any) -> PerformanceGraph:
     if not isinstance(result, PerformancePlan):
         raise TypeError("Performance Graph Builder requires a valid PerformancePlan")
 
-    # ponytail: graph is a sealed snapshot of all reasoning outputs.
-    # Add structured graph fields (nodes/edges) when translators need them.
     return PerformanceGraph(
         text=result.text,
         character_state=result.character_state,

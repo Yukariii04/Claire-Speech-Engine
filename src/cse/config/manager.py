@@ -11,7 +11,6 @@ import yaml
 
 _DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[3] / "configs" / "default.yaml"
 
-# ponytail: single global instance, factory if multi-config ever needed
 _instance: ConfigManager | None = None
 
 
@@ -99,7 +98,7 @@ class ConfigManager:
             node = data
             for part in parts[:-1]:
                 node = node.setdefault(part, {})
-            # ponytail: coerce booleans and ints, good enough for config
+            # Coerce booleans and ints for config
             node[parts[-1]] = _coerce(value)
         return data
 

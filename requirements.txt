@@ -1,5 +1,8 @@
 # Runtime
-torch
+https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl
+espeakng-loader
+phonemizer
+huggingface_hub
 numpy
 onnxruntime
 sounddevice
@@ -11,3 +14,5 @@ loguru
 # Dev / Testing
 pytest
 pytest-benchmark
+pre-commit
+build

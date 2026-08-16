@@ -38,9 +38,9 @@ def test_requirements_exist():
     assert (ROOT / "requirements.txt").exists()
 
 
-def test_package_builds():
+def test_package_builds(tmp_path):
     result = subprocess.run(
-        [sys.executable, "-m", "build", "--no-isolation"],
+        [sys.executable, "-m", "build", "--no-isolation", "--outdir", str(tmp_path)],
         capture_output=True, text=True, cwd=str(ROOT),
     )
     assert result.returncode == 0, f"Build failed: {result.stderr}"

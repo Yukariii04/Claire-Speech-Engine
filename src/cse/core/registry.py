@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 
-# ponytail: single global instance, factory if multi-registry ever needed
 _instance: ModuleRegistry | None = None
 
 

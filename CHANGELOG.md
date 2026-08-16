@@ -5,11 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.5] - 2026-08-16
+
+### Breaking Changes
+- **Acoustic Backend Migration**: Replaced Kokoro and StyleTTS2 acoustic backends with KittenTTS (v0.8.1).
+- **Kokoro & StyleTTS2 Excised**: Complete removal of Kokoro and StyleTTS2 backend implementations, tests, models, configuration, voice mappings, and CLI branches.
+- **Dependencies Cleaned**: Excised PyTorch (`torch`) and `torchaudio` direct dependencies. Now runs lightweight via ONNX Runtime and `kittentts` with official Python 3.13+ support.
+- **CLI Streamlined**:
+  - Removed obsolete top-level `cse voices` and `cse backends` commands.
+  - Added `cse models` to list supported KittenTTS models with sizes and parameter counts.
+  - Added `cse model` (`set`, `current`, `reset`, interactive) for model selection.
+  - Simplified `cse voice` to directly select KittenTTS voices without redundant backend prompt.
+  - Upgraded `cse setup` to automatically pre-download and cache all supported KittenTTS models (`kitten-tts-nano-0.8`, `kitten-tts-micro-0.8`, `kitten-tts-mini-0.8`) for offline access.
 
 ### Added
-- Documented `numpy` version conflicts between Kokoro and StyleTTS2 backends.
-- Added notes regarding the future transition to the Claire Acoustic Model (CAM) and the temporary nature of third-party backends.
+- **KittenTTS Backend**: Created `src/cse/backends/kittentts/` implementing `AcousticBackend` and `BaseTranslator` with deferred asset loading, real ONNX synthesis, and speed mapping from PerformanceGraph pace.
+- **KittenTTS Scaffold & Examples**: Added `example_kittentts.py` scaffold and updated `examples/basic.py`, `examples/generate_speech.py`, and `evaluation/compare.py`.
+- **KittenTTS Test & Benchmark Suite**: Added `tests/test_kittentts_backend.py` and `benchmarks/test_kittentts_backend.py` with full unit, mocked, and real end-to-end integration tests.
+
+### Fixed
+- **KittenTTS Installation References**: Updated `KittenTTSInitializationError` to direct users to `cse setup`.
+- **Automated Setup Single Source of Truth**: Fixed `command_setup()` to install using the pinned KittenTTS 0.8.1 release wheel URL.
+- **Benchmark Suite Restored**: Fully restored all 12 benchmark test suites. Removed stray `.benchmarks/.gitkeep` artifact.
+- **Prose Documentation Deep Cleaned**: Removed remaining Kokoro/StyleTTS2 references from `ARCHITECTURE.md`, `PVD-001.md`, `lexicon.md`, `constitution.md`, and deleted the `/kokoro/` rule from `.gitignore`.
+- **Direct Dependencies Declared**: Explicitly declared `phonemizer` and `huggingface_hub` in `pyproject.toml` and `requirements.txt`.
 
 ## [1.0.4] - 2026-07-13
 

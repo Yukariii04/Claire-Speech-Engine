@@ -7,16 +7,9 @@ This ensures that the engine can drive any compatible TTS model without requirin
 ## Supported Backends
 
 | Backend | Status | Notes |
-|---------|--------|-------|
-| `dummy` | Active | Used for testing and validation without GPU. |
-| `kokoro` | Active | Development backend. Requires `kokoro-onnx`. |
-| `styletts2` | Active | Fast evaluation backend. |
-
-> [!WARNING]
-> **Numpy Conflict:** Running setup for both `kokoro` and `styletts2` consecutively and then trying to switch between them will not work due to a `numpy` version conflict. You must run the setup for the backend you intend to use right before using it.
-
-> [!NOTE]
-> **Future Development:** Third-party backends (like `kokoro` and `styletts2`) are currently supported because CSE's own acoustic model (Claire Acoustic Model) is under development. Since these external backends differ in design, they cannot fully adopt the Claire Performance Engine. After the Claire acoustic model is released, support for these backends will continue as long as they don't conflict with CSE's core architecture.
+|---|---|---|
+| `dummy` | Active | Used for testing and validation without audio models. |
+| `kittentts` | Active | Primary CPU-optimized ONNX backend. Requires `kittentts`. |
 
 ## Backend Switching
 
@@ -26,8 +19,8 @@ Switching backends is done seamlessly via the public API:
 from cse import SpeechEngine
 
 engine = SpeechEngine()
-engine.load_backend("kokoro")  # Switches the active backend
-engine.load_voice("af_heart")
+engine.load_backend("kittentts")  # Switches the active backend
+engine.load_voice("expr-voice-2-f")
 speech = engine.speak("Hello world.")
 ```
 
@@ -37,18 +30,18 @@ Applications can query a backend's capabilities at runtime to adapt their workfl
 
 ```python
 caps = engine.get_backend_capabilities()
-print(caps["streaming"])      # True/False
-print(caps["emotion"])        # "limited", "full", "none"
-print(caps["sample_rate"])    # e.g., 24000
+print(caps["supports_streaming"])  # True/False
+print(caps["emotion"])             # "limited", "full", "none"
+print(caps["sample_rate"])         # e.g., 24000
 ```
 
 ## Implementing a New Backend
 
 To implement a new backend:
 1. Inherit from `cse.acoustic.backend.interface.AcousticBackend`.
-2. Implement `initialize()`, `shutdown()`, `synthesize()`, `get_capabilities()`, and `validate_timeline()`.
+2. Implement `initialize()`, `shutdown()`, `translate()`, `get_capabilities()`, and `validate_graph()`.
 3. Ensure you return `BackendCapabilities` detailing the backend's limitations.
-4. Register the backend in `engine.load_backend()` or the `BackendRegistry`.
+4. Register the backend in `engine.load_backend()` or `VoiceRuntime`.
 
 ## Evaluation Methodology
 

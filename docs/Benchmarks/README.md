@@ -63,7 +63,7 @@ Thresholds are defined inline in each benchmark file:
 All optimizations in this PRD are measurement-driven. No speculative optimization was applied.
 
 Key design decisions:
-- **Lazy imports**: Heavy dependencies (torch, onnxruntime) are only loaded when a backend is actually used, keeping `import cse` fast.
+- **Lazy imports**: Heavy dependencies (onnxruntime, soundfile) are only loaded when a backend is actually used, keeping `import cse` fast.
 - **Immutable data structures**: CIR and PerformanceTimeline are immutable, enabling safe sharing without defensive copies.
 - **DummyBackend default**: The engine initializes with a lightweight dummy backend, deferring model loading until `load_voice()`.
 - **tracemalloc over psutil**: Memory profiling uses stdlib `tracemalloc` to avoid adding a dependency.

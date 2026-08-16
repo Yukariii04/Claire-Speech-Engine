@@ -6,7 +6,7 @@ import cse
 def test_version_exposed():
     assert hasattr(cse, "__version__")
     assert isinstance(cse.__version__, str)
-    assert cse.__version__ == "1.0.4"
+    assert cse.__version__ == "1.0.5"
 
 def test_public_imports():
     from cse import SpeechEngine
@@ -18,6 +18,6 @@ def test_cli_entry_point():
     assert result.returncode == 0
     assert "Usage" in result.stdout or "help" in result.stdout
 
-def test_build_success():
-    result = subprocess.run([sys.executable, "-m", "build"], capture_output=True, text=True)
+def test_build_success(tmp_path):
+    result = subprocess.run([sys.executable, "-m", "build", "--no-isolation", "--outdir", str(tmp_path)], capture_output=True, text=True)
     assert result.returncode == 0

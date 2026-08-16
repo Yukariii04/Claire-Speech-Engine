@@ -1,8 +1,14 @@
-"""The Claire Speech Engine (CSE)."""
+"""Claire Speech Engine (CSE)."""
 
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 
-from .api import SpeechEngine
-from .api.exceptions import SpeechEngineError
+from cse.api.engine import SpeechEngine
+from cse.api.config import EngineConfig
+from cse.api.exceptions import SpeechEngineError
 
-__all__ = ["SpeechEngine", "__version__"]
+__all__ = [
+    "SpeechEngine",
+    "EngineConfig",
+    "SpeechEngineError",
+    "__version__",
+]

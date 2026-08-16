@@ -7,7 +7,6 @@ import sys
 from loguru import logger as _loguru_logger
 
 
-# ponytail: single global flag, no class wrapping needed
 _initialized: bool = False
 
 
