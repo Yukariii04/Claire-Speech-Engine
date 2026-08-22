@@ -31,27 +31,26 @@ The complete research and engineering initiative consisting of CSE, CPE, and CAM
 
 ## Claire Speech Engine (CSE)
 
-The backend-agnostic framework responsible for speech generation infrastructure.
+The complete speech engine system consisting of CPE (performance/communication reasoning), CAM (acoustic rendering), and supporting runtime/infrastructure.
 
 Responsibilities include:
 
 - Public API
-- Runtime
-- Backend abstraction
-- CLI
-- Voice management
-- Streaming
-- Packaging
+- Runtime lifecycle
+- Voice and model management
+- Streaming audio transport
+- CLI tools
+- Packaging and distribution
 
-CSE does not perform communication reasoning.
+CSE coordinates the flow from text to performance reasoning to acoustic speech output.
 
 ---
 
 ## Claire Performance Engine (CPE)
 
-The communication intelligence layer.
+The performance and communication reasoning layer of the Claire Project.
 
-CPE transforms text and optional contextual information into a backend-independent representation of speech performance.
+CPE transforms text and optional contextual information (Character State) into an immutable, backend-independent PerformanceGraph.
 
 CPE never generates audio.
 
@@ -59,9 +58,9 @@ CPE never generates audio.
 
 ## Claire Acoustic Model (CAM)
 
-The native acoustic renderer of the Claire Project.
+The native acoustic rendering layer of the Claire Project.
 
-CAM converts performance representations into speech.
+CAM converts the PerformanceGraph produced by CPE directly into natural speech.
 
 CAM performs no communication reasoning.
 
@@ -69,21 +68,17 @@ CAM performs no communication reasoning.
 
 ## Compatible Backend
 
-Any acoustic backend supported by CSE other than Claire.
+An optional acoustic implementation that can consume the CPE PerformanceGraph while satisfying the CAM contract.
 
-Examples include KittenTTS.
-
-Compatible backends reproduce as much of the Performance Graph as their capabilities permit.
+Compatible backends are not peer architectures to CAM; they serve as interim or alternative acoustic renderers (such as KittenTTS) that adapt and approximate the PerformanceGraph via translation.
 
 ---
 
 ## Reference Backend
 
-Claire.
+Claire / CAM (Claire Acoustic Model).
 
-The reference implementation of the complete CPE specification.
-
-All new expressive capabilities are designed with Claire as the reference backend.
+The native and intended acoustic model of CSE, designed to render the complete PerformanceGraph specification directly into speech.
 
 -------------------------------------------------------------------------------
 
@@ -168,19 +163,21 @@ Performance does not describe implementation details.
 
 ## Performance Graph
 
-The immutable backend-independent representation produced by CPE.
+The immutable, backend-independent representation produced by CPE and consumed by CAM.
 
-The Performance Graph describes how speech should be performed.
+The Performance Graph describes how speech should be performed (intent, semantics, and expressive delivery plan) and serves as the definitive contract between CPE and CAM.
 
-It contains no backend-specific information.
+Compatible acoustic implementations may also consume the Performance Graph when satisfying the CAM contract.
+
+It contains no backend-specific commands.
 
 ---
 
 ## Translator
 
-The component responsible for converting a Performance Graph into backend-specific instructions.
+The adapter component responsible for converting a Performance Graph into backend-specific instructions for compatible backends.
 
-Each backend owns its own translator.
+Each compatible backend implements its own translator (subclassing `BaseTranslator`).
 
 -------------------------------------------------------------------------------
 

@@ -44,26 +44,34 @@ Every benchmark includes a threshold assertion. If a performance regression exce
 
 Thresholds are defined inline in each benchmark file:
 
-| File | Thresholds |
+#### Current Architecture Benchmarks
+
+| File | Thresholds / Scope |
 |---|---|
-| `test_import_time.py` | Import < 50 ms |
+| `test_import_time.py` | Package import < 50 ms |
 | `test_api_engine.py` | Engine creation < 100 ms, Speech overhead < 10 ms |
-| `test_startup.py` | Bootstrap < 300 ms |
+| `test_startup.py` | Bootstrap runtime < 300 ms |
 | `test_cli.py` | CLI startup < 200 ms |
-| `test_cir.py` | CIR build < 5 ms, 1000 builds < 1 s |
-| `test_perf_compiler.py` | Compile < 2 ms, 1000 timelines < 1 s |
-| `test_audio_streaming.py` | 1000 push/pop < 20 ms |
-| `test_acoustic_backend.py` | 1000 lookups < 10 ms |
-| `test_voice_package.py` | Discovery < 10 ms, 1000 lookups < 10 ms |
-| `test_voice_runtime.py` | Initialization < 20 ms |
-| `test_memory.py` | Idle < 100 MB, Import < 50 MB |
+| `test_audio_streaming.py` | Stream push/pop (1000 operations) < 20 ms |
+| `test_acoustic_backend.py` | Backend lookup (1000 lookups) < 10 ms |
+| `test_voice_package.py` | Package discovery < 10 ms, lookup < 10 ms |
+| `test_voice_runtime.py` | Voice runtime initialization < 20 ms |
+| `test_kittentts_backend.py` | PerformanceGraph translation and ONNX synthesis latency |
+| `test_memory.py` | Idle RSS < 100 MB, Import RAM < 50 MB |
+
+#### Historical Foundation Benchmarks
+
+| File | Historical Baseline |
+|---|---|
+| `test_cir.py` | Historical CIR baseline (build < 5 ms, 1000 builds < 1 s) |
+| `test_perf_compiler.py` | Historical timeline baseline (compile < 2 ms, 1000 timelines < 1 s) |
 
 ### Optimization Notes
 
-All optimizations in this PRD are measurement-driven. No speculative optimization was applied.
+All optimizations in this framework are measurement-driven. No speculative optimization was applied.
 
 Key design decisions:
 - **Lazy imports**: Heavy dependencies (onnxruntime, soundfile) are only loaded when a backend is actually used, keeping `import cse` fast.
-- **Immutable data structures**: CIR and PerformanceTimeline are immutable, enabling safe sharing without defensive copies.
-- **DummyBackend default**: The engine initializes with a lightweight dummy backend, deferring model loading until `load_voice()`.
-- **tracemalloc over psutil**: Memory profiling uses stdlib `tracemalloc` to avoid adding a dependency.
+- **Immutable data structures**: Active pipeline structures (`PerformanceGraph`) and foundational models are immutable, enabling safe sharing without defensive copies.
+- **DummyBackend default**: The engine initializes with a lightweight dummy backend, deferring model loading until synthesis.
+- **tracemalloc over psutil**: Memory profiling uses stdlib `tracemalloc` to avoid adding external dependencies.

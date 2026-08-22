@@ -4,19 +4,18 @@ First off, thank you for considering contributing to the Claire Speech Engine (C
 
 ## Development Philosophy
 
-CSE is the foundation of the Claire project. Its sole purpose is to provide a fast, stable, backend-agnostic framework for speech synthesis. 
-As of `v1.0.0-beta`, the framework itself is feature-frozen for stability. 
+CSE is the complete speech engine foundation of the Claire project, coordinating communication reasoning via CPE and acoustic realization via CAM (with KittenTTS as the current compatible implementation).
 
 **What we accept:**
 - Bug fixes
 - Performance optimizations
 - Documentation improvements
-- New officially supported backends (if they meet the `AcousticBackend` interface)
+- Acoustic backend adapters that satisfy the `PerformanceGraph` translation contract
 
 **What we do NOT accept:**
-- Core architectural changes to the framework
-- New complex logic in `SpeechEngine`
-- LLM or AI code embedded directly into the core (these belong in the Performance Engine)
+- Unnecessary runtime dependencies (such as heavy frameworks or unneeded C++ extensions)
+- Tightly coupling acoustic backends to core orchestration
+- Learned AI models embedded directly into core deterministic reasoning passes
 
 ## Development Setup
 
@@ -33,13 +32,14 @@ As of `v1.0.0-beta`, the framework itself is feature-frozen for stability.
    ```bash
    pytest
    ```
-4. Check performance regressions (must be < 50ms):
+4. Check performance regressions (must pass threshold assertions):
    ```bash
    pytest benchmarks/ --benchmark-only
    ```
 
 ## Pull Request Process
 
-1. Ensure any install or build dependencies are removed before the end of the layer when doing a build.
-2. Update the README.md with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations and container parameters.
-3. You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
+1. Ensure all test and benchmark suites pass cleanly (`pytest` and `pytest benchmarks/ --benchmark-only`).
+2. Adhere to the established code architecture (CSE orchestration vs. CPE performance reasoning vs. acoustic backends).
+3. Update relevant documentation and README files if modifying public APIs, CLI subcommands, or backend capabilities.
+4. Submit a clear Pull Request describing your changes, motivation, and verification steps.

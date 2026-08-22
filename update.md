@@ -786,14 +786,48 @@ Publish the Claire Speech Engine as a real installable Python package on TestPyP
   - Validated subprocess return code for pip installs and added explicit error reporting/exit codes when model pre-downloads fail.
 - **Model Download Error Tracking**:
   - Updated `download_all_models()` to track and report failed models without stopping early.
-- **Removed Positional Backend Arg from `cse setup`**:
-  - `cse setup --help` simplified to `cse setup [-h]`.
-- **Documentation & CPE Status Synchronized**:
-  - Updated `README.md` and `docs/PVDs/PVD-001.md` to reflect the operational state of CPE v1 (`PerformanceGraph` reasoning passes) and Python `3.10 – 3.12` support bounds required by `misaki`.
-  - Updated `CHANGELOG.md` 1.0.5 entry.
-- **Wheel & Archive Built**:
-  - Clean wheel generated in `dist/` and archive updated as `ClaireSpeechEngine-Cleanup.zip`.
+## 2026-08-22 — Documentation Consistency & Mismatch Synchronization (v1.0.5)
 
+- **Python Version Alignment (1)**:
+  - Synchronized `memory.md`, `CHANGELOG.md`, and `src/cse/_scaffold/README.md` to state the authoritative Python requirement: `Python 3.10 – 3.12` (`>=3.10,<3.13`), matching `pyproject.toml` and root `README.md`.
+- **Subsystem READMEs & API Examples Modernization (2)**:
+  - Updated `src/cse/api/README.md` to remove obsolete source-only/pre-packaging notes and updated voice/backend examples to active KittenTTS voices (`Bella`).
+  - Updated `src/cse/acoustic/backend/README.md` to reflect `PerformanceGraph` processing, `BaseTranslator` inheritance, and `translate()` / `validate_graph()` API signatures.
+  - Updated `src/cse/runtime/voice/README.md` to document `PerformanceGraph` routing, dynamic backend switching via `load_backend()`, and removed legacy references to `VoiceManager`.
+- **Contribution Guide & Benchmark Documentation Cleaned (3)**:
+  - Updated `CONTRIBUTING.md` to reflect the v1.0.5 architecture and replaced out-of-place Docker container boilerplate with a clean Python pull request process.
+  - Updated `docs/Benchmarks/README.md` to include `test_kittentts_backend.py` in the regression threshold mapping and updated data structure terminology to `PerformanceGraph`.
+
+## 2026-08-22 — Active CPE Documentation Reconciled Before PRD-026
+
+- **CPE Architecture Document Reconciled (`docs/Architecture/CPE-000.md`)**:
+  - Reconciled architecture description to the active 3-tier model: CSE (Orchestration) → CPE (Reasoning: Meaning → Intent → Planning) → PerformanceGraph (Contract) → CAM / Acoustic Translator → Audio.
+  - Replaced legacy references to `Performance Representation` and `Performance Representation Builder` with `PerformanceGraph` and `PerformanceGraph Builder`.
+  - Established `PerformanceGraph` as the unambiguous contract between CPE and CAM.
+- **Active Lexicon Updated (`docs/Lexicon/lexicon.md`)**:
+  - Aligned CSE, CPE, CAM, and PerformanceGraph definitions with the 3-tier system.
+  - Formalized PerformanceGraph as the contract between CPE and CAM.
+  - Replaced legacy backend definitions with native CAM as reference backend and KittenTTS as compatible backend.
+- **Active Backend Architecture Updated (`docs/Backends/README.md`)**:
+  - Replaced generic backend-switching prose with the active CPE → PerformanceGraph → CAM/Acoustic Rendering pipeline flow.
+  - Clarified KittenTTS as the active CPU-optimized acoustic implementation.
+- **Benchmark Documentation Updated (`docs/Benchmarks/README.md`)**:
+  - Explicitly separated Current Architecture benchmarks from Historical Foundation baselines.
+- **Memory Store Reconciled (`memory.md`)**:
+  - Updated Project Identity and Active State to reflect the CSE → CPE → PerformanceGraph → CAM architecture.
+  - Formally demarcated historical milestone records (PRD-018/PRD-019 interim representation schemas) to avoid contradictions.
+
+## 2026-08-23 — Active Documentation Alignment (Excised Backend-Switching Architecture Language)
+
+- **Backend Guide (`docs/Backends/README.md`)**:
+  - Removed "Backend Switching" as an architectural feature; reframed `engine.load_backend("kittentts")` as runtime plumbing for invoking the current compatible implementation.
+  - Renamed "Active Backends" to "Supported Acoustic Implementations" and updated adapter implementation guidance.
+- **Voice Runtime Spec (`src/cse/runtime/voice/README.md`)**:
+  - Reframed `runtime.load_backend("kittentts")` as runtime plumbing rather than generic backend-switching architecture.
+- **Acoustic Backend Spec (`src/cse/acoustic/backend/README.md`)**:
+  - Clarified routing of the `PerformanceGraph` through the loaded acoustic implementation.
+- **Memory Store (`memory.md`)**:
+  - Confirmed active state flow remains `CSE → CPE → PerformanceGraph → CAM → Speech` with KittenTTS as the compatible implementation, preserving historical records of Phase 2 validation.
 
 
 

@@ -4,7 +4,7 @@ Scaffolded by `cse example`. Each script is a standalone demo.
 
 | File | Purpose | Python Requirement |
 |------|---------|-------------------|
-| example_kittentts.py | KittenTTS interactive synthesis demo | Python 3.13+ |
+| example_kittentts.py | KittenTTS interactive synthesis demo | Python 3.10 – 3.12 |
 
 ## Usage
 

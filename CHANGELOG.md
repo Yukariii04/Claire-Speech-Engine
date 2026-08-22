@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking Changes
 - **Acoustic Backend Migration**: Replaced Kokoro and StyleTTS2 acoustic backends with KittenTTS (v0.8.1).
 - **Kokoro & StyleTTS2 Excised**: Complete removal of Kokoro and StyleTTS2 backend implementations, tests, models, configuration, voice mappings, and CLI branches.
-- **Dependencies Cleaned**: Excised PyTorch (`torch`) and `torchaudio` direct dependencies. Now runs lightweight via ONNX Runtime and `kittentts` with official Python 3.13+ support.
+- **Dependencies Cleaned**: Excised PyTorch (`torch`) and `torchaudio` direct dependencies. Now runs lightweight via ONNX Runtime and `kittentts` with official Python 3.10 – 3.12 support.
 - **CLI Streamlined**:
   - Removed obsolete top-level `cse voices` and `cse backends` commands.
   - Added `cse models` to list supported KittenTTS models with sizes and parameter counts.

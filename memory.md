@@ -9,9 +9,9 @@
 | Field        | Value                          |
 |--------------|--------------------------------|
 | **Name**     | Claire Speech Engine (CSE)     |
-| **PRD**      | PRD-001 — Project Bootstrap & Foundation |
-| **Goal**     | Production-grade repo scaffold |
-| **Python**   | >= 3.13                         |
+| **Architecture** | 3-Tier: CSE (Orchestration) → CPE (Reasoning) → CAM (Acoustics) |
+| **Architecture Flow** | CSE → CPE → PerformanceGraph → CAM → Speech |
+| **Python**   | >= 3.10, < 3.13 (3.10 – 3.12)  |
 | **Version**  | 1.0.5                          |
 
 ---
@@ -51,17 +51,21 @@ Startup banner uses `rich.Console` (clean text, no timestamps). All other log ou
 During the transition to 1.0.4, Fish Speech was entirely removed from the production framework. Reason: Fish Speech v1.5 enforces heavy, strictly pinned dependencies (`torch<=2.4.1`, `torchaudio`, `pytorch-lightning`, etc.) which caused profound environment instability (e.g., `[WinError 127]` due to mismatched C++ extensions). This severely conflicted with lighter, more flexible backends like Kokoro and StyleTTS2. To preserve the "it just works" philosophy of CSE on Python 3.12, Fish Speech was excised.
 
 ### AD-004: Migration to KittenTTS Backend & Excising PyTorch
-In v1.0.5, Kokoro and StyleTTS2 were completely replaced with KittenTTS. KittenTTS is an ultra-lightweight, CPU-optimized text-to-speech backend powered exclusively by ONNX Runtime. This allowed excising `torch` and `torchaudio` completely from runtime dependencies, eliminating cross-platform C++ extension issues and ensuring a truly lightweight, stable install on modern Python (3.13+).
+In v1.0.5, Kokoro and StyleTTS2 were completely replaced with KittenTTS. KittenTTS is an ultra-lightweight, CPU-optimized text-to-speech backend powered exclusively by ONNX Runtime. This allowed excising `torch` and `torchaudio` completely from runtime dependencies, eliminating cross-platform C++ extension issues and ensuring a truly lightweight, stable install on modern Python (3.10 – 3.12).
 
 ---
 
 ## Active State
 
-| **Current State**| KittenTTS Migration, Direct Dependency Hardening & Benchmarks (v1.0.5) |
-| **Backend**     | KittenTTS (ONNX 0.8.1) |
-| **Torch Status**| Completely Excised  |
-| **CLI Status**   | `cse models` / `cse model` / `cse voice` / `cse setup` / `cse example` |
-| **Blockers**    | None                |
+| Field | Current State |
+|---|---|
+| **Status** | CPE Baseline & KittenTTS Synthesis Hardened (v1.0.5) |
+| **Active Pipeline** | `PerformanceContext` → `MeaningPass` → `IntentPass` → `PlanningPass` → `PerformanceGraph` |
+| **Contract** | `PerformanceGraph` (Contract between CPE and CAM) |
+| **CAM Status** | Native acoustic model of CSE (under development) |
+| **Compatible Backend** | KittenTTS (v0.8.1 ONNX, current compatible implementation while CAM is under development) |
+| **CLI Status** | `cse models` / `cse model` / `cse voice` / `cse setup` / `cse example` |
+| **Blockers** | None |
 
 ---
 
@@ -165,8 +169,8 @@ In v1.0.5, Kokoro and StyleTTS2 were completely replaced with KittenTTS. KittenT
 
 ---
 
-## Current State (Post PRD-013)
-The project validates backend-agnostic architecture through backend capability reporting, dynamic backend switching via the public API (`engine.load_backend`), and standard evaluation prompts. Phase 2 (Infrastructure) is completely proven.
+## Historical Milestone State Archive (Post PRD-013)
+The project validated the initial infrastructure through backend capability reporting, dynamic backend switching via the public API (`engine.load_backend`), and standard evaluation prompts. Phase 2 (Infrastructure) was completed.
 
 ---
 
@@ -288,20 +292,20 @@ The project validates backend-agnostic architecture through backend capability r
 | Sequential Execution      | ✅     | `ReasoningPipeline` tests pass |
 | Input Validation          | ✅     | Rejects invalid context        |
 
-## Verification Results (PRD-018)
+## Verification Results (PRD-018 — Historical: Superseded by PerformanceGraph in PRD-023)
 
 | Criterion                 | Status | Detail                         |
 |---------------------------|--------|--------------------------------|
-| Immutability              | ✅     | `PerformanceRepresentation` frozen dataclass |
+| Immutability              | ✅     | `PerformanceRepresentation` frozen dataclass (Historical) |
 | Data Preservation         | ✅     | Preserves `text` and `character_state` |
 | Input Validation          | ✅     | Rejects states missing `text`  |
 
-## Verification Results (PRD-019)
+## Verification Results (PRD-019 — Historical: Superseded by BaseTranslator(PerformanceGraph) in PRD-024)
 
 | Criterion                 | Status | Detail                         |
 |---------------------------|--------|--------------------------------|
 | Interface Base            | ✅     | `BaseTranslator` ABC defined   |
-| Input Validation          | ✅     | Validates `PerformanceRepresentation` in `process()` |
+| Input Validation          | ✅     | Validates input in `process()` |
 | Backend Independence      | ✅     | No backend-specific logic      |
 
 ## Verification Results (PRD-020)

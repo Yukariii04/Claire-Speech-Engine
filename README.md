@@ -19,7 +19,7 @@ pip install -e ".[dev]"
 ## Quick Start
 
 ### 1. Setup Backend & Pre-download Models
-CSE uses **KittenTTS** (CPU-optimized, ONNX Runtime) as its acoustic synthesis backend on **Python 3.10 – 3.12**.
+CSE currently uses **KittenTTS** (CPU-optimized, ONNX Runtime) as its compatible acoustic synthesis implementation on **Python 3.10 – 3.12** while native CAM is under development.
 
 ```bash
 # Setup KittenTTS dependencies and pre-download models for offline use
@@ -69,13 +69,15 @@ Read these documents to understand the core philosophy and design of the engine:
 ## System Overview & Roadmap
 
 The Claire Speech Engine (CSE) is currently at **v1.0.5**:
-1. **CSE (Framework & Orchestration)**: Runtime lifecycle, streaming controllers, voice registries, and user CLI configuration.
-2. **CPE Baseline (Performance Reasoning Pipeline)**: Initial rule-based passes (`meaning` -> `intent` -> `planning`) that infer basic communicative intent and delivery from punctuation/structure to construct the canonical `PerformanceGraph`.
-3. **Acoustic Synthesis**: Powered by KittenTTS (ONNX) with zero PyTorch runtime overhead.
+1. **CSE (Complete Engine & Orchestration)**: Runtime lifecycle, streaming transport, voice registries, CLI tools, and packaging.
+2. **CPE (Claire Performance Engine)**: Communication and performance reasoning passes (`meaning` -> `intent` -> `planning`) producing the canonical `PerformanceGraph`.
+3. **Acoustic Synthesis**: Currently utilizing KittenTTS (compatible ONNX implementation) while native CAM is under development.
 
-### Future Development:
-1. **Full CPE (Claire Performance Engine)**: Deep semantic understanding, emotion reasoning, context-aware dialogue planning, and rich prosody control beyond basic punctuation heuristics.
-2. **CAM (Claire Acoustic Model)**: Custom in-house acoustic model designed to natively interpret `PerformanceGraph` representations.
+### Intended Project Architecture:
+- **CSE**: Complete speech engine coordinating reasoning and acoustic realization.
+- **CPE**: Rich communication reasoning, intent enrichment, and delivery planning.
+- **PerformanceGraph**: Canonical, immutable contract between CPE and CAM.
+- **CAM (Claire Acoustic Model)**: Native, in-house acoustic renderer designed to interpret the `PerformanceGraph` directly.
 
 ## License
 

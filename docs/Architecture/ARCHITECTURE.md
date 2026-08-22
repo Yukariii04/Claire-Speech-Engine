@@ -1,64 +1,68 @@
 # Claire Speech Engine (CSE) Architecture
 
-This document provides a high-level, visual overview of the Claire Speech Engine (CSE) architecture. CSE is designed to be a highly modular, three-tier system that completely separates the orchestration of speech from the communicative intelligence and the actual acoustic generation.
+This document provides a high-level, visual overview of the Claire Speech Engine (CSE) architecture. CSE is designed to be a three-tier system that completely separates the orchestration of speech from communicative intelligence and acoustic generation.
 
 ## High-Level Architecture
 
-The framework is divided into three major architectural boundaries:
+The system is structured around three primary architectural layers:
 
-1. **CSE (Orchestration & API):** The outer shell. Manages configuration, lifecycle, backends, and API surfaces.
-2. **CPE (Claire Performance Engine):** The brain. Responsible for semantic reasoning, communicative intent, and performance planning.
-3. **Acoustic Backends (e.g., CAM, KittenTTS):** The vocal cords. Responsible for turning the abstract performance plans into actual audio waveforms.
+1. **CSE (Complete Engine & Orchestration):** Coordinates system lifecycle, voice registry, audio transport, and public API surfaces.
+2. **CPE (Claire Performance Engine):** The communication intelligence layer, responsible for semantic reasoning, communicative intent, and performance planning.
+3. **CAM (Claire Acoustic Model):** The native acoustic rendering layer, responsible for synthesizing the `PerformanceGraph` into natural speech.
+
+*(Note: While native CAM is under development, KittenTTS is used as the current compatible acoustic implementation satisfying the `PerformanceGraph` contract via translation.)*
 
 ```mermaid
 flowchart TD
-    User([User Application]) -->|Text & Config| CSE_API
+    User([User Application]) -->|Text & Context| CSE_API
 
     subgraph CSE [Claire Speech Engine - Orchestration Layer]
         CSE_API[SpeechEngine API]
         Runtime[Voice Runtime]
-        Registry[Backend Registry]
         CSE_API --> Runtime
-        Runtime <--> Registry
     end
 
-    subgraph CPE [Claire Performance Engine - Intelligence Layer]
+    subgraph CPE [Claire Performance Engine - Reasoning Layer]
         Meaning[Meaning Pass]
         Intent[Intent Pass]
         Planning[Planning Pass]
-        GraphBuilder[Graph Builder]
+        GraphBuilder[PerformanceGraph Builder]
         
         Runtime --> Meaning
         Meaning --> Intent
         Intent --> Planning
         Planning --> GraphBuilder
-        
-        GraphBuilder -->|Performance Graph| Translator
     end
 
-    subgraph Backends [Acoustic Generation Layer]
-        Translator[Backend Translator]
-        
-        Translator -->|Backend Specific Format| KittenTTS[KittenTTS Backend]
-        Translator -->|Native Graph Support| CAM[CAM - Claire Acoustic Model <br/>*Future*]
-        
-        KittenTTS --> Audio[Audio Waveform]
-        CAM --> Audio
+    subgraph NativeAcoustics [Native Acoustic Layer]
+        CAM[Claire Acoustic Model - CAM]
     end
+
+    subgraph CompatibleAcoustics [Compatible Implementation Layer]
+        Translator[BaseTranslator Adapter]
+        KittenTTS[KittenTTS ONNX Backend]
+        Translator --> KittenTTS
+    end
+
+    GraphBuilder -->|PerformanceGraph Contract| CAM
+    GraphBuilder -.->|PerformanceGraph Contract| Translator
+    
+    CAM --> Audio[Speech Audio Waveform]
+    KittenTTS -.-> Audio
     
     Audio -->|SpeechResult| CSE_API
 ```
 
 ## The Data Flow: Text to Audio
 
-The core philosophy of CSE is that **text is not audio**. Text must be *interpreted* into a performance, and then that performance is synthesized into audio.
+The core philosophy of CSE is that **text is not audio**. Text must be *interpreted* into communicative performance, and then that performance is synthesized into speech.
 
 ```mermaid
 sequenceDiagram
     participant User
     participant CSE as SpeechEngine (CSE)
     participant CPE as Performance Engine (CPE)
-    participant Backend as Acoustic Backend
+    participant CAM as Acoustic Layer (CAM / KittenTTS)
 
     User->>CSE: speak("Are we there yet?")
     activate CSE
@@ -73,15 +77,15 @@ sequenceDiagram
     CPE-->>CSE: Return Immutable PerformanceGraph
     deactivate CPE
     
-    CSE->>Backend: synthesize(PerformanceGraph)
-    activate Backend
+    CSE->>CAM: translate / synthesize(PerformanceGraph)
+    activate CAM
     
-    Note over Backend: 1. Translator parses Graph
-    Note over Backend: 2. Model generates acoustic features
-    Note over Backend: 3. Vocoder produces waveform
+    Note over CAM: 1. Parse PerformanceGraph Contract
+    Note over CAM: 2. Render acoustic speech features
+    Note over CAM: 3. Synthesize waveform
     
-    Backend-->>CSE: Return Audio Data
-    deactivate Backend
+    CAM-->>CSE: Return Audio Data
+    deactivate CAM
     
     CSE-->>User: Return SpeechResult
     deactivate CSE
@@ -90,23 +94,22 @@ sequenceDiagram
 ## Core Components Explained
 
 ### 1. `SpeechEngine` (CSE)
-The `SpeechEngine` is the primary public entry point for applications integrating CSE. It provides a clean, stable API facade over the internal complexity of the framework. Developers interact almost exclusively with this class to load voices, switch backends, and trigger synthesis.
+The `SpeechEngine` is the primary public entry point for applications integrating CSE. It provides a clean, stable API facade over the internal complexity of the engine. Developers interact with this class to load voices, initialize the runtime, and trigger speech generation.
 
 ### 2. Claire Performance Engine (CPE)
-CPE is the "director" of the voice actor. Instead of passing raw text directly to an AI model, CPE intercepts the text and performs a series of **Reasoning Passes**:
-- **Meaning:** What does this text actually mean?
-- **Intent:** What is the speaker trying to achieve? (e.g., questioning, demanding, informing).
-- **Planning:** How should the voice actor physically perform this? (e.g., pitch contour, pacing, emphasis).
+CPE is the communication intelligence layer. Instead of passing raw text directly to an acoustic model, CPE analyzes the text and optional character state through sequential **Reasoning Passes**:
+- **Meaning:** What does this text literally communicate?
+- **Intent:** What communicative goal is being pursued? (e.g., question, exclamation, statement).
+- **Planning:** How should the voice deliver this? (e.g., pitch contour, pacing, emphasis).
 
-CPE produces an immutable, backend-agnostic **Performance Graph**.
+CPE outputs an immutable, backend-independent **PerformanceGraph** that serves as the contract for acoustic rendering.
 
-### 3. Acoustic Backends
-The `AcousticBackend` is an abstract interface that defines how the engine interacts with speech models. 
-- **External Models (e.g., KittenTTS):** These models were not trained natively on the CPE Performance Graph. They rely on a **Translator** inside their CSE integration package to parse the graph and do their best to approximate the requested performance (e.g., mapping pace to generation speed).
-- **CAM (Claire Acoustic Model):** This is the future, purpose-built acoustic model for this project. CAM will be trained *specifically* to consume the rich nodes of the Performance Graph directly, allowing for unparalleled expressive control.
+### 3. Claire Acoustic Model (CAM) & Compatible Implementations
+- **CAM (Claire Acoustic Model):** The native, in-house acoustic model of the Claire Project, designed to consume the nodes and attributes of the `PerformanceGraph` directly for expressive speech synthesis.
+- **Compatible Implementations (e.g., KittenTTS):** Interim or alternative acoustic engines that consume the `PerformanceGraph` through a `BaseTranslator` adapter to satisfy the CAM contract while native CAM is under development.
 
 ## `SpeechResult`
 A `SpeechResult` is the immutable output object returned to the user upon successful (or failed) synthesis. It encapsulates:
-- The generated audio data.
+- The generated audio data and file paths.
 - Success status and error messages.
-- Performance metrics (e.g., time-to-first-byte, total generation time).
+- Performance metrics (e.g., synthesis duration, sample rate).

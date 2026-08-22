@@ -4,7 +4,7 @@
 from cse import SpeechEngine
 
 engine = SpeechEngine()
-engine.load_voice("claire")
+engine.load_voice("Bella")
 speech = engine.speak(
     "Hello from The Claire Speech Engine."
 )
@@ -17,21 +17,30 @@ The Claire Speech Engine (CSE) provides a simple, robust public API for speech s
 
 ## Installation
 
-(Not applicable until packaging is implemented. Currently, CSE is used from source).
+```bash
+pip install claire-speech-engine
+```
 
-Ensure you have the necessary dependencies installed via `pip install -e .`
+Or install from source for local development:
+
+```bash
+git clone https://github.com/Yukariii04/Claire-Speech-Engine.git
+cd Claire-Speech-Engine
+pip install -e ".[dev]"
+```
 
 ## Quick Start
 
 1. Initialize the engine.
-2. Load a voice.
+2. Load a voice (or call `engine.load_voice()` to use your saved preference).
 3. Call `speak()`.
 
 ```python
 from cse import SpeechEngine
 
 engine = SpeechEngine()
-engine.load_voice("claire")
+engine.load_backend("kittentts")
+engine.load_voice("Bella")
 result = engine.speak("Welcome to the public API.")
 
 if result.success:
@@ -58,15 +67,15 @@ engine = SpeechEngine(EngineConfig(overrides={"engine": {"name": "CSE"}}))
 
 ## Voice Loading
 
-Voices are loaded by their unique string ID. Loading a voice prepares the runtime and acoustic backend.
+Voices are loaded by their unique name or alias (e.g., `"Bella"`, `"Bruno"`, `"expr-voice-2-f"`). Calling `load_voice()` without arguments automatically resolves your preferred voice from CLI configuration (`cse voice`).
 
 ```python
 # List available voices
 available_voices = engine.list_voices()
 print(available_voices)
 
-# Load a voice
-engine.load_voice("af_heart")
+# Load a voice by alias or ID
+engine.load_voice("Bella")
 
 # Get metadata of the loaded voice
 current_voice = engine.get_voice()
@@ -89,7 +98,8 @@ The engine's lifecycle should be safely managed. When finished, call `shutdown()
 
 ```python
 engine = SpeechEngine()
-engine.load_voice("claire")
+engine.load_backend("kittentts")
+engine.load_voice("Bella")
 engine.speak("Goodbye.")
 engine.shutdown()
 ```
