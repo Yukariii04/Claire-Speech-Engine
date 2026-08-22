@@ -1,32 +1,40 @@
-# Backend Architecture & Validation
+# Acoustic Backend Architecture & Synthesis Layer
 
-The Claire Speech Engine (CSE) is designed to be **backend-agnostic**. The core engine orchestrates text processing, intermediate representation (CIR), and performance compilation, but the final audio synthesis is delegated to an `AcousticBackend`.
+The Claire Speech Engine (CSE) coordinates text processing and communication reasoning via the Claire Performance Engine (CPE) to produce an immutable `PerformanceGraph`. The native and intended acoustic model of CSE is CAM (Claire Acoustic Model), which renders the `PerformanceGraph` into speech waveforms.
 
-This ensures that the engine can drive any compatible TTS model without requiring architectural changes.
+```text
+CSE
+ └── CPE
+      └── PerformanceGraph (Contract)
+           └── CAM
+                └── Speech
+```
 
-## Supported Backends
+While native CAM is under development, KittenTTS serves as the current compatible acoustic implementation that satisfies the CAM contract via translation. A lightweight Dummy backend is also available for framework testing and pipeline validation.
 
-| Backend | Status | Notes |
+## Supported Acoustic Implementations
+
+| Backend | Status | Role |
 |---|---|---|
-| `dummy` | Active | Used for testing and validation without audio models. |
-| `kittentts` | Active | Primary CPU-optimized ONNX backend. Requires `kittentts`. |
+| `kittentts` | Active | Current compatible acoustic implementation (v0.8.1 ONNX). Translates `PerformanceGraph` to audio. |
+| `dummy` | Active | Framework testing backend without audio models. |
 
-## Backend Switching
+## Runtime Backend Invocation
 
-Switching backends is done seamlessly via the public API:
+To invoke the current compatible acoustic implementation at runtime:
 
 ```python
 from cse import SpeechEngine
 
 engine = SpeechEngine()
-engine.load_backend("kittentts")  # Switches the active backend
+engine.load_backend("kittentts")  # Loads KittenTTS compatible implementation
 engine.load_voice("expr-voice-2-f")
 speech = engine.speak("Hello world.")
 ```
 
 ## Capability Reporting
 
-Applications can query a backend's capabilities at runtime to adapt their workflows:
+Applications can query the loaded synthesis backend's capabilities at runtime to adapt their workflows:
 
 ```python
 caps = engine.get_backend_capabilities()
@@ -35,20 +43,20 @@ print(caps["emotion"])             # "limited", "full", "none"
 print(caps["sample_rate"])         # e.g., 24000
 ```
 
-## Implementing a New Backend
+## Implementing a Compatible Adapter
 
-To implement a new backend:
+To implement an acoustic adapter that satisfies the CAM contract:
 1. Inherit from `cse.acoustic.backend.interface.AcousticBackend`.
 2. Implement `initialize()`, `shutdown()`, `translate()`, `get_capabilities()`, and `validate_graph()`.
-3. Ensure you return `BackendCapabilities` detailing the backend's limitations.
+3. Ensure you return `BackendCapabilities` detailing supported features.
 4. Register the backend in `engine.load_backend()` or `VoiceRuntime`.
 
-## Evaluation Methodology
+## Evaluation Utilities
 
-Use the included evaluation scripts to compare output across backends:
+Use the evaluation script to verify acoustic synthesis across standard prompts:
 
 ```bash
 python evaluation/compare.py
 ```
 
-This runs a standard set of prompts (`evaluation/prompts/standard.txt`) across all registered backends and places the generated audio in `evaluation/outputs/<backend>/`.
+This runs standard prompts (`evaluation/prompts/standard.txt`) through registered synthesis adapters and places output in `evaluation/outputs/<backend>/`.

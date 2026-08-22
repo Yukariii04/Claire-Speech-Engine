@@ -10,19 +10,17 @@
 # Status          : Ratified
 #
 ###############################################################################
-````
-
 # 1. Preamble
 
 The Claire Project exists to advance expressive speech generation by separating communication understanding from acoustic synthesis.
 
 The project is built around three independent but complementary components:
 
-- Claire Speech Engine (CSE) — the framework.
-- Claire Performance Engine (CPE) — the communication and performance intelligence.
-- Claire Acoustic Model (CAM) — the speech renderer.
+- Claire Speech Engine (CSE) — the complete speech engine and runtime infrastructure.
+- Claire Performance Engine (CPE) — the communication and performance reasoning layer.
+- Claire Acoustic Model (CAM) — the native speech renderer.
 
-Together they form an open, extensible platform for expressive text-to-speech research and development.
+Together they form the complete system for expressive text-to-speech research and development.
 
 -------------------------------------------------------------------------------
 
@@ -46,21 +44,20 @@ The Claire Project consists of three independent layers.
 
 Responsible for:
 
-- Runtime
+- Runtime lifecycle
 - Public API
-- CLI
-- Backend abstraction
-- Streaming
-- Voice management
-- Packaging
+- CLI tools
+- Voice and model management
+- Streaming audio transport
+- Packaging and orchestration
 
-CSE does **not** understand communication.
+CSE does **not** understand communication reasoning.
 
 ---
 
 ## Claire Performance Engine (CPE)
 
-Responsible for transforming text and optional contextual information into a backend-independent representation of speech performance.
+Responsible for transforming text and optional contextual information into an immutable PerformanceGraph.
 
 CPE generates no audio.
 
@@ -68,39 +65,37 @@ CPE generates no audio.
 
 ## Claire Acoustic Model (CAM)
 
-Responsible for transforming a performance representation into natural speech.
+Responsible for transforming the PerformanceGraph into natural speech.
 
 CAM performs no communication reasoning.
 
 -------------------------------------------------------------------------------
 
-# 4. Article III — Backend Philosophy
+# 4. Article III — Acoustic Realization & Implementation Philosophy
 
-Claire Speech Engine is backend-agnostic.
+The native and intended acoustic model of the Claire Project is **CAM** (Claire Acoustic Model).
 
-Claire is the **reference backend**.
+CAM is the native reference implementation designed to render the complete PerformanceGraph specification into speech.
 
-Other acoustic models are **compatible backends**.
+Other acoustic models are **compatible backends** (such as KittenTTS) that may consume the PerformanceGraph contract via translation when native CAM is not yet available or when specific runtime environments require them.
 
-Compatible backends are welcome while they remain maintainable and useful.
-
-They are not required to support every CPE capability.
+Compatible backends are welcome while they remain maintainable and useful, but they do not define the core architecture of CSE.
 
 -------------------------------------------------------------------------------
 
 # 5. Article IV — Performance Independence
 
-The representation of speech performance must remain independent of every acoustic model.
+The representation of speech performance (the PerformanceGraph) must remain independent of every acoustic model implementation.
 
 No part of CPE may depend on:
 
 - KittenTTS
-- Claire
-- Any future renderer
+- CAM implementation details
+- Any specific acoustic renderer
 
-Performance is defined once.
+Performance is defined once by CPE as an immutable PerformanceGraph.
 
-Renderers interpret it according to their capabilities.
+Renderers interpret it according to the CAM contract.
 
 -------------------------------------------------------------------------------
 
@@ -132,19 +127,19 @@ CPE infers the required performance from the text alone.
 
 # 7. Article VI — Stable Public API
 
-Applications written against CSE should not require modification when switching between compatible backends.
+Applications written against CSE interact with a stable, high-level speech API.
 
-Changing the backend should not require changing application logic.
+Internal evolution of reasoning passes or acoustic translation should not require modifying application code.
 
 -------------------------------------------------------------------------------
 
-# 8. Article VII — Claire as Reference Backend
+# 8. Article VII — CAM as Native Model
 
-Claire is the first backend expected to implement the complete CPE specification.
+CAM is designed to implement the complete PerformanceGraph specification without information loss.
 
-New expressive capabilities are designed with Claire in mind.
+New expressive capabilities in CPE are designed with native CAM realization in mind.
 
-Compatible backends may approximate those capabilities where technically possible.
+Compatible backends approximate those capabilities where technically possible via translation.
 
 -------------------------------------------------------------------------------
 
