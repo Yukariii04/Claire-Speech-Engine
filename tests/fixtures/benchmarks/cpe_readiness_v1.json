@@ -1,0 +1,4918 @@
+[
+  {
+    "id": "CANONICAL-001",
+    "input": "Hello there.",
+    "character_state": null,
+    "expected": {
+      "text": "Hello there.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Hello there."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-002",
+    "input": "How are you?",
+    "character_state": null,
+    "expected": {
+      "text": "How are you?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "How are you?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-003",
+    "input": "Don't do that!",
+    "character_state": null,
+    "expected": {
+      "text": "Don't do that!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Don't do that!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-004",
+    "input": "Maybe you're right...",
+    "character_state": null,
+    "expected": {
+      "text": "Maybe you're right...",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Maybe you're right..."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-005",
+    "input": "[sarcastic] Oh yeah, that's just great.",
+    "character_state": null,
+    "expected": {
+      "text": "Oh yeah, that's just great.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Oh yeah, that's just great."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "flat",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "flat",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-006",
+    "input": "I guess you're right?",
+    "character_state": null,
+    "expected": {
+      "text": "I guess you're right?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I guess you're right?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-007",
+    "input": "STOP!!!",
+    "character_state": null,
+    "expected": {
+      "text": "STOP!!!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "STOP!!!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-008",
+    "input": "Would you mind helping me?",
+    "character_state": null,
+    "expected": {
+      "text": "Would you mind helping me?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Would you mind helping me?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-009",
+    "input": "Seriously, you're leaving?",
+    "character_state": null,
+    "expected": {
+      "text": "Seriously, you're leaving?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Seriously, you're leaving?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "CANONICAL-010",
+    "input": "I understand.",
+    "character_state": null,
+    "expected": {
+      "text": "I understand.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I understand."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-001",
+    "input": "Really!!!!",
+    "character_state": null,
+    "expected": {
+      "text": "Really!!!!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Really!!!!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-002",
+    "input": "Wait, what?!?",
+    "character_state": null,
+    "expected": {
+      "text": "Wait, what?!?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Wait, what?!?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-003",
+    "input": "Wait! Don't go yet.",
+    "character_state": null,
+    "expected": {
+      "text": "Wait! Don't go yet.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Wait! Don't go yet."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-004",
+    "input": "Can we talk? I hope so.",
+    "character_state": null,
+    "expected": {
+      "text": "Can we talk? I hope so.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Can we talk? I hope so."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-005",
+    "input": "Is this for real?!",
+    "character_state": null,
+    "expected": {
+      "text": "Is this for real?!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Is this for real?!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-006",
+    "input": "Watch out!!!",
+    "character_state": null,
+    "expected": {
+      "text": "Watch out!!!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Watch out!!!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-007",
+    "input": "I am not sure...",
+    "character_state": null,
+    "expected": {
+      "text": "I am not sure...",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I am not sure..."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-008",
+    "input": "Well... let us see.",
+    "character_state": null,
+    "expected": {
+      "text": "Well... let us see.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Well... let us see."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-009",
+    "input": "Wait... no!",
+    "character_state": null,
+    "expected": {
+      "text": "Wait... no!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Wait... no!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-010",
+    "input": "Are you sure??",
+    "character_state": null,
+    "expected": {
+      "text": "Are you sure??",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Are you sure??"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-011",
+    "input": "I guess this will work.",
+    "character_state": null,
+    "expected": {
+      "text": "I guess this will work.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I guess this will work."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-012",
+    "input": "It is sort of strange.",
+    "character_state": null,
+    "expected": {
+      "text": "It is sort of strange.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "It is sort of strange."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-013",
+    "input": "I kind of like it.",
+    "character_state": null,
+    "expected": {
+      "text": "I kind of like it.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I kind of like it."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-014",
+    "input": "Maybe tomorrow is better.",
+    "character_state": null,
+    "expected": {
+      "text": "Maybe tomorrow is better.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Maybe tomorrow is better."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-015",
+    "input": "This is literally impossible.",
+    "character_state": null,
+    "expected": {
+      "text": "This is literally impossible.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "This is literally impossible."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-016",
+    "input": "I actually finished early.",
+    "character_state": null,
+    "expected": {
+      "text": "I actually finished early.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I actually finished early."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-017",
+    "input": "I seriously need a break.",
+    "character_state": null,
+    "expected": {
+      "text": "I seriously need a break.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I seriously need a break."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-018",
+    "input": "Please close the door.",
+    "character_state": null,
+    "expected": {
+      "text": "Please close the door.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please close the door."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-019",
+    "input": "Would you mind closing the door?",
+    "character_state": null,
+    "expected": {
+      "text": "Would you mind closing the door?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Would you mind closing the door?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-020",
+    "input": "Please, actually do this.",
+    "character_state": null,
+    "expected": {
+      "text": "Please, actually do this.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please, actually do this."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-021",
+    "input": "Please, maybe consider it.",
+    "character_state": null,
+    "expected": {
+      "text": "Please, maybe consider it.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please, maybe consider it."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-022",
+    "input": "I actually kind of agree.",
+    "character_state": null,
+    "expected": {
+      "text": "I actually kind of agree.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I actually kind of agree."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-023",
+    "input": "Please, seriously, maybe stop.",
+    "character_state": null,
+    "expected": {
+      "text": "Please, seriously, maybe stop.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please, seriously, maybe stop."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-024",
+    "input": "Would you mind actually helping?",
+    "character_state": null,
+    "expected": {
+      "text": "Would you mind actually helping?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Would you mind actually helping?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-025",
+    "input": "I guess so...",
+    "character_state": null,
+    "expected": {
+      "text": "I guess so...",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I guess so..."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-026",
+    "input": "Actually...",
+    "character_state": null,
+    "expected": {
+      "text": "Actually...",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Actually..."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-027",
+    "input": "Please...",
+    "character_state": null,
+    "expected": {
+      "text": "Please...",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please..."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-028",
+    "input": "Maybe run!",
+    "character_state": null,
+    "expected": {
+      "text": "Maybe run!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Maybe run!"
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-029",
+    "input": "[sarcastic] Oh, did you really think of that all by yourself?",
+    "character_state": null,
+    "expected": {
+      "text": "Oh, did you really think of that all by yourself?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Oh, did you really think of that all by yourself?"
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "flat",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "flat",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-030",
+    "input": "[happy] We did it.",
+    "character_state": null,
+    "expected": {
+      "text": "We did it.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We did it."
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "rising",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "rising",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-031",
+    "input": "[angry] Maybe you should leave?",
+    "character_state": null,
+    "expected": {
+      "text": "Maybe you should leave?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Maybe you should leave?"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-032",
+    "input": "[whisper] DO NOT MAKE A SOUND",
+    "character_state": null,
+    "expected": {
+      "text": "DO NOT MAKE A SOUND",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "DO NOT MAKE A SOUND"
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-033",
+    "input": "[emphatic] Please listen carefully.",
+    "character_state": null,
+    "expected": {
+      "text": "Please listen carefully.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please listen carefully."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "ADV-034",
+    "input": "[unknown] This should fail.",
+    "character_state": null,
+    "expected_error": "ExplicitTagError"
+  },
+  {
+    "id": "ADV-035",
+    "input": "[Sarcastic] This should fail.",
+    "character_state": null,
+    "expected_error": "ExplicitTagError"
+  },
+  {
+    "id": "ADV-036",
+    "input": "[ sarcastic ] This should fail.",
+    "character_state": null,
+    "expected_error": "ExplicitTagError"
+  },
+  {
+    "id": "ADV-037",
+    "input": "[sarcastic ] This should fail.",
+    "character_state": null,
+    "expected_error": "ExplicitTagError"
+  },
+  {
+    "id": "ADV-038",
+    "input": "[ sarcastic] This should fail.",
+    "character_state": null,
+    "expected_error": "ExplicitTagError"
+  },
+  {
+    "id": "ADV-039",
+    "input": "[] This should fail.",
+    "character_state": null,
+    "expected_error": "ExplicitTagError"
+  },
+  {
+    "id": "ADV-040",
+    "input": "[happy] I feel [excited] today!",
+    "character_state": null,
+    "expected": {
+      "text": "I feel [excited] today!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I feel [excited] today!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "rising",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "rising",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-001",
+    "input": "The sun rises in the east.",
+    "character_state": null,
+    "expected": {
+      "text": "The sun rises in the east.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The sun rises in the east."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-002",
+    "input": "Coffee is ready on the counter.",
+    "character_state": null,
+    "expected": {
+      "text": "Coffee is ready on the counter.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Coffee is ready on the counter."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-003",
+    "input": "The meeting starts at two in the afternoon.",
+    "character_state": null,
+    "expected": {
+      "text": "The meeting starts at two in the afternoon.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The meeting starts at two in the afternoon."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-004",
+    "input": "We should review the documentation first.",
+    "character_state": null,
+    "expected": {
+      "text": "We should review the documentation first.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We should review the documentation first."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-005",
+    "input": "The weather forecast predicts rain tomorrow.",
+    "character_state": null,
+    "expected": {
+      "text": "The weather forecast predicts rain tomorrow.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The weather forecast predicts rain tomorrow."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-006",
+    "input": "All unit tests completed successfully.",
+    "character_state": null,
+    "expected": {
+      "text": "All unit tests completed successfully.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "All unit tests completed successfully."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-007",
+    "input": "She walked to the library after school.",
+    "character_state": null,
+    "expected": {
+      "text": "She walked to the library after school.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "She walked to the library after school."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-008",
+    "input": "The project repository contains all source code.",
+    "character_state": null,
+    "expected": {
+      "text": "The project repository contains all source code.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The project repository contains all source code."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-009",
+    "input": "It takes about twenty minutes to reach downtown.",
+    "character_state": null,
+    "expected": {
+      "text": "It takes about twenty minutes to reach downtown.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "It takes about twenty minutes to reach downtown."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-010",
+    "input": "The system operates within normal parameters.",
+    "character_state": null,
+    "expected": {
+      "text": "The system operates within normal parameters.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The system operates within normal parameters."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-011",
+    "input": "I have saved the latest draft on the server.",
+    "character_state": null,
+    "expected": {
+      "text": "I have saved the latest draft on the server.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I have saved the latest draft on the server."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-012",
+    "input": "There is a new message in your inbox.",
+    "character_state": null,
+    "expected": {
+      "text": "There is a new message in your inbox.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "There is a new message in your inbox."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-013",
+    "input": "The train arrives on platform four.",
+    "character_state": null,
+    "expected": {
+      "text": "The train arrives on platform four.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The train arrives on platform four."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-014",
+    "input": "Water boils at one hundred degrees Celsius.",
+    "character_state": null,
+    "expected": {
+      "text": "Water boils at one hundred degrees Celsius.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Water boils at one hundred degrees Celsius."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-015",
+    "input": "The package was delivered this morning.",
+    "character_state": null,
+    "expected": {
+      "text": "The package was delivered this morning.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The package was delivered this morning."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-016",
+    "input": "He prefers drinking tea instead of coffee.",
+    "character_state": null,
+    "expected": {
+      "text": "He prefers drinking tea instead of coffee.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "He prefers drinking tea instead of coffee."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-017",
+    "input": "The battery level is currently at eighty percent.",
+    "character_state": null,
+    "expected": {
+      "text": "The battery level is currently at eighty percent.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The battery level is currently at eighty percent."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-018",
+    "input": "The library closes at eight tonight.",
+    "character_state": null,
+    "expected": {
+      "text": "The library closes at eight tonight.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The library closes at eight tonight."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-019",
+    "input": "We are preparing for the upcoming conference.",
+    "character_state": null,
+    "expected": {
+      "text": "We are preparing for the upcoming conference.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We are preparing for the upcoming conference."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-020",
+    "input": "The configuration file was updated yesterday.",
+    "character_state": null,
+    "expected": {
+      "text": "The configuration file was updated yesterday.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The configuration file was updated yesterday."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-021",
+    "input": "The quick brown fox jumps over the lazy dog.",
+    "character_state": null,
+    "expected": {
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The quick brown fox jumps over the lazy dog."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-022",
+    "input": "Silence fell across the quiet courtyard.",
+    "character_state": null,
+    "expected": {
+      "text": "Silence fell across the quiet courtyard.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Silence fell across the quiet courtyard."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-023",
+    "input": "The engine runs quietly and smoothly.",
+    "character_state": null,
+    "expected": {
+      "text": "The engine runs quietly and smoothly.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The engine runs quietly and smoothly."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-024",
+    "input": "They decided to take the scenic route home.",
+    "character_state": null,
+    "expected": {
+      "text": "They decided to take the scenic route home.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "They decided to take the scenic route home."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-025",
+    "input": "A gentle breeze drifted through the open window.",
+    "character_state": null,
+    "expected": {
+      "text": "A gentle breeze drifted through the open window.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "A gentle breeze drifted through the open window."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-026",
+    "input": "The report summarizes our findings clearly.",
+    "character_state": null,
+    "expected": {
+      "text": "The report summarizes our findings clearly.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The report summarizes our findings clearly."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-027",
+    "input": "Everything is proceeding according to the plan.",
+    "character_state": null,
+    "expected": {
+      "text": "Everything is proceeding according to the plan.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Everything is proceeding according to the plan."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-028",
+    "input": "The flowers bloom early in springtime.",
+    "character_state": null,
+    "expected": {
+      "text": "The flowers bloom early in springtime.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The flowers bloom early in springtime."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-029",
+    "input": "Data synchronization finished without errors.",
+    "character_state": null,
+    "expected": {
+      "text": "Data synchronization finished without errors.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Data synchronization finished without errors."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-030",
+    "input": "Our team meets every Monday morning.",
+    "character_state": null,
+    "expected": {
+      "text": "Our team meets every Monday morning.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Our team meets every Monday morning."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-031",
+    "input": "The software build completed in three seconds.",
+    "character_state": null,
+    "expected": {
+      "text": "The software build completed in three seconds.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The software build completed in three seconds."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-032",
+    "input": "She found the missing keys on the kitchen table.",
+    "character_state": null,
+    "expected": {
+      "text": "She found the missing keys on the kitchen table.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "She found the missing keys on the kitchen table."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-033",
+    "input": "The exhibition opens to the public next week.",
+    "character_state": null,
+    "expected": {
+      "text": "The exhibition opens to the public next week.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The exhibition opens to the public next week."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-034",
+    "input": "He explained the concept with great clarity.",
+    "character_state": null,
+    "expected": {
+      "text": "He explained the concept with great clarity.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "He explained the concept with great clarity."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-035",
+    "input": "The new bridge connects the two islands.",
+    "character_state": null,
+    "expected": {
+      "text": "The new bridge connects the two islands.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The new bridge connects the two islands."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-036",
+    "input": "What time is it right now?",
+    "character_state": null,
+    "expected": {
+      "text": "What time is it right now?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "What time is it right now?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-037",
+    "input": "Where did you put the car keys?",
+    "character_state": null,
+    "expected": {
+      "text": "Where did you put the car keys?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Where did you put the car keys?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-038",
+    "input": "Who is presenting at the workshop today?",
+    "character_state": null,
+    "expected": {
+      "text": "Who is presenting at the workshop today?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Who is presenting at the workshop today?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-039",
+    "input": "Why did the application restart unexpectedly?",
+    "character_state": null,
+    "expected": {
+      "text": "Why did the application restart unexpectedly?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Why did the application restart unexpectedly?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-040",
+    "input": "When will the next release be available?",
+    "character_state": null,
+    "expected": {
+      "text": "When will the next release be available?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "When will the next release be available?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-041",
+    "input": "Can you hear me clearly?",
+    "character_state": null,
+    "expected": {
+      "text": "Can you hear me clearly?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Can you hear me clearly?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-042",
+    "input": "Is there any tea left in the pot?",
+    "character_state": null,
+    "expected": {
+      "text": "Is there any tea left in the pot?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Is there any tea left in the pot?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-043",
+    "input": "Did you receive the email I sent?",
+    "character_state": null,
+    "expected": {
+      "text": "Did you receive the email I sent?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Did you receive the email I sent?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-044",
+    "input": "Are we ready to begin the demonstration?",
+    "character_state": null,
+    "expected": {
+      "text": "Are we ready to begin the demonstration?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Are we ready to begin the demonstration?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-045",
+    "input": "Which option do you recommend?",
+    "character_state": null,
+    "expected": {
+      "text": "Which option do you recommend?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Which option do you recommend?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-046",
+    "input": "How much memory does the process consume?",
+    "character_state": null,
+    "expected": {
+      "text": "How much memory does the process consume?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "How much memory does the process consume?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-047",
+    "input": "Have you visited the new museum downtown?",
+    "character_state": null,
+    "expected": {
+      "text": "Have you visited the new museum downtown?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Have you visited the new museum downtown?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-048",
+    "input": "Will it rain during the afternoon commute?",
+    "character_state": null,
+    "expected": {
+      "text": "Will it rain during the afternoon commute?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Will it rain during the afternoon commute?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-049",
+    "input": "Do you know where the nearest station is located?",
+    "character_state": null,
+    "expected": {
+      "text": "Do you know where the nearest station is located?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Do you know where the nearest station is located?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-050",
+    "input": "Should we schedule another meeting for Friday?",
+    "character_state": null,
+    "expected": {
+      "text": "Should we schedule another meeting for Friday?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Should we schedule another meeting for Friday?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-051",
+    "input": "Could you turn down the volume slightly?",
+    "character_state": null,
+    "expected": {
+      "text": "Could you turn down the volume slightly?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Could you turn down the volume slightly?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-052",
+    "input": "Was the package delivered on time?",
+    "character_state": null,
+    "expected": {
+      "text": "Was the package delivered on time?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Was the package delivered on time?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-053",
+    "input": "Were you able to find the document?",
+    "character_state": null,
+    "expected": {
+      "text": "Were you able to find the document?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Were you able to find the document?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-054",
+    "input": "Does this computer support hardware acceleration?",
+    "character_state": null,
+    "expected": {
+      "text": "Does this computer support hardware acceleration?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Does this computer support hardware acceleration?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-055",
+    "input": "What is the capital of France?",
+    "character_state": null,
+    "expected": {
+      "text": "What is the capital of France?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "What is the capital of France?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-056",
+    "input": "Where are the backup files stored?",
+    "character_state": null,
+    "expected": {
+      "text": "Where are the backup files stored?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Where are the backup files stored?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-057",
+    "input": "Who wrote this symphony?",
+    "character_state": null,
+    "expected": {
+      "text": "Who wrote this symphony?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Who wrote this symphony?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-058",
+    "input": "Why is the sky blue during the day?",
+    "character_state": null,
+    "expected": {
+      "text": "Why is the sky blue during the day?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Why is the sky blue during the day?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-059",
+    "input": "How does the caching mechanism operate?",
+    "character_state": null,
+    "expected": {
+      "text": "How does the caching mechanism operate?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "How does the caching mechanism operate?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-060",
+    "input": "Is everyone present in the room?",
+    "character_state": null,
+    "expected": {
+      "text": "Is everyone present in the room?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Is everyone present in the room?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-061",
+    "input": "Can we order lunch now?",
+    "character_state": null,
+    "expected": {
+      "text": "Can we order lunch now?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Can we order lunch now?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-062",
+    "input": "Did the compilation pass without warnings?",
+    "character_state": null,
+    "expected": {
+      "text": "Did the compilation pass without warnings?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Did the compilation pass without warnings?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-063",
+    "input": "Are you available for a quick call?",
+    "character_state": null,
+    "expected": {
+      "text": "Are you available for a quick call?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Are you available for a quick call?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-064",
+    "input": "What did the customer say in response?",
+    "character_state": null,
+    "expected": {
+      "text": "What did the customer say in response?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "What did the customer say in response?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-065",
+    "input": "Where should we go for dinner tonight?",
+    "character_state": null,
+    "expected": {
+      "text": "Where should we go for dinner tonight?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Where should we go for dinner tonight?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-066",
+    "input": "Will you be able to attend the seminar?",
+    "character_state": null,
+    "expected": {
+      "text": "Will you be able to attend the seminar?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Will you be able to attend the seminar?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-067",
+    "input": "Have all dependencies been installed?",
+    "character_state": null,
+    "expected": {
+      "text": "Have all dependencies been installed?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Have all dependencies been installed?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-068",
+    "input": "Do you have the correct network credentials?",
+    "character_state": null,
+    "expected": {
+      "text": "Do you have the correct network credentials?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Do you have the correct network credentials?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-069",
+    "input": "Should we deploy the update this evening?",
+    "character_state": null,
+    "expected": {
+      "text": "Should we deploy the update this evening?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Should we deploy the update this evening?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-070",
+    "input": "How long will the migration take?",
+    "character_state": null,
+    "expected": {
+      "text": "How long will the migration take?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "How long will the migration take?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-071",
+    "input": "Look at that magnificent rainbow!",
+    "character_state": null,
+    "expected": {
+      "text": "Look at that magnificent rainbow!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Look at that magnificent rainbow!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-072",
+    "input": "That was an incredible performance!",
+    "character_state": null,
+    "expected": {
+      "text": "That was an incredible performance!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "That was an incredible performance!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-073",
+    "input": "Congratulations on your well-deserved promotion!",
+    "character_state": null,
+    "expected": {
+      "text": "Congratulations on your well-deserved promotion!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Congratulations on your well-deserved promotion!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-074",
+    "input": "Be careful around that sharp edge!",
+    "character_state": null,
+    "expected": {
+      "text": "Be careful around that sharp edge!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Be careful around that sharp edge!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-075",
+    "input": "What a fantastic surprise to see you here!",
+    "character_state": null,
+    "expected": {
+      "text": "What a fantastic surprise to see you here!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "What a fantastic surprise to see you here!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-076",
+    "input": "We finally solved the puzzle!",
+    "character_state": null,
+    "expected": {
+      "text": "We finally solved the puzzle!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We finally solved the puzzle!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-077",
+    "input": "Watch your step on the icy pavement!",
+    "character_state": null,
+    "expected": {
+      "text": "Watch your step on the icy pavement!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Watch your step on the icy pavement!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-078",
+    "input": "That goal was absolutely spectacular!",
+    "character_state": null,
+    "expected": {
+      "text": "That goal was absolutely spectacular!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "That goal was absolutely spectacular!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-079",
+    "input": "Hurry up before the gates close!",
+    "character_state": null,
+    "expected": {
+      "text": "Hurry up before the gates close!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Hurry up before the gates close!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-080",
+    "input": "Welcome to the Claire Speech Engine!",
+    "character_state": null,
+    "expected": {
+      "text": "Welcome to the Claire Speech Engine!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Welcome to the Claire Speech Engine!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-081",
+    "input": "The view from the mountain summit is breathtaking!",
+    "character_state": null,
+    "expected": {
+      "text": "The view from the mountain summit is breathtaking!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The view from the mountain summit is breathtaking!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-082",
+    "input": "Never underestimate the power of perseverance!",
+    "character_state": null,
+    "expected": {
+      "text": "Never underestimate the power of perseverance!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Never underestimate the power of perseverance!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-083",
+    "input": "What a brilliant solution to our problem!",
+    "character_state": null,
+    "expected": {
+      "text": "What a brilliant solution to our problem!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "What a brilliant solution to our problem!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-084",
+    "input": "Do not touch the hot stove!",
+    "character_state": null,
+    "expected": {
+      "text": "Do not touch the hot stove!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Do not touch the hot stove!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-085",
+    "input": "Happy birthday to you!",
+    "character_state": null,
+    "expected": {
+      "text": "Happy birthday to you!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Happy birthday to you!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-086",
+    "input": "We won the championship!",
+    "character_state": null,
+    "expected": {
+      "text": "We won the championship!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We won the championship!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-087",
+    "input": "That is unbelievable!",
+    "character_state": null,
+    "expected": {
+      "text": "That is unbelievable!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "That is unbelievable!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-088",
+    "input": "Run for shelter immediately!",
+    "character_state": null,
+    "expected": {
+      "text": "Run for shelter immediately!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Run for shelter immediately!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-089",
+    "input": "You did an outstanding job today!",
+    "character_state": null,
+    "expected": {
+      "text": "You did an outstanding job today!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "You did an outstanding job today!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-090",
+    "input": "Listen to this marvelous song!",
+    "character_state": null,
+    "expected": {
+      "text": "Listen to this marvelous song!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Listen to this marvelous song!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-091",
+    "input": "Yes.",
+    "character_state": null,
+    "expected": {
+      "text": "Yes.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Yes."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-092",
+    "input": "No.",
+    "character_state": null,
+    "expected": {
+      "text": "No.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "No."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-093",
+    "input": "Sure.",
+    "character_state": null,
+    "expected": {
+      "text": "Sure.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Sure."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-094",
+    "input": "Really?",
+    "character_state": null,
+    "expected": {
+      "text": "Really?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Really?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-095",
+    "input": "Why?",
+    "character_state": null,
+    "expected": {
+      "text": "Why?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Why?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-096",
+    "input": "When?",
+    "character_state": null,
+    "expected": {
+      "text": "When?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "When?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-097",
+    "input": "Who?",
+    "character_state": null,
+    "expected": {
+      "text": "Who?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Who?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-098",
+    "input": "Go!",
+    "character_state": null,
+    "expected": {
+      "text": "Go!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Go!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-099",
+    "input": "Wait!",
+    "character_state": null,
+    "expected": {
+      "text": "Wait!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Wait!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-100",
+    "input": "Stop!",
+    "character_state": null,
+    "expected": {
+      "text": "Stop!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Stop!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-101",
+    "input": "Thanks.",
+    "character_state": null,
+    "expected": {
+      "text": "Thanks.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Thanks."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-102",
+    "input": "Goodbye.",
+    "character_state": null,
+    "expected": {
+      "text": "Goodbye.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Goodbye."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-103",
+    "input": "Alright.",
+    "character_state": null,
+    "expected": {
+      "text": "Alright.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Alright."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-104",
+    "input": "Exactly.",
+    "character_state": null,
+    "expected": {
+      "text": "Exactly.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Exactly."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-105",
+    "input": "Indeed.",
+    "character_state": null,
+    "expected": {
+      "text": "Indeed.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Indeed."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-106",
+    "input": "Although it was raining heavily outside, we decided to continue our walk along the river.",
+    "character_state": null,
+    "expected": {
+      "text": "Although it was raining heavily outside, we decided to continue our walk along the river.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Although it was raining heavily outside, we decided to continue our walk along the river."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-107",
+    "input": "When the sun dipped below the horizon, the city lights began to illuminate the harbor.",
+    "character_state": null,
+    "expected": {
+      "text": "When the sun dipped below the horizon, the city lights began to illuminate the harbor.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "When the sun dipped below the horizon, the city lights began to illuminate the harbor."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-108",
+    "input": "If you need any additional assistance with the setup, please consult the installation guide.",
+    "character_state": null,
+    "expected": {
+      "text": "If you need any additional assistance with the setup, please consult the installation guide.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "If you need any additional assistance with the setup, please consult the installation guide."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-109",
+    "input": "After careful consideration of all factors, the committee approved the architectural proposal.",
+    "character_state": null,
+    "expected": {
+      "text": "After careful consideration of all factors, the committee approved the architectural proposal.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "After careful consideration of all factors, the committee approved the architectural proposal."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-110",
+    "input": "Since we arrived earlier than anticipated, we had plenty of time to explore the historic district.",
+    "character_state": null,
+    "expected": {
+      "text": "Since we arrived earlier than anticipated, we had plenty of time to explore the historic district.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Since we arrived earlier than anticipated, we had plenty of time to explore the historic district."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-111",
+    "input": "Could you please verify whether all required configuration files are in the proper directory?",
+    "character_state": null,
+    "expected": {
+      "text": "Could you please verify whether all required configuration files are in the proper directory?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Could you please verify whether all required configuration files are in the proper directory?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-112",
+    "input": "Whenever the network connection drops unexpectedly, the service attempts an automatic reconnect.",
+    "character_state": null,
+    "expected": {
+      "text": "Whenever the network connection drops unexpectedly, the service attempts an automatic reconnect.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Whenever the network connection drops unexpectedly, the service attempts an automatic reconnect."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-113",
+    "input": "Because the ambient temperature was unusually high, the cooling fans operated at maximum capacity.",
+    "character_state": null,
+    "expected": {
+      "text": "Because the ambient temperature was unusually high, the cooling fans operated at maximum capacity.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Because the ambient temperature was unusually high, the cooling fans operated at maximum capacity."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-114",
+    "input": "While we were discussing the technical requirements, the engineering team prepared a preliminary draft.",
+    "character_state": null,
+    "expected": {
+      "text": "While we were discussing the technical requirements, the engineering team prepared a preliminary draft.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "While we were discussing the technical requirements, the engineering team prepared a preliminary draft."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-115",
+    "input": "If everything proceeds according to schedule, we should finish the migration before midnight.",
+    "character_state": null,
+    "expected": {
+      "text": "If everything proceeds according to schedule, we should finish the migration before midnight.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "If everything proceeds according to schedule, we should finish the migration before midnight."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-116",
+    "input": "Can you explain how the reasoning pipeline transforms the context into a performance plan?",
+    "character_state": null,
+    "expected": {
+      "text": "Can you explain how the reasoning pipeline transforms the context into a performance plan?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Can you explain how the reasoning pipeline transforms the context into a performance plan?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-117",
+    "input": "Despite several unforeseen technical obstacles, the release was deployed successfully on time.",
+    "character_state": null,
+    "expected": {
+      "text": "Despite several unforeseen technical obstacles, the release was deployed successfully on time.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Despite several unforeseen technical obstacles, the release was deployed successfully on time."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-118",
+    "input": "Unless there are further questions regarding the agenda, we can conclude today's meeting.",
+    "character_state": null,
+    "expected": {
+      "text": "Unless there are further questions regarding the agenda, we can conclude today's meeting.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Unless there are further questions regarding the agenda, we can conclude today's meeting."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-119",
+    "input": "As soon as the validation suite finishes running, we will review the benchmark results together.",
+    "character_state": null,
+    "expected": {
+      "text": "As soon as the validation suite finishes running, we will review the benchmark results together.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "As soon as the validation suite finishes running, we will review the benchmark results together."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-120",
+    "input": "Even though the journey was long and tiring, reaching the mountain summit was well worth the effort.",
+    "character_state": null,
+    "expected": {
+      "text": "Even though the journey was long and tiring, reaching the mountain summit was well worth the effort.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Even though the journey was long and tiring, reaching the mountain summit was well worth the effort."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-121",
+    "input": "Have you had a chance to look over the new proposal yet?",
+    "character_state": null,
+    "expected": {
+      "text": "Have you had a chance to look over the new proposal yet?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Have you had a chance to look over the new proposal yet?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-122",
+    "input": "The old clock tower chimed every hour across the quiet village square.",
+    "character_state": null,
+    "expected": {
+      "text": "The old clock tower chimed every hour across the quiet village square.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The old clock tower chimed every hour across the quiet village square."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-123",
+    "input": "That was an extraordinary performance by the orchestra!",
+    "character_state": null,
+    "expected": {
+      "text": "That was an extraordinary performance by the orchestra!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "That was an extraordinary performance by the orchestra!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-124",
+    "input": "If the weather clears up by afternoon, we can walk down to the harbor.",
+    "character_state": null,
+    "expected": {
+      "text": "If the weather clears up by afternoon, we can walk down to the harbor.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "If the weather clears up by afternoon, we can walk down to the harbor."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-125",
+    "input": "Did you remember to turn off the lights before locking the front door?",
+    "character_state": null,
+    "expected": {
+      "text": "Did you remember to turn off the lights before locking the front door?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Did you remember to turn off the lights before locking the front door?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-126",
+    "input": "What a spectacular sunset over the ocean horizon!",
+    "character_state": null,
+    "expected": {
+      "text": "What a spectacular sunset over the ocean horizon!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "What a spectacular sunset over the ocean horizon!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-127",
+    "input": "The train departs promptly at seven thirty every morning.",
+    "character_state": null,
+    "expected": {
+      "text": "The train departs promptly at seven thirty every morning.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The train departs promptly at seven thirty every morning."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-128",
+    "input": "How many participants have registered for the upcoming seminar?",
+    "character_state": null,
+    "expected": {
+      "text": "How many participants have registered for the upcoming seminar?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "How many participants have registered for the upcoming seminar?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-129",
+    "input": "Listen carefully to the instructions before starting the examination.",
+    "character_state": null,
+    "expected": {
+      "text": "Listen carefully to the instructions before starting the examination.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Listen carefully to the instructions before starting the examination."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-130",
+    "input": "We arrived just in time to catch the opening ceremony!",
+    "character_state": null,
+    "expected": {
+      "text": "We arrived just in time to catch the opening ceremony!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We arrived just in time to catch the opening ceremony!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-131",
+    "input": "Could you clarify the second point mentioned in the project outline?",
+    "character_state": null,
+    "expected": {
+      "text": "Could you clarify the second point mentioned in the project outline?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Could you clarify the second point mentioned in the project outline?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-132",
+    "input": "The research team published their findings in a leading scientific journal.",
+    "character_state": null,
+    "expected": {
+      "text": "The research team published their findings in a leading scientific journal.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The research team published their findings in a leading scientific journal."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-133",
+    "input": "Never underestimate the importance of thorough code reviews!",
+    "character_state": null,
+    "expected": {
+      "text": "Never underestimate the importance of thorough code reviews!",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Never underestimate the importance of thorough code reviews!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-134",
+    "input": "Which chapter of the manual covers configuration parameters?",
+    "character_state": null,
+    "expected": {
+      "text": "Which chapter of the manual covers configuration parameters?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Which chapter of the manual covers configuration parameters?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-135",
+    "input": "The autumn leaves turned golden yellow across the countryside.",
+    "character_state": null,
+    "expected": {
+      "text": "The autumn leaves turned golden yellow across the countryside.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The autumn leaves turned golden yellow across the countryside."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-136",
+    "input": "Maybe we should check the schedule again.",
+    "character_state": null,
+    "expected": {
+      "text": "Maybe we should check the schedule again.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Maybe we should check the schedule again."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-137",
+    "input": "I guess that explains the discrepancy.",
+    "character_state": null,
+    "expected": {
+      "text": "I guess that explains the discrepancy.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I guess that explains the discrepancy."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-138",
+    "input": "It is sort of difficult to explain.",
+    "character_state": null,
+    "expected": {
+      "text": "It is sort of difficult to explain.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "It is sort of difficult to explain."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-139",
+    "input": "This is kind of fascinating to watch.",
+    "character_state": null,
+    "expected": {
+      "text": "This is kind of fascinating to watch.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "This is kind of fascinating to watch."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-140",
+    "input": "The system literally stopped responding.",
+    "character_state": null,
+    "expected": {
+      "text": "The system literally stopped responding.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "The system literally stopped responding."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-141",
+    "input": "I actually prefer the original design.",
+    "character_state": null,
+    "expected": {
+      "text": "I actually prefer the original design.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "I actually prefer the original design."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-142",
+    "input": "We seriously need to address this bottleneck.",
+    "character_state": null,
+    "expected": {
+      "text": "We seriously need to address this bottleneck.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "We seriously need to address this bottleneck."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-143",
+    "input": "Please remember to submit your timesheets.",
+    "character_state": null,
+    "expected": {
+      "text": "Please remember to submit your timesheets.",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Please remember to submit your timesheets."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-144",
+    "input": "Would you mind reviewing this pull request?",
+    "character_state": null,
+    "expected": {
+      "text": "Would you mind reviewing this pull request?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Would you mind reviewing this pull request?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-145",
+    "input": "Maybe we can discuss this over coffee?",
+    "character_state": null,
+    "expected": {
+      "text": "Maybe we can discuss this over coffee?",
+      "character_state": null,
+      "semantics": {
+        "raw_meaning": "Maybe we can discuss this over coffee?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "slow",
+        "pitch_contour": "rising",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "slow",
+          "pitch_contour": "rising",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-146",
+    "input": "Welcome back, commander.",
+    "character_state": {
+      "speaker": "AI",
+      "mood": "formal"
+    },
+    "expected": {
+      "text": "Welcome back, commander.",
+      "character_state": {
+        "speaker": "AI",
+        "mood": "formal"
+      },
+      "semantics": {
+        "raw_meaning": "Welcome back, commander."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-147",
+    "input": "Is the perimeter secure?",
+    "character_state": {
+      "speaker": "Guard",
+      "alert_level": 2
+    },
+    "expected": {
+      "text": "Is the perimeter secure?",
+      "character_state": {
+        "speaker": "Guard",
+        "alert_level": 2
+      },
+      "semantics": {
+        "raw_meaning": "Is the perimeter secure?"
+      },
+      "intent": {
+        "primary_intent": "question",
+        "pace": "moderate",
+        "pitch_contour": "rising",
+        "emphasis": "final_word"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "rising",
+          "emphasis": "final_word"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-148",
+    "input": "Alert! Intruder detected in sector seven!",
+    "character_state": {
+      "system": "Alarm",
+      "priority": "high"
+    },
+    "expected": {
+      "text": "Alert! Intruder detected in sector seven!",
+      "character_state": {
+        "system": "Alarm",
+        "priority": "high"
+      },
+      "semantics": {
+        "raw_meaning": "Alert! Intruder detected in sector seven!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-149",
+    "input": "The backup generator will activate automatically if the main power grid fails.",
+    "character_state": {
+      "speaker": "Claire",
+      "system_status": "standby"
+    },
+    "expected": {
+      "text": "The backup generator will activate automatically if the main power grid fails.",
+      "character_state": {
+        "speaker": "Claire",
+        "system_status": "standby"
+      },
+      "semantics": {
+        "raw_meaning": "The backup generator will activate automatically if the main power grid fails."
+      },
+      "intent": {
+        "primary_intent": "statement",
+        "pace": "moderate",
+        "pitch_contour": "flat",
+        "emphasis": "none"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "moderate",
+          "pitch_contour": "flat",
+          "emphasis": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "GEN-150",
+    "input": "Look at the view from this balcony!",
+    "character_state": {
+      "speaker": "Claire",
+      "location": "observatory"
+    },
+    "expected": {
+      "text": "Look at the view from this balcony!",
+      "character_state": {
+        "speaker": "Claire",
+        "location": "observatory"
+      },
+      "semantics": {
+        "raw_meaning": "Look at the view from this balcony!"
+      },
+      "intent": {
+        "primary_intent": "exclamation",
+        "pace": "fast",
+        "pitch_contour": "peaked",
+        "emphasis": "throughout"
+      },
+      "plan": {
+        "delivery": {
+          "pace": "fast",
+          "pitch_contour": "peaked",
+          "emphasis": "throughout"
+        }
+      }
+    }
+  }
+]
