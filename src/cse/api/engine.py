@@ -99,23 +99,9 @@ class SpeechEngine:
             raise VoiceNotLoadedError("Cannot speak without loading a voice first.")
         
         try:
-            from cse.performance.context import PerformanceContext
-            from cse.performance.passes.meaning import meaning_pass
-            from cse.performance.passes.intent import intent_pass
-            from cse.performance.passes.planning import planning_pass
-            from cse.performance.graph import build_performance_graph
-            from cse.performance.pipeline import ReasoningPipeline
+            from cse.performance.integration import generate_performance_graph
             
-            context = PerformanceContext(text=text)
-            
-            pipeline = ReasoningPipeline([
-                meaning_pass,
-                intent_pass,
-                planning_pass,
-                build_performance_graph,
-            ])
-            graph = pipeline.execute(context)
-            
+            graph = generate_performance_graph(text)
             return self._runtime.process(graph)
         except Exception as e:
             raise SpeechEngineError(f"Speech generation failed: {e}") from e

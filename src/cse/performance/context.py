@@ -5,6 +5,7 @@ from typing import Any, Optional
 class PerformanceContext:
     text: str
     character_state: Optional[Any] = None
+    explicit_intent_overrides: Optional[str] = None
 
     def __post_init__(self):
         if not self.text:

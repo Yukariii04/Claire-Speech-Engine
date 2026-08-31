@@ -31,3 +31,23 @@ def test_execute_end_to_end_rejects_invalid_translator():
     context = PerformanceContext(text="Hello.")
     with pytest.raises(AttributeError):
         execute_end_to_end(context, "Not a translator") # type: ignore
+
+def test_generate_performance_graph_from_string():
+    from cse.performance.integration import generate_performance_graph
+    graph = generate_performance_graph("Hello world.")
+    assert isinstance(graph, PerformanceGraph)
+    assert graph.text == "Hello world."
+    assert graph.intent["primary_intent"] == "statement"
+
+def test_generate_performance_graph_from_context():
+    from cse.performance.integration import generate_performance_graph
+    context = PerformanceContext(text="[happy] Good morning!")
+    graph = generate_performance_graph(context)
+    assert isinstance(graph, PerformanceGraph)
+    assert graph.text == "Good morning!"
+    assert graph.intent["primary_intent"] == "exclamation"
+
+def test_generate_performance_graph_rejects_invalid_type():
+    from cse.performance.integration import generate_performance_graph
+    with pytest.raises(TypeError):
+        generate_performance_graph(12345) # type: ignore

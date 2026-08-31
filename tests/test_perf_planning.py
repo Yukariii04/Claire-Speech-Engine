@@ -3,7 +3,11 @@ from cse.performance.passes.intent import IntentResult
 from cse.performance.passes.planning import planning_pass, PerformancePlan
 
 def test_planning_pass_question():
-    intent = IntentResult(text="Are we there yet?", character_state=None, semantics={}, intent={"primary_intent": "question"})
+    # PRD-026: intent dict now carries enriched performance fields
+    intent = IntentResult(
+        text="Are we there yet?", character_state=None, semantics={},
+        intent={"primary_intent": "question", "pace": "moderate", "pitch_contour": "rising", "emphasis": "final_word"}
+    )
     result = planning_pass(intent)
 
     assert isinstance(result, PerformancePlan)
@@ -11,14 +15,20 @@ def test_planning_pass_question():
     assert result.plan["delivery"]["pitch_contour"] == "rising"
 
 def test_planning_pass_exclamation():
-    intent = IntentResult(text="Stop!", character_state=None, semantics={}, intent={"primary_intent": "exclamation"})
+    intent = IntentResult(
+        text="Stop!", character_state=None, semantics={},
+        intent={"primary_intent": "exclamation", "pace": "fast", "pitch_contour": "peaked", "emphasis": "throughout"}
+    )
     result = planning_pass(intent)
 
     assert result.plan["delivery"]["pace"] == "fast"
     assert result.plan["delivery"]["emphasis"] == "throughout"
 
 def test_planning_pass_statement():
-    intent = IntentResult(text="Hello.", character_state=None, semantics={}, intent={"primary_intent": "statement"})
+    intent = IntentResult(
+        text="Hello.", character_state=None, semantics={},
+        intent={"primary_intent": "statement", "pace": "moderate", "pitch_contour": "flat", "emphasis": "none"}
+    )
     result = planning_pass(intent)
 
     assert result.plan["delivery"]["pitch_contour"] == "flat"
@@ -33,9 +43,12 @@ def test_performance_plan_immutable():
         plan.plan = {"new": "plan"}  # type: ignore
 
 def test_planning_pass_preserves_fields():
-    intent = IntentResult(text="Okay", character_state={"mood": "calm"}, semantics={"raw_meaning": "Okay"}, intent={"primary_intent": "statement"})
+    intent = IntentResult(
+        text="Okay", character_state={"mood": "calm"}, semantics={"raw_meaning": "Okay"},
+        intent={"primary_intent": "statement", "pace": "moderate", "pitch_contour": "flat", "emphasis": "none"}
+    )
     result = planning_pass(intent)
 
     assert result.character_state == {"mood": "calm"}
     assert result.semantics == {"raw_meaning": "Okay"}
-    assert result.intent == {"primary_intent": "statement"}
+    assert result.intent["primary_intent"] == "statement"

@@ -7,6 +7,7 @@ class MeaningResult:
     text: str
     character_state: Optional[Any]
     semantics: dict
+    explicit_intent_overrides: Optional[str] = None
 
 def meaning_pass(context: Any) -> MeaningResult:
     """First reasoning stage: determine semantic meaning of the text."""
@@ -18,5 +19,6 @@ def meaning_pass(context: Any) -> MeaningResult:
     return MeaningResult(
         text=context.text,
         character_state=context.character_state,
-        semantics={"raw_meaning": context.text}
+        semantics={"raw_meaning": context.text},
+        explicit_intent_overrides=context.explicit_intent_overrides,
     )

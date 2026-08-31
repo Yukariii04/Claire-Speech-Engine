@@ -38,3 +38,14 @@ def test_build_graph_does_not_modify_plan():
     # Plan should still be intact (frozen, so this is guaranteed, but verify)
     assert plan.text == "Hello."
     assert plan.plan == {"delivery": {"pace": "moderate"}}
+
+def test_performance_graph_exact_schema():
+    plan = _make_plan()
+    graph = build_performance_graph(plan)
+    assert set(graph.__dataclass_fields__.keys()) == {
+        "text",
+        "character_state",
+        "semantics",
+        "intent",
+        "plan",
+    }

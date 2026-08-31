@@ -8,7 +8,11 @@ def test_intent_pass_valid_input():
     
     assert isinstance(result, IntentResult)
     assert result.text == "Are we there yet?"
-    assert result.intent == {"primary_intent": "question"}
+    # PRD-026: intent dict now includes enriched performance fields
+    assert result.intent["primary_intent"] == "question"
+    assert result.intent["pace"] == "moderate"
+    assert result.intent["pitch_contour"] == "rising"
+    assert result.intent["emphasis"] == "final_word"
 
 def test_intent_pass_statements_and_exclamations():
     exclaim = MeaningResult(text="Stop!", character_state=None, semantics={})
