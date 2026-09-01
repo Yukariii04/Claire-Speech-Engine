@@ -41,3 +41,4 @@ htmlcov/
 .coverage
 *.code-workspace
 *.zip
+output/

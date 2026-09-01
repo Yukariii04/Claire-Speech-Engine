@@ -1,1 +1,9 @@
-"""CSE models — reserved for future model definitions."""
+"""CSE Models Package."""
+
+from cse.acoustic.cam.acoustic_model import CamAcousticModel
+from cse.acoustic.cam.vocoder import CamVocoder
+
+__all__ = [
+    "CamAcousticModel",
+    "CamVocoder",
+]

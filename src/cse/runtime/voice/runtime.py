@@ -13,6 +13,7 @@ from cse.voice import get_voice_package, VoicePackage, VoicePackageNotFoundError
 _BACKEND_MAP = {
     "dummy": "cse.acoustic.backend.dummy_backend.DummyBackend",
     "kittentts": "cse.backends.kittentts.backend.KittenTTSBackend",
+    "cam": "cse.acoustic.cam.backend.CAMBackend",
 }
 
 
@@ -50,6 +51,9 @@ class VoiceRuntime:
         elif backend_id == "kittentts":
             from cse.backends.kittentts.backend import KittenTTSBackend
             backend = KittenTTSBackend()
+        elif backend_id == "cam":
+            from cse.acoustic.cam.backend import CAMBackend
+            backend = CAMBackend()
         else:
             raise BackendNotFoundError(f"Unknown backend: {backend_id}")
             
