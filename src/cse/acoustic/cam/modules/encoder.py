@@ -13,9 +13,9 @@ import torch.nn.functional as F
 
 
 class PositionalEncoding(nn.Module):
-    """Sinusoidal positional encoding."""
+    """Sinusoidal positional encoding with dynamic arbitrary sequence length support."""
 
-    def __init__(self, d_model: int, max_len: int = 4096) -> None:
+    def __init__(self, d_model: int, max_len: int = 16384) -> None:
         super().__init__()
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
@@ -27,6 +27,13 @@ class PositionalEncoding(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x: [B, T, D]
         seq_len = x.size(1)
+        if seq_len > self.pe.size(1):
+            position = torch.arange(0, seq_len, dtype=torch.float, device=x.device).unsqueeze(1)
+            div_term = torch.exp(torch.arange(0, x.size(2), 2, device=x.device).float() * (-math.log(10000.0) / x.size(2)))
+            pe = torch.zeros(seq_len, x.size(2), device=x.device)
+            pe[:, 0::2] = torch.sin(position * div_term)
+            pe[:, 1::2] = torch.cos(position * div_term)
+            return x + pe.unsqueeze(0)
         return x + self.pe[:, :seq_len, :]
 
 

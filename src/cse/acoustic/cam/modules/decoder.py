@@ -1,6 +1,6 @@
 """CAM-001 Acoustic Decoder Trunk (PRD-028 §2, §13).
 
-Consumes adapted frame hidden representations and generates 80-channel
+Consumes adapted frame hidden representations and generates 100-channel
 mel-spectrogram acoustic features.
 """
 
@@ -12,12 +12,12 @@ from cse.acoustic.cam.modules.encoder import FFTBlock, PositionalEncoding
 
 
 class AcousticDecoder(nn.Module):
-    """Non-autoregressive frame decoder producing 80-channel mel-spectrogram."""
+    """Non-autoregressive frame decoder producing 100-channel mel-spectrogram."""
 
     def __init__(
         self,
         d_model: int = 192,
-        n_mels: int = 80,
+        n_mels: int = 100,
         num_layers: int = 4,
         num_heads: int = 4,
         conv_filter_size: int = 768,

@@ -5,9 +5,8 @@ import pytest
 import torch
 
 from cse.acoustic.cam.config import EXPRESSO_READ_STYLES
-from cse.acoustic.cam.dataset import ExpressoReadDataset, collate_cam_batch
+from cse.training.cam.dataset import ExpressoTrainingDataset, collate_training_batch
 from cse.acoustic.cam.preprocessor import (
-    ExpressoDatasetPreprocessor,
     compute_mel_spectrogram,
     resample_audio,
 )
@@ -25,61 +24,54 @@ class TestCAMDataset:
     def test_compute_mel_spectrogram_shape(self):
         # 0.5s of 24 kHz noise
         audio = np.random.randn(12000).astype(np.float32)
-        mel = compute_mel_spectrogram(audio, sample_rate=24000, n_mels=80, hop_length=256)
+        mel = compute_mel_spectrogram(audio, sample_rate=24000, n_mels=100, hop_length=256)
         assert mel.ndim == 2
-        assert mel.shape[1] == 80
+        assert mel.shape[1] == 100
         # Expected frames ~ 12000 // 256 + 1 = 47
         assert abs(mel.shape[0] - 47) <= 2
 
-    def test_preprocessor_accepts_8_read_styles(self):
-        prep = ExpressoDatasetPreprocessor()
-        raw_audio = np.random.randn(24000).astype(np.float32)
-        for style in EXPRESSO_READ_STYLES:
-            res = prep.process_utterance(
-                raw_audio=raw_audio,
-                orig_sr=24000,
-                text="A sample sentence for preprocessing.",
-                style=style,
-                speaker="speaker_0",
-            )
-            assert res["sample_rate"] == 24000
-            assert res["mel"].shape[1] == 80
-            assert len(res["phoneme_ids"]) == len(res["durations"])
-
-    def test_preprocessor_rejects_non_read_styles(self):
-        prep = ExpressoDatasetPreprocessor()
-        raw_audio = np.random.randn(24000).astype(np.float32)
-        with pytest.raises(ValueError, match="Invalid Expresso READ style"):
-            prep.process_utterance(
-                raw_audio=raw_audio,
-                orig_sr=24000,
-                text="Test.",
-                style="improvised_dialogue_style",
-            )
-
     def test_pytorch_dataset_and_batch_collation(self):
-        prep = ExpressoDatasetPreprocessor()
         items = []
-        for i, text in enumerate(["Short.", "A bit longer sentence.", "Third test utterance with more words."]):
-            raw_audio = np.random.randn(24000 * (i + 1) // 2).astype(np.float32)
-            processed = prep.process_utterance(
-                raw_audio=raw_audio,
-                orig_sr=24000,
-                text=text,
-                style=EXPRESSO_READ_STYLES[i % len(EXPRESSO_READ_STYLES)],
-            )
-            items.append(processed)
+        # Create 3 variable-length samples
+        lengths = [(5, 20), (8, 35), (12, 50)]
+        for i, (n_phones, n_frames) in enumerate(lengths):
+            phoneme_ids = np.random.randint(1, 100, size=n_phones, dtype=np.int64)
+            # Realistic integer durations summing to n_frames
+            base = n_frames // n_phones
+            durations = np.full(n_phones, base, dtype=np.int64)
+            durations[-1] += (n_frames - int(durations.sum()))
 
-        dataset = ExpressoReadDataset(items)
+            mel = np.random.randn(n_frames, 100).astype(np.float32)
+            items.append({
+                "sample_id": f"sample_{i}",
+                "phoneme_ids": phoneme_ids,
+                "speaker": "speaker_0",
+                "style": EXPRESSO_READ_STYLES[i % len(EXPRESSO_READ_STYLES)],
+                "primary_intent": "statement",
+                "pace": 1.0,
+                "pitch_contour": "flat",
+                "emphasis": "none",
+                "mel": mel,
+                "durations": durations,
+                "log_durations": np.log(np.maximum(durations.astype(np.float32), 1.0)),
+                "f0": np.zeros(n_frames, dtype=np.float32),
+                "log_f0": np.zeros(n_frames, dtype=np.float32),
+                "energy": np.zeros(n_frames, dtype=np.float32),
+                "voiced_mask": np.zeros(n_frames, dtype=bool),
+            })
+
+        dataset = ExpressoTrainingDataset(items)
         assert len(dataset) == 3
 
         batch = [dataset[0], dataset[1], dataset[2]]
-        collated = collate_cam_batch(batch)
+        collated = collate_training_batch(batch)
 
-        assert collated["phoneme_ids"].shape[0] == 3
-        assert collated["mel"].shape[0] == 3
-        assert collated["mel"].shape[2] == 80
-        assert collated["durations"].shape[0] == 3
+        assert collated["phoneme_ids"].shape == (3, 12)
+        assert collated["phoneme_lens"].tolist() == [5, 8, 12]
+        assert collated["mel"].shape == (3, 50, 100)
+        assert collated["mel_lens"].tolist() == [20, 35, 50]
+        assert collated["durations"].shape == (3, 12)
         assert collated["speaker_id"].shape[0] == 3
         assert collated["style_id"].shape[0] == 3
         assert collated["intent_id"].shape[0] == 3
+

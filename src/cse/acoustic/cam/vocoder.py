@@ -1,6 +1,6 @@
 """CAM-001 Lightweight Neural Vocoder (PRD-028 §2, §4, §18, §20).
 
-Lightweight neural vocoder converting 80-channel mel-spectrograms into 24 kHz audio.
+Lightweight neural vocoder converting 100-channel mel-spectrograms into 24 kHz audio.
 Supports dynamic/variable frame length inputs with seamless ONNX export.
 """
 
@@ -42,11 +42,11 @@ class MRFBlock(nn.Module):
 
 
 class CamVocoder(nn.Module):
-    """Lightweight 24 kHz Neural Vocoder for CAM-001."""
+    """Lightweight 24 kHz Neural Vocoder for CAM-001 (Vocos-compatible 100 mels)."""
 
     def __init__(
         self,
-        n_mels: int = 80,
+        n_mels: int = 100,
         upsample_initial_channel: int = 256,
         upsample_rates: tuple[int, ...] = (8, 8, 2, 2),  # Product = 256 (hop_length)
         upsample_kernel_sizes: tuple[int, ...] = (16, 16, 4, 4),
@@ -90,16 +90,16 @@ class CamVocoder(nn.Module):
         self.conv_post = nn.Conv1d(curr_channel, 1, kernel_size=7, stride=1, padding=3)
 
     def forward(self, mel: torch.Tensor) -> torch.Tensor:
-        """Synthesize 24 kHz audio waveform from 80-channel mel-spectrogram.
+        """Synthesize 24 kHz audio waveform from 100-channel mel-spectrogram.
 
         Args:
-            mel: [B, T_frames, 80] or [B, 80, T_frames] float tensor.
+            mel: [B, T_frames, 100] or [B, 100, T_frames] float tensor.
 
         Returns:
             waveform: [B, 1, T_samples] at 24 kHz (where T_samples = T_frames * 256).
         """
-        # Standard input from acoustic model / ONNX: [B, T_frames, 80]
-        # Transpose to [B, 80, T_frames] for 1D convolutions
+        # Standard input from acoustic model / ONNX: [B, T_frames, 100]
+        # Transpose to [B, 100, T_frames] for 1D convolutions
         x = mel.transpose(1, 2)
 
         x = self.conv_pre(x)

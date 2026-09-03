@@ -69,12 +69,12 @@ ID_TO_SPEAKER: dict[int, str] = {idx: spk for idx, spk in enumerate(EXPRESSO_SPE
 class CAMConfig:
     """Configuration for the Claire Acoustic Model (CAM-001)."""
 
-    # Audio targets (PRD-028 §4)
+    # Audio targets (PRD-028 §4, PRD-029 §9)
     sample_rate: int = 24000
     n_fft: int = 1024
     win_length: int = 1024
     hop_length: int = 256
-    n_mels: int = 80
+    n_mels: int = 100  # Locked Vocos-compatible target (PRD-029 §9)
     f_min: float = 0.0
     f_max: float = 12000.0
 

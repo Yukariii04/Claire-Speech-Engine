@@ -98,11 +98,12 @@ class CamAcousticModel(nn.Module):
         target_durations: torch.Tensor | None = None,
         target_pitch: torch.Tensor | None = None,
         target_energy: torch.Tensor | None = None,
+        phoneme_lens: torch.Tensor | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """Acoustic forward pass producing mel-spectrogram features and durations.
 
         Returns:
-            mel_output: [B, T_frames, n_mels] (e.g. [1, T_frames, 80])
+            mel_output: [B, T_frames, n_mels] (e.g. [1, T_frames, 100])
             durations: [B, T_phone] (predicted phoneme durations)
         """
         B, T_phone = phoneme_ids.shape
@@ -123,7 +124,7 @@ class CamAcousticModel(nn.Module):
         h = enc_out + spk_style_cond.unsqueeze(1) + intent_cond
 
         # 5. Variance Adaptation (Duration, Length Regulation, Pitch Contour, Emphasis)
-        adapted_hidden, durations, pitch_pred, energy_pred = self.variance_adaptor(
+        adapted_hidden, durations, log_dur_pred, pitch_pred, energy_pred = self.variance_adaptor(
             encoder_output=h,
             pace=pace,
             pitch_contour_id=pitch_contour_id,
@@ -131,13 +132,56 @@ class CamAcousticModel(nn.Module):
             target_durations=target_durations,
             target_pitch=target_pitch,
             target_energy=target_energy,
+            phoneme_lens=phoneme_lens,
         )
 
-        # 6. Decode into 80-channel mel-spectrogram
-        mel_output = self.decoder(adapted_hidden)  # [B, T_frames, 80]
+        # 6. Decode into 100-channel mel-spectrogram
+        mel_output = self.decoder(adapted_hidden)  # [B, T_frames, 100]
 
-        return mel_output, durations
+        return CamAcousticOutput(
+            mel=mel_output,
+            durations=durations,
+            log_dur_pred=log_dur_pred,
+            pitch_pred=pitch_pred,
+            energy_pred=energy_pred,
+        )
 
     def count_parameters(self) -> int:
         """Count total trainable parameters."""
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+
+from dataclasses import dataclass
+
+
+@dataclass
+class CamAcousticOutput:
+    """Output container for CAM Acoustic Model forward pass."""
+
+    mel: torch.Tensor
+    durations: torch.Tensor
+    log_dur_pred: torch.Tensor
+    pitch_pred: torch.Tensor
+    energy_pred: torch.Tensor
+
+    def __iter__(self):
+        """Allow unpacking as (mel, durations) for inference/ONNX compatibility."""
+        return iter((self.mel, self.durations))
+
+    def __getitem__(self, idx: int):
+        return (
+            self.mel,
+            self.durations,
+            self.log_dur_pred,
+            self.pitch_pred,
+            self.energy_pred,
+        )[idx]
+
+    def as_tuple(self) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        return (
+            self.mel,
+            self.durations,
+            self.log_dur_pred,
+            self.pitch_pred,
+            self.energy_pred,
+        )

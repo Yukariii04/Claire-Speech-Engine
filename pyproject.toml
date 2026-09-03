@@ -48,12 +48,34 @@ dev = [
     "pre-commit",
     "build",
 ]
+cam-export = [
+    "torch>=2.2.0",
+    "onnx>=1.16.0",
+]
 
 [project.scripts]
 cse = "cse.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+namespaces = true
+include = [
+    "cse",
+    "cse.acoustic*",
+    "cse.api*",
+    "cse.backends*",
+    "cse.cli*",
+    "cse.config*",
+    "cse.core*",
+    "cse.language*",
+    "cse.performance",
+    "cse.performance.passes*",
+    "cse.plugins*",
+    "cse.runtime*",
+    "cse.streaming*",
+    "cse.voice*",
+    "cse._scaffold*",
+]
 
 [tool.setuptools.package-data]
 cse = [

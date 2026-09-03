@@ -1,42 +1,13 @@
-"""CAM-001 Expresso READ Dataset Preprocessor (PRD-028 §4, §5, §6).
+"""CAM-001 Audio & Mel-Spectrogram Utilities (PRD-028 §4, PRD-029 §7).
 
-Implements deterministic training preprocessing:
-    source audio
-        ↓
-    24 kHz audio
-        ↓
-    transcript/text
-        ↓
-    local phoneme sequence
-        ↓
-    alignment/duration targets
-        ↓
-    acoustic/vocoder targets (80-channel mel-spectrogram)
-
-Strictly filters for the 8 Expresso READ styles:
-    default, confused, enunciated, happy, laughing, narration, sad, whisper.
-Rejects improvised dialogue portions for CAM v1.
+Provides shared deterministic signal processing utilities:
+- 24 kHz audio resampling
+- 100-channel mel-spectrogram target computation
 """
 
 from __future__ import annotations
 
-import json
-import math
-from pathlib import Path
-from typing import Any, Sequence
-
 import numpy as np
-import soundfile as sf
-from loguru import logger
-
-from cse.acoustic.cam.config import (
-    CAMConfig,
-    EXPRESSO_READ_STYLES,
-    INTENT_TO_ID,
-    SPEAKER_TO_ID,
-    STYLE_TO_ID,
-)
-from cse.acoustic.cam.phonemizer import CAMPhonemizer
 
 
 def resample_audio(
@@ -62,11 +33,11 @@ def compute_mel_spectrogram(
     n_fft: int = 1024,
     hop_length: int = 256,
     win_length: int = 1024,
-    n_mels: int = 80,
+    n_mels: int = 100,
     f_min: float = 0.0,
     f_max: float = 12000.0,
 ) -> np.ndarray:
-    """Compute 80-channel mel-spectrogram targets at 24 kHz deterministically."""
+    """Compute 100-channel mel-spectrogram targets at 24 kHz deterministically."""
     # Create Hann window
     window = np.hanning(win_length)
 
@@ -112,80 +83,3 @@ def compute_mel_spectrogram(
 
     return mel_spec.astype(np.float32)
 
-
-class ExpressoDatasetPreprocessor:
-    """Deterministic preprocessor for Expresso READ subset (PRD-028 §5, §6)."""
-
-    def __init__(
-        self,
-        config: CAMConfig | None = None,
-        phonemizer: CAMPhonemizer | None = None,
-    ) -> None:
-        self.config = config or CAMConfig()
-        self.phonemizer = phonemizer or CAMPhonemizer()
-
-    def process_utterance(
-        self,
-        raw_audio: np.ndarray,
-        orig_sr: int,
-        text: str,
-        style: str,
-        speaker: str = "speaker_0",
-        primary_intent: str = "statement",
-    ) -> dict[str, Any]:
-        """Preprocess a single Expresso utterance into training targets."""
-        # 1. Validate 8 Expresso READ styles (PRD-028 §6)
-        style_clean = style.strip().lower()
-        if style_clean not in EXPRESSO_READ_STYLES:
-            raise ValueError(
-                f"Invalid Expresso READ style: '{style}'. Must be one of {EXPRESSO_READ_STYLES}"
-            )
-
-        # 2. Resample source audio to 24 kHz (PRD-028 §4)
-        audio_24k = resample_audio(raw_audio, orig_sr=orig_sr, target_sr=self.config.sample_rate)
-
-        # 3. Phonemize text
-        phoneme_ids = self.phonemizer.text_to_ids(text, add_bos_eos=True)
-
-        # 4. Compute 80-channel mel-spectrogram
-        mel = compute_mel_spectrogram(
-            audio_24k,
-            sample_rate=self.config.sample_rate,
-            n_fft=self.config.n_fft,
-            hop_length=self.config.hop_length,
-            win_length=self.config.win_length,
-            n_mels=self.config.n_mels,
-            f_min=self.config.f_min,
-            f_max=self.config.f_max,
-        )
-
-        num_frames = mel.shape[0]
-        num_phones = len(phoneme_ids)
-
-        # 5. Extract/synthesize monotonic duration alignment targets
-        # Average frame count per phoneme
-        base_dur = max(1, num_frames // num_phones)
-        durations = np.full(num_phones, base_dur, dtype=np.int64)
-        remainder = num_frames - int(durations.sum())
-        if remainder > 0:
-            durations[-1] += remainder
-        elif remainder < 0:
-            durations[-1] = max(1, durations[-1] + remainder)
-
-        # 6. Extract pitch & energy targets
-        energy = np.linalg.norm(mel, axis=1)  # [num_frames]
-        pitch = np.zeros(num_frames, dtype=np.float32)
-
-        return {
-            "text": text,
-            "phoneme_ids": phoneme_ids,
-            "speaker_id": SPEAKER_TO_ID.get(speaker, 0),
-            "style_id": STYLE_TO_ID[style_clean],
-            "intent_id": INTENT_TO_ID.get(primary_intent, 0),
-            "audio_24k": audio_24k,
-            "mel": mel,
-            "durations": durations,
-            "pitch": pitch,
-            "energy": energy,
-            "sample_rate": self.config.sample_rate,
-        }

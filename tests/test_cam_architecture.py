@@ -107,13 +107,13 @@ class TestCAMArchitecture:
 
         assert mel.ndim == 3
         assert mel.shape[0] == 1
-        assert mel.shape[2] == 80
+        assert mel.shape[2] == acoustic_model.config.n_mels
         assert mel.shape[1] == int(dur.sum())
         assert dur.shape == (1, 6)
 
     def test_vocoder_forward_24khz(self, vocoder):
-        # 50 frames of 80-channel mel
-        mel = torch.randn(1, 50, 80)
+        # 50 frames of n_mels-channel mel
+        mel = torch.randn(1, 50, vocoder.n_mels)
         audio = vocoder(mel)
         # Hop length = 256 -> 50 * 256 = 12800 samples (at 24 kHz = 0.533 seconds)
         assert audio.ndim == 3

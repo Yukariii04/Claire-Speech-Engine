@@ -71,15 +71,16 @@ def export_cam_acoustic_onnx(
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     wrapper = AcousticExportWrapper(model).eval()
+    dev = next(model.parameters()).device
 
     # Dummy inputs for graph tracing
-    dummy_phoneme_ids = torch.tensor([[2, 10, 20, 30, 40, 3]], dtype=torch.long)  # [1, 6]
-    dummy_speaker_id = torch.tensor([0], dtype=torch.long)
-    dummy_style_id = torch.tensor([0], dtype=torch.long)
-    dummy_intent_id = torch.tensor([0], dtype=torch.long)
-    dummy_pace = torch.tensor([1.0], dtype=torch.float32)
-    dummy_pitch_contour_id = torch.tensor([0], dtype=torch.long)
-    dummy_emphasis_id = torch.tensor([0], dtype=torch.long)
+    dummy_phoneme_ids = torch.tensor([[2, 10, 20, 30, 40, 3]], dtype=torch.long, device=dev)  # [1, 6]
+    dummy_speaker_id = torch.tensor([0], dtype=torch.long, device=dev)
+    dummy_style_id = torch.tensor([0], dtype=torch.long, device=dev)
+    dummy_intent_id = torch.tensor([0], dtype=torch.long, device=dev)
+    dummy_pace = torch.tensor([1.0], dtype=torch.float32, device=dev)
+    dummy_pitch_contour_id = torch.tensor([0], dtype=torch.long, device=dev)
+    dummy_emphasis_id = torch.tensor([0], dtype=torch.long, device=dev)
 
     input_names = [
         "phoneme_ids",
@@ -155,8 +156,10 @@ def export_cam_vocoder_onnx(
 
     vocoder = vocoder.eval()
 
-    # Dummy mel input [1, 50, 80]
-    dummy_mel = torch.randn(1, 50, 80, dtype=torch.float32)
+    # Dummy mel input [1, 50, n_mels]
+    dev = next(vocoder.parameters()).device
+    n_mels = getattr(vocoder, "n_mels", 100)
+    dummy_mel = torch.randn(1, 50, n_mels, dtype=torch.float32, device=dev)
 
     input_names = ["mel"]
     output_names = ["waveform"]
@@ -259,7 +262,7 @@ def validate_onnx_inference(
         mel_output, durations = acoustic_out[0], acoustic_out[1]
 
         assert mel_output.shape[0] == 1
-        assert mel_output.shape[2] == 80
+        assert mel_output.shape[2] == 100, f"Expected 100-channel mel-spectrogram, got {mel_output.shape[2]}"
         assert mel_output.shape[1] == int(durations.sum())
 
         # 2. Vocoder inference

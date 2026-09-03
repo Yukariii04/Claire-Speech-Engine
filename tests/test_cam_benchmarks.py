@@ -18,7 +18,33 @@ class TestCAMBenchmarks:
             assert abs(actual_count - word_target) <= 5
 
     def test_run_full_cam_benchmark_executes_successfully(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("CSE_CAM_CACHE_DIR", str(tmp_path / "bench_cache"))
+        cache_dir = tmp_path / "bench_cache"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        monkeypatch.setenv("CSE_CAM_CACHE_DIR", str(cache_dir))
+
+        from cse.acoustic.cam.acoustic_model import CamAcousticModel
+        from cse.acoustic.cam.config import CAMConfig
+        from cse.acoustic.cam.onnx_export import (
+            export_cam_acoustic_onnx,
+            export_cam_vocoder_onnx,
+            quantize_cam_onnx,
+        )
+        from cse.acoustic.cam.vocoder import CamVocoder
+
+        tiny_cfg = CAMConfig(n_mels=100, d_model=32)
+        ac_model = CamAcousticModel(tiny_cfg)
+        voc_model = CamVocoder(n_mels=100)
+
+        fp32_ac = cache_dir / "cam_acoustic.onnx"
+        fp32_voc = cache_dir / "cam_vocoder.onnx"
+        export_cam_acoustic_onnx(ac_model, fp32_ac)
+        export_cam_vocoder_onnx(voc_model, fp32_voc)
+
+        quant_ac = cache_dir / "cam_acoustic_int8.onnx"
+        quant_voc = cache_dir / "cam_vocoder_int8.onnx"
+        quantize_cam_onnx(fp32_ac, quant_ac)
+        quantize_cam_onnx(fp32_voc, quant_voc)
+
         res = run_full_cam_benchmark(quantized=True)
         assert res["status"] == "PASS"
         assert "CPU" in res["benchmarks"]

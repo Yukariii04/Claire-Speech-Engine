@@ -91,6 +91,6 @@ class TestCAMONNXExport:
     def test_variable_vocoder_input_lengths(self, exported_models):
         voc_sess = ort.InferenceSession(str(exported_models["vocoder"]), providers=["CPUExecutionProvider"])
         for num_frames in (12, 45, 128, 300):
-            dummy_mel = np.random.randn(1, num_frames, 80).astype(np.float32)
+            dummy_mel = np.random.randn(1, num_frames, 100).astype(np.float32)
             out = voc_sess.run(None, {"mel": dummy_mel})[0]
             assert out.shape == (1, 1, num_frames * 256)

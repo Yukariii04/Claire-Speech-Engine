@@ -33,12 +33,29 @@ desktop.ini
 models/**/*.bin
 models/**/*.onnx
 models/**/*.pt
+*.bin
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.npz
+*.wav
+*.flac
+*.parquet
 temp/
+data/
+output/
+outputs/
 
-# Testing
+# Testing & Archives
 .pytest_cache/
 htmlcov/
 .coverage
 *.code-workspace
 *.zip
-output/
+
+# Caches & Temporary Workspaces
+.cache/
+caches/
+*workspace*/

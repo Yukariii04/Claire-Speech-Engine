@@ -61,11 +61,16 @@ def _clean_text(text: str) -> str:
     return text
 
 
+class PhonemizationError(RuntimeError):
+    """Raised when IPA phonemization fails and silent fallback is disabled."""
+
+
 class CAMPhonemizer:
     """Local, deterministic phonemizer for CAM-001."""
 
-    def __init__(self, language: str = "en-us") -> None:
+    def __init__(self, language: str = "en-us", allow_fallback: bool = False) -> None:
         self.language = language
+        self.allow_fallback = allow_fallback
         self._espeak_available: bool | None = None
 
     def _check_espeak(self) -> bool:
@@ -94,7 +99,11 @@ class CAMPhonemizer:
         return self._espeak_available
 
     def text_to_phonemes(self, text: str) -> list[str]:
-        """Convert text into a list of phoneme symbols deterministically."""
+        """Convert text into a list of phoneme symbols deterministically.
+        
+        Raises:
+            PhonemizationError: If phonemization fails or eSpeak is unavailable and allow_fallback is False.
+        """
         cleaned = _clean_text(text)
         if not cleaned:
             return []
@@ -129,9 +138,23 @@ class CAMPhonemizer:
                         idx += 1
                 return symbols
             except Exception as e:
-                logger.debug(f"eSpeak phonemization fallback: {e}")
+                logger.error(f"eSpeak phonemization execution failed: {e}")
+                if not self.allow_fallback:
+                    raise PhonemizationError(
+                        f"Phonemization failed for input '{text}': {e}. "
+                        "Silent character fallback is prohibited for CAM synthesis."
+                    ) from e
 
-        # Deterministic character / grapheme fallback
+        # If eSpeak is unavailable:
+        if not self.allow_fallback:
+            raise PhonemizationError(
+                "eSpeak-ng / phonemizer is unavailable. CAM synthesis strictly requires "
+                "functional IPA phonemization (eSpeak-ng). Silent character fallback is disabled. "
+                "Please verify espeak-ng is installed and configured."
+            )
+
+        logger.warning(f"eSpeak unavailable; falling back to raw character tokens for: '{cleaned}'")
+        # Explicit test opt-in fallback only
         symbols = []
         for char in cleaned.lower():
             if char in TOKEN_TO_ID:
@@ -162,3 +185,7 @@ class CAMPhonemizer:
     def ids_to_phonemes(self, ids: Sequence[int]) -> list[str]:
         """Map token IDs back to phoneme symbols."""
         return [ID_TO_TOKEN.get(i, UNK) for i in ids]
+
+    def id_to_token(self, token_id: int) -> str:
+        """Map single token ID back to phoneme symbol."""
+        return ID_TO_TOKEN.get(token_id, UNK)
