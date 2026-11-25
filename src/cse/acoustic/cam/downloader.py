@@ -96,7 +96,7 @@ def resolve_cam_model_paths(
             f"Trained CAM model artifacts not found in local cache ('{cache_dir}') or remote repository ('{CAM_DEFAULT_REPO_ID}').\n"
             f"  - Acoustic Model: {target_acoustic} (exists: {target_acoustic.is_file()})\n"
             f"  - Vocoder Model:  {target_vocoder} (exists: {target_vocoder.is_file()})\n"
-            "Trained weights must be produced via 'scripts/colab_train_cam_phase1.py' or downloaded from an official release.\n"
+            "Trained weights must be placed in the local cache or downloaded from an official release.\n"
             "Silent fabrication of randomly initialized weights is strictly prohibited."
         )
 

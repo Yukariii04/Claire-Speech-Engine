@@ -24,7 +24,24 @@ def test_build_success(tmp_path):
     assert result.returncode == 0
 
 def test_wheel_excludes_legacy_compiler(tmp_path):
-    """Verify cse.performance.compiler* is excluded from the built wheel."""
+    """Verify only supported runtime modules are packaged and legacy compiler modules are excluded."""
+    allowed_subpackages = {
+        "acoustic",
+        "api",
+        "backends",
+        "cli",
+        "config",
+        "core",
+        "language",
+        "performance",
+        "plugins",
+        "runtime",
+        "streaming",
+        "voice",
+        "_scaffold",
+        "__init__.py",
+        "__pycache__",
+    }
     result = subprocess.run(
         [sys.executable, "-m", "build", "--wheel", "--no-isolation", "--outdir", str(tmp_path)],
         capture_output=True, text=True,
@@ -36,3 +53,7 @@ def test_wheel_excludes_legacy_compiler(tmp_path):
         names = zf.namelist()
     compiler_entries = [n for n in names if "performance/compiler" in n or "performance\\compiler" in n]
     assert compiler_entries == [], f"Legacy compiler leaked into wheel: {compiler_entries}"
+    for n in names:
+        parts = n.replace("\\", "/").split("/")
+        if len(parts) >= 2 and parts[0] == "cse":
+            assert parts[1] in allowed_subpackages, f"Unexpected package entry in wheel: {n}"
