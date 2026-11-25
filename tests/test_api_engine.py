@@ -3,11 +3,20 @@
 import pytest
 from pathlib import Path
 
+import cse.voice as _voice_pkg
 from cse import SpeechEngine
 from cse.api.config import EngineConfig
 from cse.api.exceptions import ConfigurationError, SpeechEngineError, VoiceNotLoadedError
 from cse.api.lifecycle import EngineState
+from cse.runtime.voice.info import BackendVoiceInfo
 from cse.voice import VoicePackage, VoiceMetadata, register_voice_package
+from cse.voice.registry import PackageRegistry
+
+
+@pytest.fixture(autouse=True)
+def _isolate_voice_registry(monkeypatch):
+    """Give each test a fresh PackageRegistry to avoid cross-test leakage."""
+    monkeypatch.setattr(_voice_pkg, "_registry", PackageRegistry())
 
 
 @pytest.fixture
@@ -25,10 +34,7 @@ def dummy_voice():
         license="MIT"
     )
     pkg = VoicePackage(metadata=meta, path=Path("/tmp/test_voice"))
-    try:
-        register_voice_package(pkg)
-    except Exception:
-        pass
+    register_voice_package(pkg)
     return pkg
 
 
@@ -84,6 +90,26 @@ class TestSpeechEngine:
         success = engine.load_voice("test_voice")
         assert success is True
         assert engine._voice_loaded is True
+
+    def test_backend_voice_returns_backend_voice_info(self):
+        """Backend-validated voices return BackendVoiceInfo through the engine."""
+        engine = SpeechEngine()
+        engine.load_backend("kittentts")
+        assert engine.get_voice() is None
+
+        engine.load_voice("Bella")
+        current_voice = engine.get_voice()
+        assert current_voice is not None
+        assert isinstance(current_voice, BackendVoiceInfo)
+        assert not isinstance(current_voice, VoicePackage)
+        assert current_voice.metadata.id == "expr-voice-2-f"
+        assert current_voice.metadata.name == "Expression 2 Female"
+        assert current_voice.metadata.backend == "kittentts"
+        assert current_voice.metadata.license is None
+
+        engine.load_backend("dummy")
+        assert engine.get_voice() is None
+        engine.shutdown()
 
     def test_voice_loading_fails(self):
         engine = SpeechEngine()

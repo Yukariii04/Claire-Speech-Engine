@@ -10,13 +10,14 @@ CSE
                 └── Speech
 ```
 
-While native CAM is under development, KittenTTS serves as the current compatible acoustic implementation that satisfies the CAM contract via translation. A lightweight Dummy backend is also available for framework testing and pipeline validation.
+While KittenTTS serves as the active default compatible acoustic implementation satisfying the CAM contract via translation, native `cam` (`CAMBackend`) is exposed experimentally in `VoiceRuntime` and requires released ONNX weights (`ClaireAI/cam-001-expresso-read`) or local `CAMConfig` model paths (`resolve_cam_model_paths()` raises `FileNotFoundError` when trained weights are absent). A lightweight `dummy` backend is also available for framework testing and pipeline validation.
 
 ## Supported Acoustic Implementations
 
 | Backend | Status | Role |
 |---|---|---|
-| `kittentts` | Active | Current compatible acoustic implementation (v0.8.1 ONNX). Translates `PerformanceGraph` to audio. |
+| `kittentts` | Active (Default) | Compatible acoustic implementation (v0.8.1 ONNX). Translates `PerformanceGraph` to audio. |
+| `cam` | Experimental | Native Claire Acoustic Model (`CAMBackend`, two-stage ONNX Runtime). Requires released/local trained weights. |
 | `dummy` | Active | Framework testing backend without audio models. |
 
 ## Runtime Backend Invocation
@@ -30,6 +31,17 @@ engine = SpeechEngine()
 engine.load_backend("kittentts")  # Loads KittenTTS compatible implementation
 engine.load_voice("expr-voice-2-f")
 speech = engine.speak("Hello world.")
+```
+
+To invoke the experimental native CAM backend (requires ONNX weights in `~/.cache/claire/cam/v1.0.0`, `$CSE_CAM_CACHE_DIR`, or a released checkpoint at `ClaireAI/cam-001-expresso-read`):
+
+```python
+from cse import SpeechEngine
+
+engine = SpeechEngine()
+engine.load_backend("cam")
+engine.load_voice("cam-speaker_0-default")
+speech = engine.speak("Hello from native CAM.")
 ```
 
 ## Capability Reporting

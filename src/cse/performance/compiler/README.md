@@ -1,4 +1,6 @@
-# Performance Compiler
+# Performance Compiler (Legacy Historical PRD-003 Baseline)
+
+> **Historical / Superseded Module:** This package implements the legacy PRD-003 `CIRDocument` → `PerformanceTimeline` compiler. It is **not** used by the active CSE/CPE speech-generation pipeline (`PerformanceContext` → `ReasoningPipeline` → `PerformanceGraph`) and is excluded from built distribution wheels (`pyproject.toml`). Preserved only for historical benchmark/test baseline compatibility.
 
 ## Purpose
 

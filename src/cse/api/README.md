@@ -4,6 +4,7 @@
 from cse import SpeechEngine
 
 engine = SpeechEngine()
+engine.load_backend("kittentts")
 engine.load_voice("Bella")
 speech = engine.speak(
     "Hello from The Claire Speech Engine."
@@ -67,9 +68,12 @@ engine = SpeechEngine(EngineConfig(overrides={"engine": {"name": "CSE"}}))
 
 ## Voice Loading
 
-Voices are loaded by their unique name or alias (e.g., `"Bella"`, `"Bruno"`, `"expr-voice-2-f"`). Calling `load_voice()` without arguments automatically resolves your preferred voice from CLI configuration (`cse voice`).
+Voices are loaded by their unique ID or alias (e.g., `"Bella"`, `"Bruno"`, `"expr-voice-2-f"`, `"cam-speaker_0-default"`). Calling `load_voice()` without arguments automatically resolves your preferred voice from CLI configuration (`cse voice`), or picks the active backend's default voice.
 
 ```python
+# Switch to an acoustic backend first (default at startup is 'dummy')
+engine.load_backend("kittentts")
+
 # List available voices
 available_voices = engine.list_voices()
 print(available_voices)
@@ -77,9 +81,11 @@ print(available_voices)
 # Load a voice by alias or ID
 engine.load_voice("Bella")
 
-# Get metadata of the loaded voice
+# Get metadata of the loaded voice (BackendVoiceInfo for backend voices,
+# or VoicePackage for disk/registry voices)
 current_voice = engine.get_voice()
-print(current_voice.metadata.name)
+if current_voice is not None:
+    print(current_voice.metadata.name)
 ```
 
 ## Speech Generation

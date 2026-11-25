@@ -4,12 +4,20 @@ from __future__ import annotations
 
 import pytest
 
+import cse.voice as _voice_pkg
 from cse.performance.graph import PerformanceGraph
 from cse.runtime.voice.exceptions import InvalidRuntimeStateError, VoiceNotFoundError
+from cse.runtime.voice.info import BackendVoiceInfo
 from cse.runtime.voice.runtime import VoiceRuntime
 from cse.voice import register_voice_package, VoicePackage, VoiceMetadata
+from cse.voice.registry import PackageRegistry
 from pathlib import Path
-import uuid
+
+
+@pytest.fixture(autouse=True)
+def _isolate_voice_registry(monkeypatch):
+    """Give each test a fresh PackageRegistry to avoid cross-test leakage."""
+    monkeypatch.setattr(_voice_pkg, "_registry", PackageRegistry())
 
 
 @pytest.fixture
@@ -58,6 +66,27 @@ class TestVoiceRuntime:
         runtime.unload_voice()
         assert runtime._state == RuntimeState.READY
 
+    def test_backend_voice_returns_backend_voice_info(self):
+        """Backend-validated voices return BackendVoiceInfo, not VoicePackage."""
+        runtime = VoiceRuntime()
+        runtime.initialize()
+        runtime.load_backend("kittentts")
+        runtime.load_voice("Bella")
+
+        loaded = runtime.get_loaded_voice()
+        assert loaded is not None
+        assert isinstance(loaded, BackendVoiceInfo)
+        assert not isinstance(loaded, VoicePackage)
+        assert loaded.metadata.id == "expr-voice-2-f"
+        assert loaded.metadata.name == "Expression 2 Female"
+        assert loaded.metadata.backend == "kittentts"
+        assert loaded.metadata.license is None
+        assert not hasattr(loaded, "path")
+
+        runtime.load_backend("dummy")
+        assert runtime.get_loaded_voice() is None
+        runtime.shutdown()
+
     def test_load_voice_uninitialized_raises(self, mock_package):
         runtime = VoiceRuntime()
         
@@ -76,10 +105,7 @@ class TestVoiceRuntime:
     def test_process_raises_not_implemented(self, mock_package):
         runtime = VoiceRuntime()
         runtime.initialize()
-        try:
-            register_voice_package(mock_package)
-        except Exception:
-            pass # already registered globally in this test run
+        register_voice_package(mock_package)
             
         runtime.load_voice("claire")
         

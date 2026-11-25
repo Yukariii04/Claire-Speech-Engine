@@ -23,7 +23,7 @@ from cse.backends.kittentts.exceptions import (
     SpeechGenerationError,
     VoiceLoadError,
 )
-from cse.backends.kittentts.result import SpeechResult
+from cse.acoustic.backend.result import SpeechResult
 from cse.performance.graph import PerformanceGraph
 
 # Public voice names mapped to internal expression voice IDs

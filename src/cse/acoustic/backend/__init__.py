@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from cse.acoustic.backend.capabilities import BackendCapabilities
 from cse.acoustic.backend.dummy_backend import DummyBackend
+from cse.acoustic.backend.result import SpeechResult
 from cse.acoustic.backend.exceptions import (
     BackendError,
     BackendNotFoundError,
@@ -24,4 +25,5 @@ __all__ = [
     "BackendRegistry",
     "BackendValidationError",
     "DummyBackend",
+    "SpeechResult",
 ]

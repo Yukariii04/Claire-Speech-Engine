@@ -10,7 +10,7 @@ The system is structured around three primary architectural layers:
 2. **CPE (Claire Performance Engine):** The communication intelligence layer, responsible for semantic reasoning, communicative intent, and performance planning.
 3. **CAM (Claire Acoustic Model):** The native acoustic rendering layer, responsible for synthesizing the `PerformanceGraph` into natural speech.
 
-*(Note: While native CAM is under development, KittenTTS is used as the current compatible acoustic implementation satisfying the `PerformanceGraph` contract via translation.)*
+*(Note: KittenTTS is the active default compatible acoustic implementation satisfying the `PerformanceGraph` contract via translation. Native `cam` is exposed experimentally in `VoiceRuntime` and requires released ONNX weights or custom `CAMConfig` model paths.)*
 
 ```mermaid
 flowchart TD
@@ -84,7 +84,7 @@ sequenceDiagram
     Note over CAM: 2. Render acoustic speech features
     Note over CAM: 3. Synthesize waveform
     
-    CAM-->>CSE: Return Audio Data
+    CAM-->>CSE: Return SpeechResult (WAV path & metadata)
     deactivate CAM
     
     CSE-->>User: Return SpeechResult
@@ -109,7 +109,9 @@ CPE outputs an immutable, backend-independent **PerformanceGraph** that serves a
 - **Compatible Implementations (e.g., KittenTTS):** Interim or alternative acoustic engines that consume the `PerformanceGraph` through a `BaseTranslator` adapter to satisfy the CAM contract while native CAM is under development.
 
 ## `SpeechResult`
-A `SpeechResult` is the immutable output object returned to the user upon successful (or failed) synthesis. It encapsulates:
-- The generated audio data and file paths.
-- Success status and error messages.
-- Performance metrics (e.g., synthesis duration, sample rate).
+A `SpeechResult` (`cse.acoustic.backend.result.SpeechResult`, also re-exported by `cse.backends.kittentts.result`) is the immutable output object returned upon successful synthesis. Synthesis errors raise typed exceptions (such as `SpeechGenerationError` or `SpeechEngineError`) rather than returning failed `SpeechResult` objects. It encapsulates:
+- `success`: Boolean synthesis status.
+- `audio_path`: Path to the generated WAV file.
+- `duration_seconds`, `sample_rate`, `channels`: Audio metrics.
+- `backend` and `voice`: Synthesis backend ID and resolved voice ID.
+- `metadata`: Optional backend-specific metadata dictionary.

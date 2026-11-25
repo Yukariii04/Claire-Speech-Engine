@@ -6,8 +6,10 @@ from cse.performance.graph import PerformanceGraph
 from cse.acoustic.backend import AcousticBackend, DummyBackend
 from cse.acoustic.backend.exceptions import BackendNotFoundError
 from cse.runtime.voice.exceptions import BackendNotRegisteredError, InvalidRuntimeStateError
+from cse.runtime.voice.info import BackendVoiceInfo
 from cse.runtime.voice.state import RuntimeState
 from cse.voice import get_voice_package, VoicePackage, VoicePackageNotFoundError
+from cse.voice.metadata import VoiceMetadata
 
 
 _BACKEND_MAP = {
@@ -23,7 +25,7 @@ class VoiceRuntime:
     def __init__(self, backend: AcousticBackend | None = None) -> None:
         self._state = RuntimeState.UNINITIALIZED
         self._backend = backend or DummyBackend()
-        self._active_voice: VoicePackage | None = None
+        self._active_voice: VoicePackage | BackendVoiceInfo | None = None
         self._backend_id: str = "dummy"
 
     def initialize(self) -> None:
@@ -62,6 +64,9 @@ class VoiceRuntime:
             
         self._backend = backend
         self._backend_id = backend_id
+        self._active_voice = None  # Reset voice on backend switch
+        if self._state == RuntimeState.VOICE_LOADED:
+            self._state = RuntimeState.READY
         if self._state != RuntimeState.UNINITIALIZED:
             self._backend.initialize()
 
@@ -74,17 +79,20 @@ class VoiceRuntime:
         if self._state not in (RuntimeState.READY, RuntimeState.VOICE_LOADED):
             raise InvalidRuntimeStateError(f"Cannot load voice from {self._state}")
 
-        # PRD-015: Let the backend validate the voice first
-        if self._backend.validate_voice(voice_id):
-            if hasattr(self._backend, 'load_voice'):
-                self._backend.load_voice(voice_id)
-            self._active_voice = None  # No VoicePackage needed
-            self._state = RuntimeState.VOICE_LOADED
-            return
-
-        # PRD-015 §11: voice doesn't belong to this backend — helpful error
+        # PRD-015: When the backend enumerates voices, validate against it first
         available = self._backend.list_voices()
         if available:
+            if self._backend.validate_voice(voice_id):
+                resolved_id = voice_id
+                if hasattr(self._backend, "load_voice"):
+                    loaded = self._backend.load_voice(voice_id)
+                    if isinstance(loaded, str) and loaded:
+                        resolved_id = loaded
+                self._active_voice = self._build_backend_voice_info(resolved_id, available)
+                self._state = RuntimeState.VOICE_LOADED
+                return
+
+            # PRD-015 §11: voice doesn't belong to this backend — helpful error
             voice_list = ", ".join(v["id"] for v in available)
             backend_name = self._backend.get_capabilities().backend_name
             from cse.runtime.voice.exceptions import VoiceNotFoundError
@@ -94,15 +102,53 @@ class VoiceRuntime:
                 f"Run: cse voice"
             )
 
-        # Fallback: try VoicePackage registry (backwards compat)
+        # Fallback for backends without enumerated voices (e.g. DummyBackend):
+        # resolve from the VoicePackage registry so disk packages stay intact.
         try:
             package = get_voice_package(voice_id)
         except VoicePackageNotFoundError as e:
             from cse.runtime.voice.exceptions import VoiceNotFoundError
             raise VoiceNotFoundError(str(e)) from e
-            
+
         self._active_voice = package
         self._state = RuntimeState.VOICE_LOADED
+
+    def _build_backend_voice_info(
+        self,
+        voice_id: str,
+        available: list[dict[str, str]],
+    ) -> BackendVoiceInfo:
+        """Build a BackendVoiceInfo from the backend's capabilities and voice entry."""
+        caps = self._backend.get_capabilities()
+        vid_lower = voice_id.strip().lower()
+        matched = next(
+            (
+                v
+                for v in available
+                if v.get("id", "").lower() == vid_lower
+                or v.get("alias", "").lower() == vid_lower
+                or v.get("name", "").lower() == vid_lower
+            ),
+            None,
+        )
+        resolved_id = matched["id"] if matched and "id" in matched else voice_id
+        display_name = matched.get("name", resolved_id) if matched else resolved_id
+        language = matched.get("language") or (
+            caps.supported_languages[0] if caps.supported_languages else "en"
+        )
+        metadata = VoiceMetadata(
+            id=resolved_id,
+            name=display_name,
+            version=caps.backend_version,
+            author=caps.backend_name,
+            language=language,
+            backend=self._backend_id,
+            sample_rate=caps.sample_rate,
+            channels=1,
+            description=f"{caps.backend_name} voice '{display_name}'",
+            license=None,  # Backends do not supply license info
+        )
+        return BackendVoiceInfo(metadata=metadata)
 
     def unload_voice(self) -> None:
         """Unload the currently active voice."""
@@ -125,8 +171,8 @@ class VoiceRuntime:
         finally:
             self._state = RuntimeState.VOICE_LOADED
 
-    def get_loaded_voice(self) -> VoicePackage | None:
-        """Get the currently loaded VoicePackage."""
+    def get_loaded_voice(self) -> VoicePackage | BackendVoiceInfo | None:
+        """Get the currently loaded voice (VoicePackage or BackendVoiceInfo)."""
         return self._active_voice
 
     def get_backend_id(self) -> str:

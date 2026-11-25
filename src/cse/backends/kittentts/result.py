@@ -1,21 +1,11 @@
-"""SpeechResult for KittenTTS and acoustic backends."""
+"""SpeechResult for KittenTTS and acoustic backends.
+
+This module re-exports SpeechResult from the canonical location
+(cse.acoustic.backend.result) for backward compatibility.
+"""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any
+from cse.acoustic.backend.result import SpeechResult
 
-
-@dataclass(frozen=True)
-class SpeechResult:
-    """Immutable result of a speech synthesis operation."""
-
-    success: bool
-    audio_path: Path
-    duration_seconds: float
-    sample_rate: int
-    channels: int
-    backend: str
-    voice: str
-    metadata: dict[str, Any] = field(default_factory=dict)
+__all__ = ["SpeechResult"]

@@ -5,6 +5,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from cse.runtime.voice.info import BackendVoiceInfo
+from cse.voice import VoicePackage
+
 from cse.api.config import EngineConfig
 from cse.api.exceptions import (
     ConfigurationError,
@@ -64,8 +67,8 @@ class SpeechEngine:
         except Exception as e:
             raise SpeechEngineError(f"Failed to load voice {voice_id}: {e}") from e
 
-    def get_voice(self) -> Any:
-        """Get the currently loaded voice package."""
+    def get_voice(self) -> VoicePackage | BackendVoiceInfo | None:
+        """Get the currently loaded voice (VoicePackage or BackendVoiceInfo)."""
         self._check_state()
         return self._runtime.get_loaded_voice()
 

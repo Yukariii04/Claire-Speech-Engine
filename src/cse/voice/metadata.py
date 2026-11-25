@@ -18,4 +18,4 @@ class VoiceMetadata:
     sample_rate: int
     channels: int
     description: str
-    license: str
+    license: str | None = None

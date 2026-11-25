@@ -46,7 +46,7 @@ from cse.acoustic.cam.config import (
     STYLE_TO_ID,
 )
 from cse.acoustic.cam.downloader import resolve_cam_model_paths
-from cse.backends.kittentts.result import SpeechResult
+from cse.acoustic.backend.result import SpeechResult
 from cse.performance.graph import PerformanceGraph
 
 
@@ -196,7 +196,7 @@ class CAMBackend(AcousticBackend):
 
         try:
             acoustic_out = self._acoustic_session.run(None, acoustic_feed)
-            mel_output = acoustic_out[0]  # [1, T_frames, 80]
+            mel_output = acoustic_out[0]  # [1, T_frames, 100]
         except Exception as e:
             raise SpeechGenerationError(f"CAM acoustic ONNX inference failed: {e}") from e
 
@@ -248,7 +248,7 @@ class CAMBackend(AcousticBackend):
         return BackendCapabilities(
             backend_name="cam",
             supports_streaming=False,
-            supports_batch=True,
+            supports_batch=False,  # Public translate() API accepts one PerformanceGraph
             supports_multispeaker=True,
             supports_voice_cloning=False,
             emotion="high",

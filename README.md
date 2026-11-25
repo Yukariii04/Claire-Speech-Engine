@@ -19,7 +19,7 @@ pip install -e ".[dev]"
 ## Quick Start
 
 ### 1. Setup Backend & Pre-download Models
-CSE currently uses **KittenTTS** (CPU-optimized, ONNX Runtime) as its compatible acoustic synthesis implementation on **Python 3.10 – 3.12** while native CAM is under development.
+CSE currently uses **KittenTTS** (CPU-optimized, ONNX Runtime) as its active compatible acoustic synthesis implementation on **Python 3.10 – 3.12**; native **CAM** (`load_backend("cam")`) is exposed experimentally and requires released or custom-configured ONNX weights.
 
 ```bash
 # Setup KittenTTS dependencies and pre-download models for offline use
@@ -71,7 +71,7 @@ Read these documents to understand the core philosophy and design of the engine:
 The Claire Speech Engine (CSE) is currently at **v1.0.5**:
 1. **CSE (Complete Engine & Orchestration)**: Runtime lifecycle, streaming transport, voice registries, CLI tools, and packaging.
 2. **CPE (Claire Performance Engine)**: Communication and performance reasoning passes (`meaning` -> `intent` -> `planning`) producing the canonical `PerformanceGraph`.
-3. **Acoustic Synthesis**: Currently utilizing KittenTTS (compatible ONNX implementation) while native CAM is under development.
+3. **Acoustic Synthesis**: Currently utilizing KittenTTS (compatible ONNX implementation); native `cam` backend is exposed experimentally and requires trained ONNX weights (`CAMConfig` paths or released weights).
 
 ### Intended Project Architecture:
 - **CSE**: Complete speech engine coordinating reasoning and acoustic realization.

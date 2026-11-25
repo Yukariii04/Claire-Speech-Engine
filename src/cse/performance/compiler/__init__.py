@@ -1,4 +1,9 @@
-"""Performance Compiler.
+"""Legacy Performance Compiler (Superseded PRD-003 Baseline).
+
+.. deprecated::
+   This module is a legacy PRD-003 baseline retained only for historical
+   tests and benchmarks. It is NOT part of the active CPE PerformanceGraph
+   speech-generation pipeline and is excluded from built distribution wheels.
 
 Transforms a Claire Intermediate Representation (CIR) into a
 deterministic Performance Timeline.

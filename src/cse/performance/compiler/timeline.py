@@ -1,4 +1,8 @@
-"""Performance Timeline — immutable root object (PRD §8)."""
+"""Performance Timeline — legacy immutable root object (Superseded PRD-003 §8 baseline).
+
+Retained for historical tests and benchmarks; excluded from the active
+PerformanceGraph synthesis pipeline and built distribution wheels.
+"""
 
 from __future__ import annotations
 

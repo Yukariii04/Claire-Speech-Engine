@@ -56,6 +56,9 @@ cam-export = [
 [project.scripts]
 cse = "cse.cli.main:main"
 
+[tool.setuptools]
+include-package-data = false
+
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = true
@@ -82,6 +85,9 @@ cse = [
     "_scaffold/*.py",
     "_scaffold/*.md",
 ]
+
+[tool.setuptools.exclude-package-data]
+cse = ["performance/compiler*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
