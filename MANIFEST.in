@@ -1,0 +1,3 @@
+prune tests
+prune src/cse/performance/compiler
+global-exclude __pycache__ *.py[cod]
